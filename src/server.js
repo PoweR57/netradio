@@ -1,18 +1,8 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
+const express = require('express');
+const config = require('./config');
 
-// parse incoming requests
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
 
-app.use(express.static('./public'));
-
-app.use('/', require('./routes/route'));
-
-app.set("view engine", "twig");
-app.set("views", "./src/views");
-
-app.listen(3000, function () {
-    console.log('Express app listening on port 3000');
+app.listen(config.app.port, () => {
+    console.log(`Server running at http://${config.app.baseUrl}:${config.app.port}`);
 });
