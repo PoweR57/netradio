@@ -2,12 +2,11 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
-
 // parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('../public'));
+app.use(express.static('./public'));
 
 app.use('/', require('./routes/route'));
 
