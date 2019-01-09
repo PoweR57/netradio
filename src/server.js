@@ -3,9 +3,7 @@ var app = express();
 var server = require('http').createServer(app); 
 var bodyParser = require('body-parser');
 
-// parse incoming requests
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+const app = express();
 
 app.use(express.static('./public'));
 
