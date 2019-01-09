@@ -1,5 +1,5 @@
 dev:
-  container_name: net-radio-api-service
+  container_name: net-radio-api-service-dev
   image: vanhaarenlucas/node-icecast
   volumes:
     - .:/app
@@ -8,7 +8,7 @@ dev:
   ports:
   - 3000:3000
 
-dev:
+app:
   container_name: net-radio-api-service
   image: vanhaarenlucas/node-icecast
   volumes:
