@@ -1,4 +1,4 @@
-app:
+dev:
   container_name: net-radio-api-service
   image: vanhaarenlucas/node-icecast
   volumes:
@@ -7,3 +7,16 @@ app:
   command: npm run dev
   ports:
   - 3000:3000
+
+dev:
+  container_name: net-radio-api-service
+  image: vanhaarenlucas/node-icecast
+  volumes:
+    - .:/app
+  working_dir: "/app"
+  command: npm run start
+  environment:
+    - NODE_ENV=prod
+    - PORT=3000
+  ports:
+    - 3000:3000

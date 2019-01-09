@@ -1,11 +1,11 @@
 # netradio
  Pour démarrer le serveur en **développement**
  ```
- npm run dev
+ docker-compose up dev
  ```
 
  Pour le lancer en mode production
  ```
- npm run start
+ docker-compose up app
  ```
 
