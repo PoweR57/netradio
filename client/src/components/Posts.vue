@@ -21,15 +21,14 @@
 <script>
 /* eslint-disable */
 import PostsService from "@/services/PostsService";
+var socket = io("localhost:8081");
+var mySocket = io("/", { transports: ["websocket"] });
 
 export default {
     name: "posts",
     data() {
         return {
-            posts: [],
-            socket: io("localhost:8081"),
-            mySocket: io("/", { transports: ["websocket"] }),
-            debug: document.querySelector("#debug")
+            posts: []
         };
     },
     mounted() {
@@ -57,40 +56,40 @@ export default {
                 console.log("Header size: " + arrayBuffer.byteLength);
 
                 // Every new client streamer must receive this header buffer data
-                this.mySocket.emit("bufferHeader", {
+                mySocket.emit("bufferHeader", {
                     data: arrayBuffer,
                     mimeType: presenterMedia.options.mimeType
                 });
             };
 
             presenterMedia.onBufferProcess = function(streamData) {
-                debug.value =
+                document.querySelector("#debug").value =
                     "Buffer sent: " + streamData[0].byteLength + "bytes";
-                this.mySocket.emit("stream", streamData);
+                mySocket.emit("stream", streamData);
             };
 
             presenterMedia.startRecording();
         },
         asStreamer: function() {
             // Set latency to 100ms (Equal with presenter)
-            audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
+            var audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
             audioStreamer.playStream();
 
             // Buffer header must be received first
-            this.mySocket.on("bufferHeader", function(packet) {
+            mySocket.on("bufferHeader", function(packet) {
                 audioStreamer.mimeType = packet.mimeType;
                 audioStreamer.setBufferHeader(packet.data);
             });
 
             // Receive buffer and play it
-            this.mySocket.on("stream", function(packet) {
-                debug.value =
+            mySocket.on("stream", function(packet) {
+                document.querySelector("#debug").value =
                     "Buffer received: " + packet[0].byteLength + "bytes";
                 audioStreamer.realtimeBufferPlay(packet);
             });
 
             // Request buffer header
-            this.mySocket.emit("requestBufferHeader", "");
+            mySocket.emit("requestBufferHeader", "");
         }
     }
 };

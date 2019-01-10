@@ -19,9 +19,6 @@ app.get('/posts', (req, res) => {
     )
 })
 
-// app.listen(process.env.PORT || 8081)
-
-
 var io = require('socket.io')(server);
 io.on('connection', () => { /* … */ });
 server.listen(process.env.PORT || 8081);
@@ -36,15 +33,18 @@ io.on('connection', function (socket) {
         // Buffer header can be saved on server so it can be passed to new user
         bufferHeader = packet;
         socket.broadcast.emit('bufferHeader', packet);
+        console.log("salut")
     });
 
     // Broadcast the received buffer
     socket.on('stream', function (packet) {
         socket.broadcast.emit('stream', packet);
+        console.log("salut")
     });
 
     // Send buffer header to new user
     socket.on('requestBufferHeader', function () {
         socket.emit('bufferHeader', bufferHeader);
+        console.log("salut")
     });
 });
