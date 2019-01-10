@@ -17,12 +17,11 @@
     </div>
 </template>
 
-
 <script>
 /* eslint-disable */
 import PostsService from "@/services/PostsService";
-var socket = io("localhost:8081");
-var mySocket = io("/", { transports: ["websocket"] });
+// var socket = io("/posts", { transports: ["websocket"] });
+var socket = null;
 
 export default {
     name: "posts",
@@ -33,6 +32,9 @@ export default {
     },
     mounted() {
         this.getPosts();
+    },
+    created: function() {
+        socket = io("localhost:8081");
     },
     methods: {
         async getPosts() {
@@ -56,7 +58,7 @@ export default {
                 console.log("Header size: " + arrayBuffer.byteLength);
 
                 // Every new client streamer must receive this header buffer data
-                mySocket.emit("bufferHeader", {
+                socket.emit("bufferHeader", {
                     data: arrayBuffer,
                     mimeType: presenterMedia.options.mimeType
                 });
@@ -65,7 +67,7 @@ export default {
             presenterMedia.onBufferProcess = function(streamData) {
                 document.querySelector("#debug").value =
                     "Buffer sent: " + streamData[0].byteLength + "bytes";
-                mySocket.emit("stream", streamData);
+                socket.emit("stream", streamData);
             };
 
             presenterMedia.startRecording();
@@ -76,20 +78,20 @@ export default {
             audioStreamer.playStream();
 
             // Buffer header must be received first
-            mySocket.on("bufferHeader", function(packet) {
+            socket.on("bufferHeader", function(packet) {
                 audioStreamer.mimeType = packet.mimeType;
                 audioStreamer.setBufferHeader(packet.data);
             });
 
             // Receive buffer and play it
-            mySocket.on("stream", function(packet) {
+            socket.on("stream", function(packet) {
                 document.querySelector("#debug").value =
                     "Buffer received: " + packet[0].byteLength + "bytes";
                 audioStreamer.realtimeBufferPlay(packet);
             });
 
             // Request buffer header
-            mySocket.emit("requestBufferHeader", "");
+            socket.emit("requestBufferHeader", "");
         }
     }
 };
