@@ -13,7 +13,13 @@
         <button v-on:click="asPresenter()">Presenter</button>
         <button v-on:click="asStreamer()">Streamer</button>
         <input type="text" id="debug">
-        <br>Presenter must be online before the streamer
+        <br><br>
+        <button v-on:click="playMusic('music1.mp3')">Play Music</button>
+        <button v-on:click="playMusic('music2.mp3')">Play Music</button>
+        <button v-on:click="playMusic('music3.mp3')">Play Music</button>
+        <button v-on:click="playMusic('music4.mp3')">Play Music</button>
+        <br><br>
+        <embed src="http://localhost:8081/" loop="false" autostart="true" hidden="false">
     </div>
 </template>
 
@@ -92,7 +98,11 @@ export default {
 
             // Request buffer header
             socket.emit("requestBufferHeader", "");
+        },
+        playMusic: function(name) {
+            socket.emit("playMusic", name);
         }
+
     }
 };
 </script>
