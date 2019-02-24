@@ -25,7 +25,6 @@ app.get('/posts', (req, res) => {
 
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;
-var listSocket = new Array()
 
 // Event listener
 io.on('connection', function (socket) {

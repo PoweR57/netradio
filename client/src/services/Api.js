@@ -1,6 +1,7 @@
 /* eslint-disable */
-import axios from 'axios'
+import axios from 'axios';
+import Config from "@/config/config";
 
 export default () => {
-    return axios.create({ baseURL: 'http://localhost:8081' })
+    return axios.create({ baseURL: 'http://' + Config.service.music.URL })
 }
