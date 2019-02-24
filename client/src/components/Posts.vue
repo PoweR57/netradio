@@ -10,16 +10,25 @@
                 <span>{{ post.description }}</span>
             </p>
         </div>
-        <button v-on:click="asPresenter()">Presenter</button>
-        <button v-on:click="asStreamer()">Streamer</button>
+        <button v-on:click="startPresenter()">Animateur Start</button>
+        <button v-on:click="stopPresenter()">Animateur Stop</button>
+        <button v-on:click="startStreamer()">Streamer Start</button>
+        <button v-on:click="stopStreamer()">Streamer Stop</button>
         <input type="text" id="debug">
         <br><br>
-        <button v-on:click="playMusic('music1.mp3')">Play Music</button>
-        <button v-on:click="playMusic('music2.mp3')">Play Music</button>
-        <button v-on:click="playMusic('music3.mp3')">Play Music</button>
-        <button v-on:click="playMusic('music4.mp3')">Play Music</button>
+        <button v-on:click="playMusic('music1.mp3')">Play Music 1</button>
+        <button v-on:click="playMusic('music2.mp3')">Play Music 2</button>
+        <button v-on:click="playMusic('music3.mp3')">Play Music 3</button>
+        <button v-on:click="playMusic('music4.mp3')">Play Music 4 </button>
+        <button v-on:click="playMusic('music5.mp3')">Play Music 5 </button>
+        <button v-on:click="playMusic('music6.mp3')">Play Music 6 </button>
+        <button v-on:click="playMusic('music7.mp3')">Play Music 7 </button>
+        <button v-on:click="playMusic('music8.mp3')">Play Music 8 </button>
         <br><br>
-        <embed src="http://localhost:8081/" loop="false" autostart="true" hidden="false">
+        <div id="update">
+            <!-- <embed src="http://localhost:8081/" loop="false" autostart="true" hidden="false"> -->
+            <audio src="http://localhost:8081/" controls autoplay></audio>
+        </div>
     </div>
 </template>
 
@@ -28,6 +37,8 @@
 import PostsService from "@/services/PostsService";
 // var socket = io("/posts", { transports: ["websocket"] });
 var socket = null;
+var presenterMedia = null;
+var audioStreamer = null;
 
 export default {
     name: "posts",
@@ -41,15 +52,7 @@ export default {
     },
     created: function() {
         socket = io("localhost:8081");
-    },
-    methods: {
-        async getPosts() {
-            const response = await PostsService.fetchPosts();
-            this.posts = response.data;
-        },
-        asPresenter: function() {
-            // Set latency to 100ms (Equal with streamer)
-            var presenterMedia = new ScarletsMediaPresenter(
+        presenterMedia = new ScarletsMediaPresenter(
                 {
                     audio: {
                         channelCount: 1,
@@ -57,7 +60,16 @@ export default {
                     }
                 },
                 100
-            );
+        );
+        audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
+    },
+    methods: {
+        async getPosts() {
+            const response = await PostsService.fetchPosts();
+            this.posts = response.data;
+        },
+        startPresenter: function() {
+            // Set latency to 100ms (Equal with streamer)
 
             presenterMedia.onRecordingReady = function(arrayBuffer) {
                 console.log("Recording started!");
@@ -78,11 +90,12 @@ export default {
 
             presenterMedia.startRecording();
         },
-        asStreamer: function() {
-            // Set latency to 100ms (Equal with presenter)
-            var audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
+        stopPresenter: function() {
+            presenterMedia.stopRecording();
+        },
+        startStreamer: function() {
             audioStreamer.playStream();
-
+            
             // Buffer header must be received first
             socket.on("bufferHeader", function(packet) {
                 audioStreamer.mimeType = packet.mimeType;
@@ -99,8 +112,15 @@ export default {
             // Request buffer header
             socket.emit("requestBufferHeader", "");
         },
+        stopStreamer: function() {
+            audioStreamer.pause();
+        },
         playMusic: function(name) {
+            socket.on("update", function() {
+                $("#update").html('<audio src="http://localhost:8081/" controls autoplay></audio>');
+            });
             socket.emit("playMusic", name);
+
         }
 
     }
