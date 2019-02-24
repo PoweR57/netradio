@@ -25,9 +25,11 @@ app.get('/posts', (req, res) => {
 
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;
+var listSocket = new Array()
 
 // Event listener
 io.on('connection', function (socket) {
+
     /* Presenter */
     socket.on('bufferHeader', function (packet) {
         // Buffer header can be saved on server so it can be passed to new user
@@ -51,10 +53,19 @@ io.on('connection', function (socket) {
             timer.stop()
         }
 
-        file = './musiques/'+name
+        file = './musiques/' + name
 
         startMusic()
-        });
+        socket.broadcast.emit('update', '')
+    });
+
+    socket.on('stop', function () {
+        socket.broadcast.emit('stop', '')
+    });
+
+    socket.on('close', function (exception) {
+        socket.disconnect()
+    })
 });
 
 http.listen(8081, () => console.log('listening on port 8081'))
@@ -63,35 +74,22 @@ http.listen(8081, () => console.log('listening on port 8081'))
 
 
 let timer = new Timer()
+timer.on('tick', (ms) => onEverySecond())
+timer.on('done', () => resetParams())
+timer.on('statusChanged', (status) => onChangeStatus(status))
+
 
 let file = null
 let start = 0;
 let onePart = 0;
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     if (file) {
-        var rs = fs.createReadStream(file,{'flags':'r', 'start': start})
-        res.writeHead(200,{'Content-Type':'audio/mpeg'})
+        var rs = fs.createReadStream(file, { 'flags': 'r', 'start': start })
+        res.writeHead(200, { 'Content-Type': 'audio/mpeg' })
         rs.pipe(res)
     }
 })
-
-// http://localhost:3000/play?music=music1.mp3
-// app.get('/play', (req,res) => {
-//     // Si une musique est déjà en cours.
-//     if (timer.status == 'running') {
-//         resetParams()
-//         timer.stop()
-//     }
-
-//     file = './musiques/'+req.query.music
-
-//     startMusic()
-// })
-
-timer.on('tick', (ms) => onEverySecond())
-timer.on('done', () => resetParams())
-timer.on('statusChanged', (status) => onChangeStatus(status))
 
 var startMusic = () => {
     let fileSize = fs.statSync(file).size
