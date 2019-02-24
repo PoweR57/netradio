@@ -33,7 +33,7 @@ var audioStreamer = null;
 
 socket.on("update", function() {
     $("#update").html(
-        '<audio id="player" src="' +
+        '<audio id="player" src="http://' +
             Config.service.music.URL +
             '" controls autoplay></audio>'
     );
@@ -43,7 +43,7 @@ socket.on("update", function() {
 socket.on("stop", function() {
     console.log("stop");
     var music = document.getElementById("player");
-    music.setAttribute("src", ""); //change the source
+    music.setAttribute("src", " "); //change the source
     music.load(); //change the source
 });
 
