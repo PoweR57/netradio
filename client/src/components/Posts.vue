@@ -16,8 +16,11 @@
         <input type="text" id="debug">
         <br>
         <br>
+        <div>
+            <button id="controls" v-text="msgButton" v-on:click="playerStart()"></button>
+        </div>
         <div id="update">
-            <audio id="player" v-bind:src="URL" controls autoplay></audio>
+            <!-- Conteneur du player audio -->
         </div>
     </div>
 </template>
@@ -30,21 +33,24 @@ import Config from "@/config/config";
 var socket = io(Config.service.music.URL);
 var presenterMedia = null;
 var audioStreamer = null;
+var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
 
 socket.on("update", function() {
-    $("#update").html(
-        '<audio id="player" src="http://' +
-            Config.service.music.URL +
-            '" controls autoplay></audio>'
-    );
-    console.log("play only one");
+    if (playerStatus == true) {
+        $("#update").html(
+            '<audio id="player" src="http://' +
+                Config.service.music.URL +
+                '" controls autoplay></audio>'
+        );
+    }
 });
 
 socket.on("stop", function() {
-    console.log("stop");
-    var music = document.getElementById("player");
-    music.setAttribute("src", " "); //change the source
-    music.load(); //change the source
+    if (playerStatus == true) {
+        var audio = document.getElementById("player");
+        audio.setAttribute("src", " "); //change the source
+        audio.load(); //change the source
+    }
 });
 
 export default {
@@ -52,7 +58,8 @@ export default {
     data() {
         return {
             posts: [],
-            URL: "http://" + Config.service.music.URL + "/"
+            URL: "http://" + Config.service.music.URL + "/",
+            msgButton: "Click for play"
         };
     },
     mounted() {
@@ -118,7 +125,29 @@ export default {
 
             // Request buffer header
             socket.emit("requestBufferHeader", "");
+        },
+        playerStart: function() {
+            if (playerStatus) {
+                this.msgButton = "Click for Play";
+                $("#update").empty();
+            } else {
+                this.msgButton = "Click for Pause";
+                $("#update").html(
+                    '<audio id="player" src="http://' +
+                        Config.service.music.URL +
+                        '" controls autoplay></audio>'
+                );
+                var audio = document.getElementById("player");
+                audio.play();
+            }
+            playerStatus = !playerStatus;
         }
     }
 };
 </script>
+
+<style>
+/* #update {
+    display: none;
+} */
+</style>

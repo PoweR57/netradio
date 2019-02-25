@@ -64,7 +64,14 @@ io.on('connection', function (socket) {
 
     socket.on('close', function (exception) {
         socket.disconnect()
-    })
+    });
+
+    // Quand on arrete le serveur.
+    process.on('SIGINT', function () {
+        socket.broadcast.emit('stop');
+        console.log('Arrêt du service "music".');
+    });
+    process.setMaxListeners(0);
 });
 
 http.listen(8081, () => console.log('listening on port 8081'))
