@@ -10,8 +10,6 @@
                 <span>{{ post.description }}</span>
             </p>
         </div>
-        <button v-on:click="startPresenter()">Animateur Start</button>
-        <button v-on:click="stopPresenter()">Animateur Stop</button>
         <button v-on:click="startStreamer()">Streamer Start</button>
         <input type="text" id="debug">
         <br>
@@ -31,7 +29,6 @@ import PostsService from "@/services/PostsService";
 import Config from "@/config/config";
 
 var socket = io(Config.service.music.URL);
-var presenterMedia = null;
 var audioStreamer = null;
 var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
 
@@ -66,46 +63,12 @@ export default {
         this.getPosts();
     },
     created: function() {
-        presenterMedia = new ScarletsMediaPresenter(
-            {
-                audio: {
-                    channelCount: 1,
-                    echoCancellation: false
-                }
-            },
-            100
-        );
         audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
     },
     methods: {
         async getPosts() {
             const response = await PostsService.fetchPosts();
             this.posts = response.data;
-        },
-        startPresenter: function() {
-            // Set latency to 100ms (Equal with streamer)
-
-            presenterMedia.onRecordingReady = function(arrayBuffer) {
-                console.log("Recording started!");
-                console.log("Header size: " + arrayBuffer.byteLength);
-
-                // Every new client streamer must receive this header buffer data
-                socket.emit("bufferHeader", {
-                    data: arrayBuffer,
-                    mimeType: presenterMedia.options.mimeType
-                });
-            };
-
-            presenterMedia.onBufferProcess = function(streamData) {
-                document.querySelector("#debug").value =
-                    "Buffer sent: " + streamData[0].byteLength + "bytes";
-                socket.emit("stream", streamData);
-            };
-
-            presenterMedia.startRecording();
-        },
-        stopPresenter: function() {
-            presenterMedia.stopRecording();
         },
         startStreamer: function() {
             audioStreamer.playStream();
