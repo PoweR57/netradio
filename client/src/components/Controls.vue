@@ -13,6 +13,10 @@
         <button v-on:click="playMusic('music6.mp3')">Play Music 6</button>
         <button v-on:click="playMusic('music7.mp3')">Play Music 7</button>
         <button v-on:click="playMusic('music8.mp3')">Play Music 8</button>
+        <button v-on:click="playMusic('music9.mp3')">Play Music short</button>
+        <br>
+        <br>
+        <button v-on:click="playList()">Play List</button>
         <br>
         <br>
         <button v-on:click="stopMusic()">Stop</button>
@@ -68,6 +72,16 @@ export default {
         },
         playMusic: function(name) {
             socket.emit("playMusic", name);
+        },
+        playList: function() {
+            var list = [
+                "music10.mp3",
+                "music10.mp3",
+                "music10.mp3",
+                "music10.mp3",
+                "music10.mp3"
+            ];
+            socket.emit("playList", list);
         },
         stopMusic: function() {
             socket.emit("stop");
