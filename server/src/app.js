@@ -33,6 +33,7 @@ io.on('connection', function (socket) {
     socket.on('bufferHeader', function (packet) {
         // Buffer header can be saved on server so it can be passed to new user
         bufferHeader = packet;
+
         socket.broadcast.emit('bufferHeader', packet);
     });
 
@@ -46,6 +47,7 @@ io.on('connection', function (socket) {
         socket.emit('bufferHeader', bufferHeader);
     });
 
+    //Socket de reception de la musique à diffuser instantanément
     socket.on('playMusic', function (name) {
         if (timer.status == 'running') {
             resetParams()
@@ -55,10 +57,13 @@ io.on('connection', function (socket) {
         file = './musiques/' + name
 
         startMusic()
+
+        //Acualisation des balises audios chez les clients
         socket.broadcast.emit('update', '')
     });
 
     socket.on('stop', function () {
+        //Ferme toutes des balises audios chez les clients
         socket.broadcast.emit('stop', '')
     });
 
@@ -68,27 +73,26 @@ io.on('connection', function (socket) {
 
     // Quand on arrete le serveur.
     process.on('SIGINT', function () {
+        // Stop toutes les musiques de tous les clients
         socket.broadcast.emit('stop');
         console.log('Arrêt du service "music".');
     });
     process.setMaxListeners(0);
 });
 
-http.listen(8081, () => console.log('listening on port 8081'))
-
-
 
 
 let timer = new Timer()
-timer.on('tick', (ms) => onEverySecond())
-timer.on('done', () => resetParams())
+timer.on('tick', (ms) => onEverySecond()) //S'execute toutes les secondes
+timer.on('done', () => resetParams()) //Une fois le timer terminé. (Il a fait tout le temps de la musique)
 timer.on('statusChanged', (status) => onChangeStatus(status))
 
 
-let file = null
-let start = 0;
-let onePart = 0;
+let file = null //Nom du fichier de musique qui sera diffusé
+let start = 0;  //Lorsque utilisateur va reprendre le flux musical, mettre la au meme niveau que tout le monde. Incrémentation toutes les secondes jusqu'à la fin de la musique de 'onePart'
+let onePart = 0;// Taille en buffer d'une partie du fichier de la musique : (buffer de toute la musique) / (temps en seconde de la musique)
 
+// Rend la musique disponible sur la page localhost:8081/
 app.get('/', (req, res) => {
     if (file) {
         var rs = fs.createReadStream(file, { 'flags': 'r', 'start': start })
@@ -97,6 +101,7 @@ app.get('/', (req, res) => {
     }
 })
 
+// Permet de demarrer de maniere factice la musique
 var startMusic = () => {
     let fileSize = fs.statSync(file).size
     mp3Duration(file, function (err, duration) {
@@ -111,15 +116,23 @@ var onEverySecond = () => {
     start += onePart
 }
 
+// Appelé lorsque qu'une musique démarre ou se termine
 var onChangeStatus = (status) => {
     console.log('status:', status)
+
+    // Lors de la fin d'une musique
     if (status == 'stopped') {
         resetParams()
     }
 }
 
+//Remise à zero des variables en préparation d'une nouvelle musique à diffuser
 var resetParams = () => {
     file = null
     start = 0
     onePart = 0
 }
+
+
+
+http.listen(8081, () => console.log('listening on port 8081'))
