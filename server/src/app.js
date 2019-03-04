@@ -65,14 +65,12 @@ io.on('connection', function (socket) {
 
     timer.on('statusChanged', (status) => {
         if (status == 'running') {
-            console.log('update')
             socket.broadcast.emit('update')
         }
     })
 
     socket.on('stop', function () {
         //Ferme toutes des balises audios chez les clients
-        console.log('stop')
         arrayOfMusicForPlay = [];
         resetParams()
         timer.stop()
@@ -129,7 +127,7 @@ var onEverySecond = () => {
 
 // Appelé lorsque qu'une musique démarre ou se termine
 var onChangeStatus = (status) => {
-    // console.log('status:', status)
+    console.log('status:', status)
 
     // Lors de la fin d'une musique
     if (status == 'stopped') {

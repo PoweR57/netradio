@@ -28,28 +28,10 @@
 import PostsService from "@/services/PostsService";
 import Config from "@/config/config";
 
-var socket = io(Config.service.music.URL);
 var audioStreamer = null;
+var socket = null;
 var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
-
-socket.on("update", function() {
-    console.log("update");
-    if (playerStatus == true) {
-        $("#update").html(
-            '<audio id="player" src="http://' +
-                Config.service.music.URL +
-                '" controls autoplay></audio>'
-        );
-    }
-});
-socket.on("stop", function() {
-    console.log("stop");
-    if (playerStatus == true) {
-        var audio = document.getElementById("player");
-        audio.setAttribute("src", " "); //change the source
-        audio.load(); //change the source
-    }
-});
+var lock = 0;
 
 export default {
     name: "posts",
@@ -65,22 +47,47 @@ export default {
     },
     created: function() {
         audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
+        socket = io(Config.service.music.URL);
         this.startStreamer();
+        this.socket();
     },
     methods: {
         async getPosts() {
             const response = await PostsService.fetchPosts();
             this.posts = response.data;
         },
+        socket() {
+            console.log("update");
+            socket.on("update", function() {
+                if (lock == 0) {
+                    lock = 1;
+                    console.log("update2");
+                    if (playerStatus == true) {
+                        document.getElementById("update").empty();
+                        document.getElementById("update").innerHTML =
+                            '<audio id="player" src="http://' +
+                            Config.service.music.URL +
+                            '" controls autoplay></audio>';
+                        var audio = document.getElementById("player");
+                        audio.play();
+                    }
+                }
+            });
+
+            socket.on("stop", function() {
+                console.log("stop");
+                if (playerStatus == true) {
+                    var audio = document.getElementById("player");
+                    audio.setAttribute("src", " "); //change the source
+                    audio.load(); //change the source
+                }
+            });
+        },
         startStreamer: function() {
             audioStreamer.playStream();
 
             // Buffer header must be received first
             socket.on("bufferHeader", function(packet) {
-                if (packet.mimeType == null) {
-                    console.log(packet);
-                    console.log("zzzzzzzzzzzzzzzzzzzzzz", packet.mimeType);
-                }
                 audioStreamer.mimeType = packet.mimeType;
                 audioStreamer.setBufferHeader(packet.data);
             });
