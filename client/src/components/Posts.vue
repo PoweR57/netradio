@@ -31,7 +31,6 @@ import Config from "@/config/config";
 var audioStreamer = null;
 var socket = null;
 var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
-var lock = 0;
 
 export default {
     name: "posts",
@@ -59,18 +58,14 @@ export default {
         socket() {
             console.log("update");
             socket.on("update", function() {
-                if (lock == 0) {
-                    lock = 1;
-                    console.log("update2");
-                    if (playerStatus == true) {
-                        document.getElementById("update").empty();
-                        document.getElementById("update").innerHTML =
-                            '<audio id="player" src="http://' +
-                            Config.service.music.URL +
-                            '" controls autoplay></audio>';
-                        var audio = document.getElementById("player");
-                        audio.play();
-                    }
+                if (playerStatus == true) {
+                    document.getElementById("update").empty();
+                    document.getElementById("update").innerHTML =
+                        '<audio id="player" src="http://' +
+                        Config.service.music.URL +
+                        '" controls autoplay></audio>';
+                    var audio = document.getElementById("player");
+                    audio.play();
                 }
             });
 
