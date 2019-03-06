@@ -81,7 +81,6 @@ export default {
             socket.emit("requestBufferHeader", "");
         },
         playerStart: function() {
-            var socket2 = io(Config.service.music.URL);
             if (playerStatus) {
                 this.msgButton = "Click for Play";
                 $("#update").empty();
@@ -89,10 +88,13 @@ export default {
             } else {
                 this.msgButton = "Click for Pause";
                 this.displayPlayer();
-                var audio = document.getElementById("player");
-                audio.play();
 
-                socket2.on("update", function() {
+                var audio = document.getElementById("player");
+                if (audio.currentTime == 0) {
+                    audio.play();
+                }
+
+                socket.on("update", function() {
                     if (playerStatus == true) {
                         var audio = document.getElementById("player");
                         audio.src = "http://" + Config.service.music.URL;
@@ -100,7 +102,7 @@ export default {
                     }
                 });
 
-                socket2.on("stop", function() {
+                socket.on("stop", function() {
                     if (playerStatus == true) {
                         var audio = document.getElementById("player");
                         audio.setAttribute("src", " "); //change the source
