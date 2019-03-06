@@ -5,7 +5,7 @@
         <input type="text" id="debug">
         <br>
         <br>
-        <button v-on:click="playMusic('music1.mp3')">Play Music 1</button>
+        <!-- <button v-on:click="playMusic('music1.mp3')">Play Music 1</button> -->
         <button v-on:click="playMusic('music2.mp3')">Play Music 2</button>
         <button v-on:click="playMusic('music3.mp3')">Play Music 3</button>
         <button v-on:click="playMusic('music4.mp3')">Play Music 4</button>

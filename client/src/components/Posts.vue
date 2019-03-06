@@ -48,35 +48,17 @@ export default {
         audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
         socket = io(Config.service.music.URL);
         this.startStreamer();
-        this.socket();
     },
     methods: {
         async getPosts() {
             const response = await PostsService.fetchPosts();
             this.posts = response.data;
         },
-        socket() {
-            console.log("update");
-            socket.on("update", function() {
-                if (playerStatus == true) {
-                    document.getElementById("update").empty();
-                    document.getElementById("update").innerHTML =
-                        '<audio id="player" src="http://' +
-                        Config.service.music.URL +
-                        '" controls autoplay></audio>';
-                    var audio = document.getElementById("player");
-                    audio.play();
-                }
-            });
-
-            socket.on("stop", function() {
-                console.log("stop");
-                if (playerStatus == true) {
-                    var audio = document.getElementById("player");
-                    audio.setAttribute("src", " "); //change the source
-                    audio.load(); //change the source
-                }
-            });
+        displayPlayer() {
+            document.getElementById("update").innerHTML =
+                '<audio id="player" src="http://' +
+                Config.service.music.URL +
+                '" controls autoplay></audio>';
         },
         startStreamer: function() {
             audioStreamer.playStream();
@@ -99,19 +81,32 @@ export default {
             socket.emit("requestBufferHeader", "");
         },
         playerStart: function() {
+            var socket2 = io(Config.service.music.URL);
             if (playerStatus) {
                 this.msgButton = "Click for Play";
                 $("#update").empty();
                 document.querySelector("#debug").value = "";
             } else {
                 this.msgButton = "Click for Pause";
-                $("#update").html(
-                    '<audio id="player" src="http://' +
-                        Config.service.music.URL +
-                        '" controls autoplay></audio>'
-                );
+                this.displayPlayer();
                 var audio = document.getElementById("player");
                 audio.play();
+
+                socket2.on("update", function() {
+                    if (playerStatus == true) {
+                        var audio = document.getElementById("player");
+                        audio.src = "http://" + Config.service.music.URL;
+                        audio.play();
+                    }
+                });
+
+                socket2.on("stop", function() {
+                    if (playerStatus == true) {
+                        var audio = document.getElementById("player");
+                        audio.setAttribute("src", " "); //change the source
+                        audio.load(); //change the source
+                    }
+                });
             }
             playerStatus = !playerStatus;
         }
