@@ -1,5 +1,10 @@
 <template>
     <div class="controls">
+        <div v-if="posts">
+            <h1>{{posts.title}}</h1>
+            <h1>{{posts.description}}</h1>
+        </div>
+        <br>
         <button v-on:click="startPresenter()">Animateur Start</button>
         <button v-on:click="stopPresenter()">Animateur Stop</button>
         <input type="text" id="debug">
@@ -25,6 +30,7 @@
 
 <script>
 /* eslint-disable */
+import PostsServiceDataBase from "@/services/PostsServiceDataBase";
 import Config from "@/config/config";
 
 var socket = null;
@@ -32,6 +38,12 @@ var presenterMedia = null;
 
 export default {
     name: "controls",
+    data() {
+        return { posts: null };
+    },
+    mounted() {
+        this.getPosts();
+    },
     created: function() {
         socket = io(Config.service.music.URL);
         presenterMedia = new ScarletsMediaPresenter(
@@ -45,6 +57,10 @@ export default {
         );
     },
     methods: {
+        async getPosts() {
+            const response = await PostsServiceDataBase.fetchPosts();
+            this.posts = response.data;
+        },
         startPresenter: function() {
             // Set latency to 100ms (Equal with streamer)
 
