@@ -25,7 +25,7 @@
 
 <script>
 /* eslint-disable */
-import PostsService from "@/services/PostsService";
+import ServiceMusic from "@/services/ServiceMusic";
 import Config from "@/config/config";
 
 var audioStreamer = null;
@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         async getPosts() {
-            const response = await PostsService.fetchPosts();
+            const response = await ServiceMusic.fetchPosts();
             this.posts = response.data;
         },
         displayPlayer() {

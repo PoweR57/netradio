@@ -30,7 +30,7 @@
 
 <script>
 /* eslint-disable */
-import PostsServiceDataBase from "@/services/PostsServiceDataBase";
+import ServicePHP from "@/services/ServicePHP";
 import Config from "@/config/config";
 
 var socket = null;
@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         async getPosts() {
-            const response = await PostsServiceDataBase.fetchPosts();
+            const response = await ServicePHP.fetchPosts();
             this.posts = response.data;
         },
         startPresenter: function() {

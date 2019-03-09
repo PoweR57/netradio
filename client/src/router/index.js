@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Posts from '@/components/Posts'
 import Controls from '@/components/Controls'
+import Playlists from '@/components/Playlists'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/controls',
       name: 'controls',
       component: Controls
+    },
+    {
+      path: '/playlists',
+      name: 'playlists',
+      component: Playlists
     }
   ]
 })
