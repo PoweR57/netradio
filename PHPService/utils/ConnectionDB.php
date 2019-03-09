@@ -17,6 +17,16 @@ function connectionDataBase()
     return $connection;
 }
 
+function resetDataBase($connection)
+{
+    try {
+        $sql = "DROP TABLE musique";
+        $connection->exec($sql);
+
+    } catch (PDOException $e) {
+    }
+}
+
 function createDataBase($connection)
 {
     try {
@@ -54,7 +64,7 @@ function peopleDataBase($connection, $dir)
     $getID3 = new getID3();
 
     for ($i = 2; $i < count($files); $i++) {
-        $ThisFileInfo = $getID3->analyze("D:/Musique/Autre/" . $files[$i]);
+        $ThisFileInfo = $getID3->analyze($dir . "/" . $files[$i]);
 
         $titre = " ";
         $album = " ";

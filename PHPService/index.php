@@ -5,7 +5,8 @@ require "utils/ConnectionDB.php";
 require "router/router.php";
 
 $connection = connectionDataBase(); //Récupérer la connection à la bdd
+resetDataBase($connection); //Supprime la table musique
 createDataBase($connection); //Creer la BDD
 
-$dir = "D:\Musique\Autre";
-// peopleDataBase($connection, $dir); // Peuple la bdd avec un répertoire de musiques.
+$dir = "../MusicService/musiques";
+peopleDataBase($connection, $dir); // Peuple la bdd avec un répertoire de musiques.
