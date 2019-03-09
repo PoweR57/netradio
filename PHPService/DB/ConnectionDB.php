@@ -57,7 +57,7 @@ function createDataBase($connection)
         $sql = "CREATE TABLE playlist (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             title VARCHAR(3000) NOT NULL,
-            liste_musique VARCHAR(3000) DEFAULT '[]'
+            liste_musique VARCHAR(3000) DEFAULT ''
             )";
         $connection->exec($sql);
     } catch (PDOException $e) {

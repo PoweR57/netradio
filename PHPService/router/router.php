@@ -7,13 +7,45 @@ $app->get('/', function ($request, $response) {
     $response->json(["title" => "Titre en PHP", "description" => "Description en php"], 200);
 });
 
-$app->get('/Musiques', function ($request, $response) {
+$app->get('/reset', function ($request, $response) {
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    resetDataBase($connection); //Supprime toutes les tables
+    createDataBase($connection); //Creer la BDD
+    
+    $dir = "../MusicService/musiques";
+    peopleDataBase($connection, $dir); // Peuple la bdd avec un répertoire de musiques.
+});
+
+$app->get('/musiques', function ($request, $response) {
     $response->send(getMusic());
 });
 
-$app->get('/Musiques/:id', function ($request, $response) {
+$app->get('/musiques/:id', function ($request, $response) {
     $response->send(getMusicById($request["params"]["id"]));
 });
+
+$app->get('/playlists', function ($request, $response) {
+    $response->send(getPlaylist());
+});
+
+$app->post('/playlists', function ($request, $response) {
+    $json = json_decode($request['raw']);
+    $response->send(createPlaylist($json->title));
+});
+
+$app->delete('/playlists/:id', function ($request, $response) {
+    $response->send(deletePlaylistById($request["params"]["id"]));
+});
+
+$app->get('/playlists/:id', function ($request, $response) {
+    $response->send(getPlaylistById($request["params"]["id"]));
+});
+
+$app->get('/playlists/:id_p/musiques/:id_m', function ($request, $response) {
+    $response->send(putMusiqueInPlaylistById($request["params"]["id_p"],$request["params"]["id_m"]));
+});
+
+
 
 // $app->any('/getAllMusic', function ($request, $response) {
 //     $response->send("ANY request");
