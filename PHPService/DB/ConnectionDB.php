@@ -2,7 +2,7 @@
 
 function connectionDataBase()
 {
-    $servername = "localhost";
+    $servername = "192.168.1.36";
     $username = "root";
     $password = "";
     $dbname = "music";
@@ -20,9 +20,8 @@ function connectionDataBase()
 function resetDataBase($connection)
 {
     try {
-        $sql = "DROP TABLE musique";
+        $sql = "DROP TABLE musique; DROP TABLE user; DROP TABLE playlist;";
         $connection->exec($sql);
-
     } catch (PDOException $e) {
     }
 }
@@ -40,7 +39,6 @@ function createDataBase($connection)
             duree VARCHAR(3000) DEFAULT NULL
             )";
         $connection->exec($sql);
-
     } catch (PDOException $e) {
     }
     try {
@@ -53,7 +51,15 @@ function createDataBase($connection)
             pseudo VARCHAR(3000) NOT NULL
             )";
         $connection->exec($sql);
-
+    } catch (PDOException $e) {
+    }
+    try {
+        $sql = "CREATE TABLE playlist (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            title VARCHAR(3000) NOT NULL,
+            liste_musique VARCHAR(3000) DEFAULT '[]'
+            )";
+        $connection->exec($sql);
     } catch (PDOException $e) {
     }
 }
@@ -96,7 +102,6 @@ function peopleDataBase($connection, $dir)
             $sql = "INSERT INTO musique (titre, album, genre, artist, annee, duree) VALUES (\"$titre\",\"$album\",\"$genre\",\"$artist\",\"$annee\",\"$duree\")";
             $connection->exec($sql);
         } catch (PDOException $e) {
-            echo $e . "<br>";
         }
     }
 }
