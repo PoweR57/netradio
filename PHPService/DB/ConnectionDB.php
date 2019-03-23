@@ -2,7 +2,8 @@
 
 function connectionDataBase()
 {
-    $servername = "192.168.1.36";
+    $servername = "localhost";
+    // $servername = "192.168.1.36";
     $username = "root";
     $password = "";
     $dbname = "music";
@@ -20,7 +21,7 @@ function connectionDataBase()
 function resetDataBase($connection)
 {
     try {
-        $sql = "DROP TABLE musique; DROP TABLE user; DROP TABLE playlist;";
+        $sql = "DROP TABLE musique;DROP TABLE user;DROP TABLE playlist;DROP TABLE album;";
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
@@ -29,14 +30,9 @@ function resetDataBase($connection)
 function createDataBase($connection)
 {
     try {
-        $sql = "CREATE TABLE musique (
+        $sql = "CREATE TABLE album (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            titre VARCHAR(3000) DEFAULT NULL,
-            album VARCHAR(3000) DEFAULT NULL,
-            genre VARCHAR(3000) DEFAULT NULL,
-            artist VARCHAR(3000) DEFAULT NULL,
-            annee VARCHAR(3000) DEFAULT NULL,
-            duree VARCHAR(3000) DEFAULT NULL
+            titre VARCHAR(3000) DEFAULT NULL
             )";
         $connection->exec($sql);
     } catch (PDOException $e) {
@@ -62,9 +58,49 @@ function createDataBase($connection)
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
+        try {
+        $sql = "CREATE TABLE musique (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            titre VARCHAR(3000) DEFAULT NULL,
+            album VARCHAR(3000) DEFAULT NULL,
+            genre VARCHAR(3000) DEFAULT NULL,
+            artist VARCHAR(3000) DEFAULT NULL,
+            annee VARCHAR(3000) DEFAULT NULL,
+            duree VARCHAR(3000) DEFAULT NULL,
+            filepath VARCHAR(3000) DEFAULT NULL,
+            id_album INT(6) DEFAULT NULL        
+            )";
+        $connection->exec($sql);
+    } catch (PDOException $e) {
+    }
+        try {
+        $sql = "ALTER TABLE `musique` ADD KEY `id_album` (`id_album`);";
+        $connection->exec($sql);
+    } catch (PDOException $e) {
+    }
 }
 
-function peopleDataBase($connection, $dir)
+function peopleDataBaseHard() {
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    resetDataBase($connection); //Supprime toutes les tables
+    createDataBase($connection); //Creer la BDD
+
+    $dir = "D:/Alexandre/Musique/Radio/";
+    $array = scandir($dir);
+
+    $getID3 = new getID3();
+    for ($i=2; $i < sizeof($array); $i++) {
+        try {
+            $sql = "INSERT INTO album (titre) VALUES (\"$array[$i]\")";
+            $connection->exec($sql);
+        } catch (PDOException $e) {
+        }
+        peopleDataBase($connection,$dir . $array[$i],$i-1);
+    }
+    // print_r($getID3->analyze("D:/Alexandre/Musique/Radio/100% Avicii-2018(WEB.FLAC.16BIT. 44100 HZ)(onasimlap)/13 - Avicii - Waiting For Love.flac"));
+}
+
+function peopleDataBase($connection, $dir, $ref_album)
 {
     $files = scandir($dir);
     $getID3 = new getID3();
@@ -78,28 +114,31 @@ function peopleDataBase($connection, $dir)
         $artist = " ";
         $annee = " ";
         $duree = " ";
-        if (isset($ThisFileInfo['tags']['id3v2']['album'])) {
-
-            $album = implode(",", $ThisFileInfo['tags']['id3v2']['album']);
+        $filepath = " ";
+        if (isset($ThisFileInfo['tags']['vorbiscomment']['album'])) {
+            $album = str_replace("100% ", "", implode(",", $ThisFileInfo['tags']['vorbiscomment']['album']));
         }
-        if (isset($ThisFileInfo['tags']['id3v2']['genre'])) {
-            $genre = implode(",", $ThisFileInfo['tags']['id3v2']['genre']);
+        if (isset($ThisFileInfo['tags']['vorbiscomment']['genre'])) {
+            $genre = implode(",", $ThisFileInfo['tags']['vorbiscomment']['genre']);
         }
-        if (isset($ThisFileInfo['tags']['id3v2']['artist'])) {
-            $artist = implode(",", $ThisFileInfo['tags']['id3v2']['artist']);
+        if (isset($ThisFileInfo['tags']['vorbiscomment']['artist'])) {
+            $artist = implode(",", $ThisFileInfo['tags']['vorbiscomment']['artist']);
         }
-        if (isset($ThisFileInfo['tags']['id3v2']['year'])) {
-            $annee = implode(",", $ThisFileInfo['tags']['id3v2']['year']);
+        if (isset($ThisFileInfo['tags']['vorbiscomment']['year'])) {
+            $annee = implode(",", $ThisFileInfo['tags']['vorbiscomment']['year']);
+        }
+        if (isset($ThisFileInfo['tags']['vorbiscomment']['title'])) {
+            $titre = preg_replace('#\((.+)\)#U', '', implode(",", $ThisFileInfo['tags']['vorbiscomment']['title']));
         }
         if (isset($ThisFileInfo['playtime_string'])) {
             $duree = $ThisFileInfo['playtime_string'];
         }
-        if (isset($ThisFileInfo['filename'])) {
-            $titre = $ThisFileInfo['filename'];
+        if (isset($ThisFileInfo['filenamepath'])) {
+            $filepath = $ThisFileInfo['filenamepath'];
         }
 
         try {
-            $sql = "INSERT INTO musique (titre, album, genre, artist, annee, duree) VALUES (\"$titre\",\"$album\",\"$genre\",\"$artist\",\"$annee\",\"$duree\")";
+            $sql = "INSERT INTO musique (titre, album, genre, artist, annee, duree, filepath, id_album) VALUES (\"$titre\",\"$album\",\"$genre\",\"$artist\",\"$annee\",\"$duree\",\"$filepath\",\"$ref_album\")";
             $connection->exec($sql);
         } catch (PDOException $e) {
         }

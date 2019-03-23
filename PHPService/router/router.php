@@ -20,6 +20,10 @@ $app->get('/musiques', function ($request, $response) {
     $response->send(getMusic());
 });
 
+$app->get('/PeopleHard', function ($request, $response) {
+    $response->send(peopleDataBaseHard());
+});
+
 $app->get('/musiques/:id', function ($request, $response) {
     $response->send(getMusicById($request["params"]["id"]));
 });

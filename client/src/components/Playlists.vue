@@ -21,52 +21,37 @@
         class="list-group"
         group="people"
         draggable=".dragMe"
-        v-model="list3"
+        v-model="listOfMusicWhoWaitForPlaying"
         @start="isDragging = true"
         @end="isDragging = false"
       >
         <div
           class="list-group-item dragMe"
-          v-for="(element,idx) in list3"
+          v-for="(element,idx) in listOfMusicWhoWaitForPlaying"
           :key="idx"
           @click="removeAt(idx)"
-        >{{ element.name }}</div>
+        >{{ element.name }}
+        </div>
         <div slot="header">Drag and drop some musics</div>
       </draggable>
     </div>
 
     <div class="ui styled accordion" id="left-and-right-component">
-      <div class="title active">
-        <i class="dropdown icon"></i>
-        Draggable 1
+      <div v-for="(listOfmusic,idl) in listOfPlayerList" :key="idl">
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Draggable {{idl}}
+        </div>
+        <div class="content">
+          <draggable
+            class="dragArea list-group"
+            :list="listOfmusic"
+            :group="{ name: 'people', pull: 'clone', put: false }"
+          >
+            <div class="list-group-item" v-for="(element,idx) in listOfmusic" :key="idx">{{ element.name }}</div>
+          </draggable>
+        </div>
       </div>
-      <div class="content active">
-        <draggable
-          class="dragArea list-group"
-          :list="list1"
-          :group="{ name: 'people', pull: 'clone', put: false }"
-        >
-          <div class="list-group-item" v-for="(element,idx) in list1" :key="idx">{{ element.name }}</div>
-        </draggable>
-      </div>
-      <div class="title">
-        <i class="dropdown icon"></i>
-        Draggable 2
-      </div>
-      <div class="content">
-        <draggable
-          class="dragArea list-group"
-          :list="list2"
-          :group="{ name: 'people', pull: 'clone', put: false }"
-        >
-          <div class="list-group-item" v-for="(element,idx) in list2" :key="idx">{{ element.name }}</div>
-        </draggable>
-      </div>
-      <div class="title">
-        <i class="dropdown icon"></i>
-        Transition
-      </div>
-      <div class="content"></div>
     </div>
   </div>
 </template>
@@ -90,14 +75,27 @@ export default {
       namePlaylist: "",
       playlists: null,
       musiques: null,
-      list1: [
-        { name: "dog 1" },
-        { name: "dog 2" },
-        { name: "dog 3" },
-        { name: "dog 4" }
+      listOfPlayerList: [
+        [
+          { name: "dog 1" },
+          { name: "dog 2" },
+          { name: "dog 3" },
+          { name: "dog 4" }
+        ],
+        [
+          { name: "poule 1" },
+          { name: "poule 2" },
+          { name: "poule 3" },
+          { name: "poule 4" }
+        ],
+        [
+          { name: "chat 1" },
+          { name: "chat 2" },
+          { name: "chat 3" },
+          { name: "chat 4" }
+        ]
       ],
-      list2: [{ name: "cat 5" }, { name: "cat 6" }, { name: "cat 7" }],
-      list3: [
+      listOfMusicWhoWaitForPlaying: [
         { name: "poule 1" },
         { name: "poule 2" },
         { name: "poule 3" },
@@ -128,7 +126,7 @@ export default {
       this.getPlayLists();
     },
     removeAt(idx) {
-      this.list3.splice(idx, 1);
+      this.listOfMusicWhoWaitForPlaying.splice(idx, 1);
     }
   },
   computed: {
