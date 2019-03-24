@@ -20,6 +20,45 @@ function getMusic() {
     return $result;
 }
 
+function getMusicRandom() {
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    $result = "";
+    try {
+        $sql = "SELECT * FROM musique ORDER BY RAND() LIMIT 10";
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    return $result;
+}
+
+function getAlbum() {
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    $result = "";
+    try {
+        $sql = "SELECT * FROM album";
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    return $result;
+}
+
+function getMusicByAlbum($id) {
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    $result = "";
+    try {
+        $sql = "SELECT * FROM musique where id_album=" . $id;
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    return $result;
+}
+
 function getMusicById($id) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";

@@ -18,4 +18,10 @@ export default {
     getMusiques() {
         return ApiPHP().get('/musiques')
     },
+    getAlbums() {
+        return ApiPHP().get('/albums')
+    },
+    getMusicByAlbum(id) {
+        return ApiPHP().get('/albums/'+id+'/musiques')
+    }
 }

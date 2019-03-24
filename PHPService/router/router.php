@@ -7,17 +7,20 @@ $app->get('/', function ($request, $response) {
     $response->json(["title" => "Titre en PHP", "description" => "Description en php"], 200);
 });
 
-$app->get('/reset', function ($request, $response) {
-    $connection = connectionDataBase(); //Récupérer la connection à la bdd
-    resetDataBase($connection); //Supprime toutes les tables
-    createDataBase($connection); //Creer la BDD
-    
-    $dir = "../MusicService/musiques";
-    peopleDataBase($connection, $dir); // Peuple la bdd avec un répertoire de musiques.
+$app->get('/albums', function ($request, $response) {
+    $response->send(getAlbum());
+});
+
+$app->get('/albums/:id/musiques', function ($request, $response) {
+    $response->send(getMusicByAlbum($request["params"]["id"]));
 });
 
 $app->get('/musiques', function ($request, $response) {
     $response->send(getMusic());
+});
+
+$app->get('/musiques/random', function ($request, $response) {
+    $response->send(getMusicRandom());
 });
 
 $app->get('/PeopleHard', function ($request, $response) {

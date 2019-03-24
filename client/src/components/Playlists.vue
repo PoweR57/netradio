@@ -1,55 +1,73 @@
 <template>
-  <div class="playlists">
-    <!-- <button v-on:click="insert">Click to insert</button>
-    <input type="text" v-model="namePlaylist" v-on:keyup.enter="insert">
-    <div v-if="playlists">
-      <div v-for="playlist in playlists" :key="playlist.id">
-        <li>
-          <button v-on:click="supprimer(playlist.id)">Supp Playlist</button>
-          {{playlist.id}} {{playlist.title}} {{playlist.liste_musique}}
-        </li>
-      </div>
-    </div>
-    <br>
-    <div v-if="musiques">
-      <div v-for="musique in musiques" :key="musique.id">
-        <li>{{musique.id}} {{musique.titre}} {{musique.album}} {{musique.genre}} {{musique.artist}} {{musique.annee}} {{musique.duree}}</li>
-      </div>
-    </div>-->
-    <div id="left-and-right-component">
-      <draggable
-        class="list-group"
-        group="people"
-        draggable=".dragMe"
-        v-model="listOfMusicWhoWaitForPlaying"
-        @start="isDragging = true"
-        @end="isDragging = false"
-      >
-        <div
-          class="list-group-item dragMe"
-          v-for="(element,idx) in listOfMusicWhoWaitForPlaying"
-          :key="idx"
-          @click="removeAt(idx)"
-        >{{ element.name }}
-        </div>
-        <div slot="header">Drag and drop some musics</div>
-      </draggable>
+  <div class="playlists ui segment">
+    <div id="left-component" class="ui segment">
+      <h2 id="header" slot="header">Drag and drop some musics</h2>
+      <table class="ui striped table">
+        <draggable
+          group="people"
+          draggable=".dragMe"
+          tag="tbody"
+          v-model="listOfMusicWhoWaitForPlaying"
+          @start="isDragging = true"
+          @end="isDragging = false"
+        >
+          <tr
+            class="list-group-item dragMe"
+            v-for="(element,idx) in listOfMusicWhoWaitForPlaying"
+            :key="idx"
+          >
+            <td id="padding">
+              <div class="ui buttons">
+                <button class="ui negative button" @click="removeFromArray(idx)">
+                  <i class="close icon"></i>
+                </button>
+                <div class="or" data-text="⏱"></div>
+                <button class="ui orange button">{{element.duree}}</button>
+                <div class="or" data-text="🎵"></div>
+                <button class="ui yellow button">{{element.titre}}</button>
+              </div>
+            </td>
+          </tr>
+
+          <h2 id="header" slot="header">...</h2>
+        </draggable>
+      </table>
     </div>
 
-    <div class="ui styled accordion" id="left-and-right-component">
-      <div v-for="(listOfmusic,idl) in listOfPlayerList" :key="idl">
-        <div class="title">
+    <div class="ui styled accordion" id="right-component">
+      <div v-for="(album,idl) in albums" :key="idl">
+        <div class="title" @click="downloadMusicByAlbum(idl)">
           <i class="dropdown icon"></i>
-          Draggable {{idl}}
+          {{album.titre}}
         </div>
         <div class="content">
-          <draggable
-            class="dragArea list-group"
-            :list="listOfmusic"
-            :group="{ name: 'people', pull: 'clone', put: false }"
-          >
-            <div class="list-group-item" v-for="(element,idx) in listOfmusic" :key="idx">{{ element.name }}</div>
-          </draggable>
+          <table class="ui striped table">
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <draggable
+              class="dragArea list-group"
+              :list="listOfMusic"
+              tag="tbody"
+              :group="{ name: 'people', pull: 'clone', put: false }"
+            >
+              <tr class="list-group-item" v-for="(element,idx) in listOfMusic" :key="idx">
+                <td>
+                  <div class="ui buttons">
+                  <button class="ui negative icon button" @click="addToArray(idx)">
+                    <i class="arrow left icon"></i>
+                    </button>
+                    <div class="or" data-text="⏱"></div>
+                    <button class="ui orange button">{{element.duree}}</button>
+                    <div class="or" data-text="🎵"></div>
+                    <button class="ui yellow button">{{element.titre}}</button>
+                  </div>
+                </td>
+              </tr>
+            </draggable>
+          </table>
         </div>
       </div>
     </div>
@@ -72,71 +90,32 @@ export default {
   },
   data() {
     return {
-      namePlaylist: "",
-      playlists: null,
-      musiques: null,
-      listOfPlayerList: [
-        [
-          { name: "dog 1" },
-          { name: "dog 2" },
-          { name: "dog 3" },
-          { name: "dog 4" }
-        ],
-        [
-          { name: "poule 1" },
-          { name: "poule 2" },
-          { name: "poule 3" },
-          { name: "poule 4" }
-        ],
-        [
-          { name: "chat 1" },
-          { name: "chat 2" },
-          { name: "chat 3" },
-          { name: "chat 4" }
-        ]
-      ],
-      listOfMusicWhoWaitForPlaying: [
-        { name: "poule 1" },
-        { name: "poule 2" },
-        { name: "poule 3" },
-        { name: "poule 4" }
-      ]
+      albums: null,
+      id_album: null,
+      listOfMusic: [],
+      listOfMusicWhoWaitForPlaying: []
     };
   },
   mounted() {
-    this.getMusiques();
-    this.getPlayLists();
+    this.getAlbums();
   },
   methods: {
-    async getMusiques() {
-      const response = await ServicePHP.getMusiques();
-      this.musiques = response.data;
+    async getAlbums() {
+      const response = await ServicePHP.getAlbums();
+      this.albums = response.data;
     },
-    async getPlayLists() {
-      const response = await ServicePHP.getPlayLists();
-      this.playlists = response.data;
+    async downloadMusicByAlbum(id) {
+      if (this.id_album !== id) {
+        this.id_album = id;
+        const response = await ServicePHP.getMusicByAlbum(id + 1);
+        this.listOfMusic = response.data;
+      }
     },
-    async insert() {
-      await ServicePHP.postPlayLists(this.namePlaylist);
-      this.namePlaylist = "";
-      this.getPlayLists();
+    removeFromArray(id) {
+      this.listOfMusicWhoWaitForPlaying.splice(id, 1);
     },
-    async supprimer(id) {
-      await ServicePHP.deletePlayLists(id);
-      this.getPlayLists();
-    },
-    removeAt(idx) {
-      this.listOfMusicWhoWaitForPlaying.splice(idx, 1);
-    }
-  },
-  computed: {
-    dragOptions() {
-      return {
-        animation: 0,
-        group: "description",
-        disabled: false,
-        ghostClass: "ghost"
-      };
+    addToArray(id) {
+      this.listOfMusicWhoWaitForPlaying.push(this.listOfMusic[id]);
     }
   }
 };
@@ -144,10 +123,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.list-group {
+table {
   min-height: 100px;
-  background-color: lightblue;
-  border: solid black 2px;
+}
+
+tbody {
+  height: 100%;
+}
+
+.buttons {
+  overflow: hidden;
+}
+
+#header {
+  padding: 5px;
+}
+
+#padding {
+  padding: 5px;
 }
 
 .list-group-item {
@@ -159,9 +152,18 @@ export default {
   margin-right: 10%;
   display: flex;
   justify-content: space-around;
+  height: 100%;
 }
 
-#left-and-right-component {
-  width: 35%;
+#left-component {
+  width: 40%;
+  height: 100%;
+  overflow: auto;
+}
+
+#right-component {
+  width: 55%;
+  height: 100%;
+  overflow: auto;
 }
 </style>

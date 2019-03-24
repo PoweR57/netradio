@@ -1,16 +1,5 @@
 <template>
     <div class="posts">
-        <h1>Posts</h1>This file will list all the posts.
-        <div v-for="post in posts" :key="post.id">
-            <p>
-                <span>
-                    <b>{{ post.title }}</b>
-                </span>
-                <br>
-                <span>{{ post.description }}</span>
-            </p>
-        </div>
-        <br>
         <div>
             <button id="controls" v-text="msgButton" v-on:click="playerStart()"></button>
         </div>
@@ -36,13 +25,9 @@ export default {
     name: "posts",
     data() {
         return {
-            posts: [],
             URL: "http://" + Config.service.music.URL + "/",
             msgButton: "Click for play"
         };
-    },
-    mounted() {
-        this.getPosts();
     },
     created: function() {
         audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
@@ -50,10 +35,6 @@ export default {
         this.startStreamer();
     },
     methods: {
-        async getPosts() {
-            const response = await ServiceMusic.fetchPosts();
-            this.posts = response.data;
-        },
         displayPlayer() {
             document.getElementById("update").innerHTML =
                 '<audio id="player" src="http://' +

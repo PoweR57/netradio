@@ -13,15 +13,6 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.get('/posts', (req, res) => {
-    res.send(
-        [{
-            title: "Hello World!",
-            description: "Hi there! How are you?"
-        }]
-    )
-})
-
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;
 
@@ -106,6 +97,11 @@ app.get('/', (req, res) => {
     }
 })
 
+// Get Array : Musique en attente d'être jouée
+app.get('/WaitingMusic', (req, res) => {
+    res.send({list: arrayOfMusicForPlay})
+})
+
 // Permet de demarrer de maniere factice la musique
 var startMusic = () => {
     if (arrayOfMusicForPlay.length != 0) {
@@ -115,7 +111,7 @@ var startMusic = () => {
             time = Math.round(duration)
             onePart = fileSize / time
             timer.start(time * 1000)
-            console.log('Running Music : ' + arrayOfMusicForPlay[0])
+            console.log('Running Music : ' + arrayOfMusicForPlay[0] + " Size : " +fileSize+" "+onePart )
         });
     }
 }
@@ -142,7 +138,5 @@ var resetParams = () => {
     start = 0
     onePart = 0
 }
-
-
 
 http.listen(8081, () => console.log('listening on port 8081'))
