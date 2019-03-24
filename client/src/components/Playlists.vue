@@ -10,6 +10,7 @@
           v-model="listOfMusicWhoWaitForPlaying"
           @start="isDragging = true"
           @end="isDragging = false"
+          @change="sendNewList()"
         >
           <tr
             class="list-group-item dragMe"
@@ -29,7 +30,10 @@
             </td>
           </tr>
 
-          <h2 id="header" slot="header">...<button class="ui yellow button" @click="RandomInArray()">RAND</button></h2>
+          <h2 id="header" slot="header">
+            ...
+            <button class="ui yellow button" @click="RandomInArray()">RAND</button>
+          </h2>
         </draggable>
       </table>
     </div>
@@ -56,8 +60,8 @@
               <tr class="list-group-item" v-for="(element,idx) in listOfMusic" :key="idx">
                 <td>
                   <div class="ui buttons">
-                  <button class="ui negative icon button" @click="addToArray(idx)">
-                    <i class="arrow left icon"></i>
+                    <button class="ui negative icon button" @click="addToArray(idx)">
+                      <i class="arrow left icon"></i>
                     </button>
                     <div class="or" data-text="⏱"></div>
                     <button class="ui orange button">{{element.duree}}</button>
@@ -77,7 +81,11 @@
 <script>
 /* eslint-disable */
 import ServicePHP from "@/services/ServicePHP";
+import ServiceMusic from "@/services/ServiceMusic";
 import draggable from "vuedraggable";
+import Config from "@/config/config";
+
+var socket = null;
 
 $(document).ready(function() {
   $(".ui.accordion").accordion();
@@ -96,8 +104,17 @@ export default {
       listOfMusicWhoWaitForPlaying: []
     };
   },
+  created() {
+    socket = io(Config.service.music.URL);
+  },
   mounted() {
     this.getAlbums();
+    var getClass = this;
+    socket.on("update", function() {
+      console.log("update")
+      getClass.getMusicWaiting();
+    });
+    this.getMusicWaiting();
   },
   methods: {
     async getAlbums() {
@@ -111,17 +128,27 @@ export default {
         this.listOfMusic = response.data;
       }
     },
+    async getMusicWaiting() {
+      const response = await ServiceMusic.getMusicWaiting();
+      this.listOfMusicWhoWaitForPlaying = response.data.waiting;
+    },
     removeFromArray(id) {
       this.listOfMusicWhoWaitForPlaying.splice(id, 1);
+      this.sendNewList();
     },
     addToArray(id) {
       this.listOfMusicWhoWaitForPlaying.push(this.listOfMusic[id]);
+      this.sendNewList();
     },
     async RandomInArray() {
       const response = await ServicePHP.getMusiquesRandom();
       response.data.forEach(element => {
         this.listOfMusicWhoWaitForPlaying.push(element);
       });
+      this.sendNewList();
+    },
+    sendNewList() {
+      ServiceMusic.postMusicList(this.listOfMusicWhoWaitForPlaying);
     }
   }
 };

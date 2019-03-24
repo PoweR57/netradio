@@ -15,10 +15,9 @@ app.use(cors())
 
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;
-
+var saveStat = "stopped";
 // Event listener
 io.on('connection', function (socket) {
-
     /* Presenter */
     socket.on('bufferHeader', function (packet) {
         // Buffer header can be saved on server so it can be passed to new user
@@ -36,33 +35,25 @@ io.on('connection', function (socket) {
         socket.emit('bufferHeader', bufferHeader);
     });
 
-    //Socket de reception de la musique à diffuser instantanément
-    socket.on('playMusic', function (name) {
-        arrayOfMusicForPlay.push(name)
-        if (timer.status == 'stopped') {
-            startMusic()
-        }
-    });
-
-    //Socket de reception de la list musique à diffuser instantanément
-    socket.on('playList', function (list) {
-        list.forEach(element => {
-            arrayOfMusicForPlay.push(element)
-        });
-        if (timer.status == 'stopped') {
-            startMusic()
-        }
-    });
-
     timer.on('statusChanged', (status) => {
-        if (status == 'running') {
+        // Lors de la fin d'une musique
+        if (status == 'stopped' && saveStat != status) {
+            console.log('stopped : ', status)
+            saveStat = status
+            resetParams()
+            startMusic()
+        }
+        if (status == 'running' && saveStat != status) {
+            console.log('running : ', status)
+            saveStat = status
             socket.broadcast.emit('update')
         }
     })
 
     socket.on('stop', function () {
         //Ferme toutes des balises audios chez les clients
-        arrayOfMusicForPlay = [];
+        arrayOfWaitingMusicForPlay = [];
+        musicIsPlay = null;
         resetParams()
         timer.stop()
         socket.broadcast.emit('stop', '')
@@ -77,41 +68,63 @@ io.on('connection', function (socket) {
     process.setMaxListeners(0);
 });
 
-var arrayOfMusicForPlay = [];
+var arrayOfWaitingMusicForPlay = [];
+var musicIsPlay = [];
 
 let timer = new Timer()
 timer.on('tick', (ms) => onEverySecond()) //S'execute toutes les secondes
-timer.on('done', () => resetParams()) //Une fois le timer terminé. (Il a fait tout le temps de la musique)
-timer.on('statusChanged', (status) => onChangeStatus(status))
 
 let start = 0;  //Lorsque utilisateur va reprendre le flux musical, mettre la au meme niveau que tout le monde. Incrémentation toutes les secondes jusqu'à la fin de la musique de 'onePart'
 let onePart = 0;// Taille en buffer d'une partie du fichier de la musique : (buffer de toute la musique) / (temps en seconde de la musique)
 
 // Rend la musique disponible sur la page localhost:8081/
 app.get('/', (req, res) => {
-    if (arrayOfMusicForPlay[0]) {
-        var fichier = './musiques/' + arrayOfMusicForPlay[0]
+    if (musicIsPlay) {
+
+        var fichier = musicIsPlay.filepath
+        console.log(fichier)
         var rs = fs.createReadStream(fichier, { 'flags': 'r', 'start': start })
         res.writeHead(200, { 'Content-Type': 'audio/mpeg' })
         rs.pipe(res)
     }
 })
 
-// Get Array : Musique en attente d'être jouée
-app.get('/WaitingMusic', (req, res) => {
-    res.send({list: arrayOfMusicForPlay})
+// Get Array : Musique en cours
+app.get('/Playing', (req, res) => {
+    res.send({isPlaying: musicIsPlay})
+})
+
+// Get Array : Musique en attente
+app.get('/Waiting', (req, res) => {
+    res.send({waiting: arrayOfWaitingMusicForPlay})
+})
+
+// Get Array : Musique en attente + en cours
+app.get('/WaitingAndPlaying', (req, res) => {
+    res.send({isPlaying: musicIsPlay, waiting: arrayOfWaitingMusicForPlay})
+})
+
+// Post Array : Actualisation de la liste des musiques
+app.post('/list', (req, res) => {
+    arrayOfWaitingMusicForPlay = [];
+    arrayOfWaitingMusicForPlay = JSON.parse(req.body.list);
+    if (timer.status == 'stopped') {
+        startMusic()
+    }
 })
 
 // Permet de demarrer de maniere factice la musique
 var startMusic = () => {
-    if (arrayOfMusicForPlay.length != 0) {
-        fichier = './musiques/' + arrayOfMusicForPlay[0]
+    if (arrayOfWaitingMusicForPlay.length != 0) {
+        musicIsPlay = arrayOfWaitingMusicForPlay[0];
+        console.log('Loading Music : ' + musicIsPlay.titre)
+        arrayOfWaitingMusicForPlay.shift();
+        var fichier = musicIsPlay.filepath;
         let fileSize = fs.statSync(fichier).size
         mp3Duration(fichier, function (err, duration) {
             time = Math.round(duration)
             onePart = fileSize / time
             timer.start(time * 1000)
-            console.log('Running Music : ' + arrayOfMusicForPlay[0] + " Size : " +fileSize+" "+onePart )
         });
     }
 }
@@ -121,20 +134,9 @@ var onEverySecond = () => {
     start += onePart
 }
 
-// Appelé lorsque qu'une musique démarre ou se termine
-var onChangeStatus = (status) => {
-    console.log('status:', status)
-
-    // Lors de la fin d'une musique
-    if (status == 'stopped') {
-        arrayOfMusicForPlay.shift()
-        resetParams()
-        startMusic()
-    }
-}
-
 //Remise à zero des variables en préparation d'une nouvelle musique à diffuser
 var resetParams = () => {
+    musicIsPlay = []
     start = 0
     onePart = 0
 }

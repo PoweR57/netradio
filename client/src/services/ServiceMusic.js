@@ -2,7 +2,11 @@
 import ApiMusic from '@/services/ApiMusic'
 
 export default {
-    fetchPosts() {
-        return ApiMusic().get('posts')
-    }
+    getMusicWaiting() {
+        return ApiMusic().get('/Waiting')
+    },
+    postMusicList(list) {
+        var json = JSON.stringify(list)
+        ApiMusic().post('/list', {list : json} )
+    },
 }
