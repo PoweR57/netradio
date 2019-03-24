@@ -80,9 +80,7 @@ let onePart = 0;// Taille en buffer d'une partie du fichier de la musique : (buf
 // Rend la musique disponible sur la page localhost:8081/
 app.get('/', (req, res) => {
     if (musicIsPlay) {
-
         var fichier = musicIsPlay.filepath
-        console.log(fichier)
         var rs = fs.createReadStream(fichier, { 'flags': 'r', 'start': start })
         res.writeHead(200, { 'Content-Type': 'audio/mpeg' })
         rs.pipe(res)
