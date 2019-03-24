@@ -18,6 +18,9 @@ export default {
     getMusiques() {
         return ApiPHP().get('/musiques')
     },
+    getMusiquesRandom() {
+        return ApiPHP().get('/musiques/random')
+    },
     getAlbums() {
         return ApiPHP().get('/albums')
     },

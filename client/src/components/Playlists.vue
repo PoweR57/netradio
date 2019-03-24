@@ -29,7 +29,7 @@
             </td>
           </tr>
 
-          <h2 id="header" slot="header">...</h2>
+          <h2 id="header" slot="header">...<button class="ui yellow button" @click="RandomInArray()">RAND</button></h2>
         </draggable>
       </table>
     </div>
@@ -116,6 +116,12 @@ export default {
     },
     addToArray(id) {
       this.listOfMusicWhoWaitForPlaying.push(this.listOfMusic[id]);
+    },
+    async RandomInArray() {
+      const response = await ServicePHP.getMusiquesRandom();
+      response.data.forEach(element => {
+        this.listOfMusicWhoWaitForPlaying.push(element);
+      });
     }
   }
 };
