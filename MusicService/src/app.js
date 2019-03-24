@@ -118,7 +118,7 @@ var startMusic = () => {
     if (arrayOfWaitingMusicForPlay.length != 0) {
         musicIsPlay = arrayOfWaitingMusicForPlay[0];
         console.log('Loading Music : ' + musicIsPlay.titre)
-        arrayOfWaitingMusicForPlay.shift();
+        arrayOfWaitingMusicForPlay.splice(0, 1);
         var fichier = musicIsPlay.filepath;
         let fileSize = fs.statSync(fichier).size
         mp3Duration(fichier, function (err, duration) {
