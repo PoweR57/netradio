@@ -3,7 +3,7 @@
   <div class="ui large top fixed hidden menu">
     <div class="ui container">
       <a class="active item">Home</a>
-      <a class="item" href="playlists">Planning</a>
+      <a class="item" v-on:click="next()">Planning</a>
       <a class="item">Company</a>
       <a class="item">Careers</a>
       <div class="middle">
@@ -52,6 +52,9 @@ export default {
     this.startStreamer();
   },
   methods: {
+      next(){
+          this.$router.push('playlists')
+      },
     displayPlayer() {
       document.getElementById("update").innerHTML =
         '<audio id="player" src="http://' +
