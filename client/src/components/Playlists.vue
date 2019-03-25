@@ -248,23 +248,22 @@ export default {
             const response = await ServiceMusic.getMusicPlaying();
             this.MusicRuning = response.data.isPlaying;
         },
-        async changeFilter(filter) {
+        async getPlaylist() {
             const response = await ServicePHP.getPlaylists();
             var list = response.data;
 
-            this.filter = filter;
-            if (filter == "playlist") {
-                list.forEach(element => {
-                    var array = element.liste_musique.split(",");
-                    console.log(array);
-                });
-                const response = await ServicePHP.getMusiquesById(2);
-                this.listOfMusicWhoWaitForPlaying = response.data.waiting;
-                // for (let index = 0; index < array.length; index++) {
-                //     const element = array[index];
-
-                // }
+            var array = null;
+            for (let index = 0; index < list.length; index++) {
+                var idList = list[index].liste_musique.split(",");
+                list[index].liste_musique = [];
+                for (let index2 = 0; index2 < idList.length; index2++) {
+                    var music = await ServicePHP.getMusiquesById(
+                        idList[index2]
+                    );
+                    list[index].liste_musique.push(music.data[0]);
+                }
             }
+            this.playlists = list;
         },
         removeFromArray(id) {
             this.listOfMusicWhoWaitForPlaying.splice(id, 1);
@@ -283,6 +282,9 @@ export default {
         },
         sendNewList() {
             ServiceMusic.postMusicList(this.listOfMusicWhoWaitForPlaying);
+        },
+        changeFilter(e) {
+            console.log(e)
         }
     }
 };
