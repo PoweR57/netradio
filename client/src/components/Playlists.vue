@@ -165,7 +165,7 @@
                                     <div class="ui buttons">
                                         <button
                                             class="ui negative icon button"
-                                            @click="addToArray(idx)"
+                                            @click="addToArrayElement(element)"
                                         >
                                             <i class="arrow left icon"></i>
                                         </button>
@@ -219,15 +219,15 @@ export default {
     },
     mounted() {
         this.getAlbums();
+        this.getMusicWaiting();
+        this.getMusicPlaying();
+        this.getPlaylist();
         var getClass = this;
         socket.on("update", function() {
             console.log("update");
             getClass.getMusicWaiting();
             getClass.getMusicPlaying();
         });
-        this.getMusicWaiting();
-        this.getMusicPlaying();
-        this.getPlaylist();
     },
     methods: {
         async getAlbums() {
@@ -272,6 +272,10 @@ export default {
         },
         addToArray(id) {
             this.listOfMusicWhoWaitForPlaying.push(this.listOfMusic[id]);
+            this.sendNewList();
+        },
+        addToArrayElement(element) {
+            this.listOfMusicWhoWaitForPlaying.push(element);
             this.sendNewList();
         },
         async RandomInArray() {
