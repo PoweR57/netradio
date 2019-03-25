@@ -134,3 +134,16 @@ function putMusiqueInPlaylistById($id_p,$id_m) {
         echo $e;
     }
 }
+
+function getUserByLogin($login,$mdp){
+    $connection = connectionDataBase();
+    $result = "";
+    try{
+        $sql = "SELECT * FROM user where email=\"".$login."\" and mdp=\"".$mdp."\"";
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    }catch (PDOException $e){
+        echo $e;
+    }
+    return $result;
+}
