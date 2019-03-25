@@ -85,7 +85,7 @@ function peopleDataBaseHard() {
     resetDataBase($connection); //Supprime toutes les tables
     createDataBase($connection); //Creer la BDD
 
-    $dir = "D:/Alexandre/Musique/Radio/";
+    $dir = "D:/Musique/Radio/";
     $array = scandir($dir);
 
     for ($i=2; $i < sizeof($array); $i++) {
