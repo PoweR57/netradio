@@ -5,6 +5,7 @@ import Hello from '@/components/Hello'
 import Posts from '@/components/Posts'
 import Controls from '@/components/Controls'
 import Playlists from '@/components/Playlists'
+import Login from '@/components/Login'
 
 Vue.use(Router)
 
@@ -12,7 +13,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
+      name: 'hello',
       component: Hello
     },
     {
@@ -29,6 +30,11 @@ export default new Router({
       path: '/playlists',
       name: 'playlists',
       component: Playlists
+    },
+    {
+      path:'/login',
+      name:'login',
+      component: Login
     }
   ]
 })
