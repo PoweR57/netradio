@@ -1,10 +1,10 @@
 /* eslint-disable */
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Posts from '@/components/Posts'
-import Controls from '@/components/Controls'
-import Playlists from '@/components/Playlists'
+import Acceuil from '@/components/Acceuil'
+import Planning from '@/components/Planning'
+import Podcasts from '@/components/Podcasts'
+import Panel from '@/components/Panel'
 
 Vue.use(Router)
 
@@ -12,23 +12,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'acceuil',
+      component: Acceuil
     },
     {
-      path: '/posts',
-      name: 'posts',
-      component: Posts
+      path: '/planning',
+      name: 'planning',
+      component: Planning
     },
     {
-      path: '/controls',
-      name: 'controls',
-      component: Controls
+      path: '/podcasts',
+      name: 'podcasts',
+      component: Podcasts
     },
     {
-      path: '/playlists',
-      name: 'playlists',
-      component: Playlists
+      path: '/panel',
+      name: 'panel',
+      component: Panel
     }
   ]
 })

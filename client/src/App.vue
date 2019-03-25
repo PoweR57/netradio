@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <Posts/>
+    <Header/>
     <!-- <img src="./assets/logo.png"> -->
     <router-view/>
   </div>
 </template>
 
 <script>
-import Posts from './components/Posts'
+import Header from './components/Header'
 export default {
   name: 'App',
   components: {
-    'Posts': Posts
+    'Header': Header
   }
 }
 </script>
