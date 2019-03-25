@@ -138,10 +138,10 @@
                     </div>
                 </div>
             </div>
-            <div v-for="(album,idl) in albums" :key="idl">
-                <div class="title" @click="downloadMusicByAlbum(idl)">
+            <div v-for="(playlist,idl) in playlists" :key="idl">
+                <div class="title">
                     <i class="dropdown icon"></i>
-                    {{album.titre}}
+                    {{playlist.title}}
                 </div>
                 <div class="content">
                     <table class="ui striped table">
@@ -152,13 +152,13 @@
                         </thead>
                         <draggable
                             class="dragArea list-group"
-                            :list="listOfMusic"
+                            :list="playlist.liste_musique"
                             tag="tbody"
                             :group="{ name: 'people', pull: 'clone', put: false }"
                         >
                             <tr
                                 class="list-group-item"
-                                v-for="(element,idx) in listOfMusic"
+                                v-for="(element,idx) in playlist.liste_musique"
                                 :key="idx"
                             >
                                 <td>
@@ -227,6 +227,7 @@ export default {
         });
         this.getMusicWaiting();
         this.getMusicPlaying();
+        this.getPlaylist();
     },
     methods: {
         async getAlbums() {
@@ -283,8 +284,8 @@ export default {
         sendNewList() {
             ServiceMusic.postMusicList(this.listOfMusicWhoWaitForPlaying);
         },
-        changeFilter(e) {
-            console.log(e)
+        changeFilter(filter) {
+            this.filter = filter
         }
     }
 };
