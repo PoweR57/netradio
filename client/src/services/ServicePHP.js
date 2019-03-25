@@ -24,4 +24,8 @@ export default {
         var json = '{"title":"' + title + '"}';
         return ApiPHP().post('/playlists', json)
     },
+    getUserByLogin(login,mdp) {
+        var json = '{"login":"' + login + '","mdp":"' + mdp + '"}';
+        return ApiPHP().post('/login', json)
+    },
 }
