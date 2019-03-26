@@ -54,7 +54,7 @@ $app->get('/playlists/:id_p/musiques/:id_m', function ($request, $response) {
 
 $app->post('/login', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(getUserByLogin($json->login,$json->mdp));
+    $response->send(getUserByLogin($json->email,$json->mdp));
 });
 
 $app->post('/signup' ,function ($request, $response){

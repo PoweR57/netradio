@@ -25,14 +25,14 @@ export default {
         return ApiPHP().post('/playlists', json)
     },
     getUserByLogin(login,mdp) {
-        var json = '{"login":"' + login + '","mdp":"' + mdp + '"}';
+        var json = '{"email":"' + login + '","mdp":"' + mdp + '"}';
         return ApiPHP().post('/login', json)
     },
     createUser(login,nom,prenom,mdp){
         var json = 
         `
         {
-            "login":"` + login + `",
+            "email":"` + login + `",
             "nom":"` + nom + `",
             "prenom":"` + prenom + `",
             "mdp":"` + mdp + `"

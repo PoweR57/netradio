@@ -141,12 +141,16 @@ function getUserByLogin($email,$mdp){
     try{
         $sql = "SELECT * FROM user where email=\"". $email ."\"";
         $result = $connection->query($sql);
-        // $result = formatToJson($result);
-        $donnees = $result->fetch();
-        if (password_verify($mdp, $donnees['mdp'])){
-            echo ("c'est génial");
+        
+        // $donnees = $result->fetch();
+        foreach ($result as $res) {
+            echo ($res['mdp']);
         }
-        $result->closeCursor();
+        // if (password_verify($mdp, $result['mdp'])){
+        //     echo ("c'est génial");
+        // }
+        // $result->closeCursor();
+        $result = "";
     }catch (PDOException $e){
         echo $e;
     }
