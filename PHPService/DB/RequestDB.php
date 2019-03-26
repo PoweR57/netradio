@@ -135,13 +135,18 @@ function putMusiqueInPlaylistById($id_p,$id_m) {
     }
 }
 
-function getUserByLogin($login,$mdp){
+function getUserByLogin($email,$mdp){
     $connection = connectionDataBase();
     $result = "";
     try{
-        $sql = "SELECT * FROM user where email=\"".$login."\" and mdp=\"".$mdp."\"";
+        $sql = "SELECT * FROM user where email=\"". $email ."\"";
         $result = $connection->query($sql);
-        $result = formatToJson($result);
+        // $result = formatToJson($result);
+        $donnees = $result->fetch();
+        if (password_verify($mdp, $donnees['mdp'])){
+            echo ("c'est génial");
+        }
+        $result->closeCursor();
     }catch (PDOException $e){
         echo $e;
     }

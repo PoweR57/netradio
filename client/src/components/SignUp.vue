@@ -48,8 +48,8 @@ export default {
 <style scoped>
   form{
     width:30% ;
-    margin-left: 35%;
-    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
 
   }
 

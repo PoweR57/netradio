@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="ui form">
+    <div class="ui form">
       <div class="field">
         <label>Login</label>
         <input v-model="login" type="email" name="email" placeholder="Login" required>
@@ -11,7 +11,7 @@
       </div>
       <div class="field"></div>
       <button class="ui button" @click="getUserByLogin()">Valider</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -38,9 +38,9 @@ export default {
 </script>
 <style scoped>
   form{
-    width:30% ;
-    margin-left: 35%;
-    margin-top: 5%;
+    width:60% ;
+    margin-left: auto;
+    margin-right: auto;
 
   }
 
