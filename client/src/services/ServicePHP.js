@@ -11,6 +11,9 @@ export default {
     getMusiques() {
         return ApiPHP().get('/musiques')
     },
+    getMusiquesById(id) {
+        return ApiPHP().get('/musiques/'+id)
+    },
     getMusiquesRandom() {
         return ApiPHP().get('/musiques/random')
     },
@@ -20,9 +23,8 @@ export default {
     getMusicByAlbum(id) {
         return ApiPHP().get('/albums/' + id + '/musiques')
     },
-    postPlayLists(title) {
-        var json = '{"title":"' + title + '"}';
-        return ApiPHP().post('/playlists', json)
+    getPlaylists() {
+        return ApiPHP().get('/playlists')
     },
     getUserByLogin(login,mdp) {
         var json = '{"email":"' + login + '","mdp":"' + mdp + '"}';
@@ -39,6 +41,34 @@ export default {
         }
         `;
         console.log(json);
-        return ApiPHP().post('/signup', json)
+        return ApiPHP().post('/signup', json);
+    },
+    postPlaylist(title,description) {
+        var json = 
+        `
+        {
+            "title":"` + title + `",
+            "descr":"` + description + `"
+        }
+        `;
+        return ApiPHP().post('/playlist',json)
+    },
+    savePlaylist(playlist,title) {
+        var strList = ""
+        playlist.forEach(element => {
+            if (strList == "") {
+                strList = element.id
+            } else {
+                strList += ','+element.id
+            }
+        });
+        var json = 
+        `
+        {
+            "title":"` + title + `",
+            "liste_musique":"` + strList + `"
+        }
+        `;
+        return ApiPHP().post('/playlists', json)
     }
 }

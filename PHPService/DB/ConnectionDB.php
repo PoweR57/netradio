@@ -32,7 +32,8 @@ function createDataBase($connection)
     try {
         $sql = "CREATE TABLE album (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            titre VARCHAR(3000) DEFAULT NULL
+            titre VARCHAR(3000) DEFAULT NULL,
+            descr VARCHAR(3000) DEFAULT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
     } catch (PDOException $e) {
@@ -43,8 +44,7 @@ function createDataBase($connection)
             mdp VARCHAR(3000) NOT NULL,
             email VARCHAR(3000) NOT NULL,
             nom VARCHAR(3000) NOT NULL,
-            prenom VARCHAR(3000) NOT NULL,
-            pseudo VARCHAR(3000) NOT NULL
+            prenom VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
     } catch (PDOException $e) {
@@ -85,7 +85,7 @@ function peopleDataBaseHard() {
     resetDataBase($connection); //Supprime toutes les tables
     createDataBase($connection); //Creer la BDD
 
-    $dir = "D:/Alexandre/Musique/Radio/";
+    $dir = "D:/Musique/Radio/";
     $array = scandir($dir);
 
     for ($i=2; $i < sizeof($array); $i++) {
