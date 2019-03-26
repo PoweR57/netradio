@@ -81,7 +81,7 @@ export default {
           $("#pod").removeClass("active");
           $("#pan").addClass("active");
           this.$router.push(page);
-          break;
+        break;
       }
     },
     displayPlayer() {
