@@ -1,17 +1,25 @@
 <template>
   <div>
-    <form class="ui form">
+    <div class="ui form">
       <div class="field">
         <label>Login</label>
         <input v-model="login" type="text" name="email" placeholder="Login">
+      </div>
+      <div class="field">
+        <label>Nom</label>
+        <input v-model="nom" type="text" name="nom" placeholder="Nom">
+      </div>
+      <div class="field">
+        <label>Prénom</label>
+        <input v-model="prenom" type="text" name="prenom" placeholder="Prenom">
       </div>
       <div class="field">
         <label>Mot de passe</label>
         <input v-model="mdp" type="text" name="mdp" placeholder="Mot de passe">
       </div>
       <div class="field"></div>
-      <button class="ui button" @click="getUserByLogin()">Valider</button>
-    </form>
+      <button class="ui button" @click="createUser()">Valider</button>
+    </div>
   </div>
 </template>
 
@@ -24,13 +32,14 @@ export default {
   data() {
     return {
       login: "",
-      mdp: ""
+      mdp: "",
+      nom:"",
+      prenom: ""
     };
   },
   methods: {
-   async getUserByLogin(){
-      const response = await ServicePHP.getUserByLogin(this.login,this.mdp);
-      console.log(response);
+   async createUser(){
+      const response = await ServicePHP.createUser(this.login,this.nom,this.prenom,this.mdp);
     }
   },
   computed: {}

@@ -28,4 +28,17 @@ export default {
         var json = '{"login":"' + login + '","mdp":"' + mdp + '"}';
         return ApiPHP().post('/login', json)
     },
+    createUser(login,nom,prenom,mdp){
+        var json = 
+        `
+        {
+            "login":"` + login + `",
+            "nom":"` + nom + `",
+            "prenom":"` + prenom + `",
+            "mdp":"` + mdp + `"
+        }
+        `;
+        console.log(json);
+        return ApiPHP().post('/signup', json)
+    }
 }
