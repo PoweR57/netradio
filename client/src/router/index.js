@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Posts from '@/components/Posts'
 import Controls from '@/components/Controls'
+import Planning from '@/components/Planning'
 import Playlists from '@/components/Playlists'
 import EditPlaylist from '@/components/EditPlaylist'
 import CreerPlaylist from '@/components/CreerPlaylist'
@@ -23,6 +24,11 @@ export default new Router({
       path: '/posts',
       name: 'posts',
       component: Posts
+    },
+    {
+      path: '/planning',
+      name: 'planning',
+      component: Planning
     },
     {
       path: '/controls',
