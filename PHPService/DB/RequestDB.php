@@ -108,7 +108,7 @@ function deletePlaylistById($id) {
     }
 }
 
-function createPlaylist($title) {
+function createPlaylist($title,$descr) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     try {
         $sql = "INSERT INTO playlist (title) values ('$title')";
@@ -117,6 +117,16 @@ function createPlaylist($title) {
         echo $e;
     }
 }
+
+// function createPlaylist($title,$liste) {
+//     $connection = connectionDataBase(); //Récupérer la connection à la bdd
+//     try {
+//         $sql = "INSERT INTO playlist (title,liste_musique) values ('$title','$liste')";
+//         $connection->query($sql);
+//     } catch (PDOException $e) {
+//         echo $e;
+//     }
+// }
 
 function putMusiqueInPlaylistById($id_p,$id_m) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
@@ -133,4 +143,38 @@ function putMusiqueInPlaylistById($id_p,$id_m) {
     } catch (PDOException $e) {
         echo $e;
     }
+}
+
+function getUserByLogin($email,$mdp){
+    $connection = connectionDataBase();
+    $result = "";
+    try{
+        $sql = "SELECT * FROM user where email=\"". $email ."\"";
+        $result = $connection->query($sql);
+        
+        // $donnees = $result->fetch();
+        foreach ($result as $res) {
+            echo ($res['mdp']);
+        }
+        // if (password_verify($mdp, $result['mdp'])){
+        //     echo ("c'est génial");
+        // }
+        // $result->closeCursor();
+        $result = "";
+    }catch (PDOException $e){
+        echo $e;
+    }
+    return $result;
+}
+
+function createUser($email,$nom,$prenom,$mdp){
+    $connection = connectionDataBase();
+    try{
+        $mdp = password_hash($mdp, PASSWORD_BCRYPT);
+        $sql = "INSERT INTO user (email,nom,prenom,mdp) values ('$email','$nom','$prenom','$mdp')";
+        $connection->query($sql);
+    }catch(PDOException $e){
+        echo $e;
+    }
+   
 }

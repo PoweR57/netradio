@@ -1,29 +1,8 @@
 <template>
     <div class="controls">
-        <div v-if="posts">
-            <h1>{{posts.title}}</h1>
-            <h1>{{posts.description}}</h1>
-        </div>
-        <br>
         <button v-on:click="startPresenter()">Animateur Start</button>
         <button v-on:click="stopPresenter()">Animateur Stop</button>
         <input type="text" id="debug">
-        <br>
-        <br>
-        <!-- <button v-on:click="playMusic('music1.mp3')">Play Music 1</button> -->
-        <button v-on:click="playMusic('music2.mp3')">Play Music 2</button>
-        <button v-on:click="playMusic('music3.mp3')">Play Music 3</button>
-        <button v-on:click="playMusic('music4.mp3')">Play Music 4</button>
-        <button v-on:click="playMusic('music5.mp3')">Play Music 5</button>
-        <button v-on:click="playMusic('music6.mp3')">Play Music 6</button>
-        <button v-on:click="playMusic('music7.mp3')">Play Music 7</button>
-        <button v-on:click="playMusic('music8.mp3')">Play Music 8</button>
-        <button v-on:click="playMusic('music9.mp3')">Play Music short</button>
-        <br>
-        <br>
-        <button v-on:click="playList()">Play List</button>
-        <br>
-        <br>
         <button v-on:click="stopMusic()">Stop</button>
     </div>
 </template>
@@ -38,12 +17,6 @@ var presenterMedia = null;
 
 export default {
     name: "controls",
-    data() {
-        return { posts: null };
-    },
-    mounted() {
-        this.getPosts();
-    },
     created: function() {
         socket = io(Config.service.music.URL);
         presenterMedia = new ScarletsMediaPresenter(
@@ -57,10 +30,6 @@ export default {
         );
     },
     methods: {
-        async getPosts() {
-            const response = await ServicePHP.fetchPosts();
-            this.posts = response.data;
-        },
         startPresenter: function() {
             // Set latency to 100ms (Equal with streamer)
 
@@ -85,19 +54,6 @@ export default {
         },
         stopPresenter: function() {
             presenterMedia.stopRecording();
-        },
-        playMusic: function(name) {
-            socket.emit("playMusic", name);
-        },
-        playList: function() {
-            var list = [
-                "music10.mp3",
-                "music10.mp3",
-                "music10.mp3",
-                "music10.mp3",
-                "music10.mp3"
-            ];
-            socket.emit("playList", list);
         },
         stopMusic: function() {
             socket.emit("stop");

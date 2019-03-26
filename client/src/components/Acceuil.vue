@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>BONJOUR</h1>
+    <a href="/#/login">Website</a>
   </div>
 </template>
 
@@ -11,13 +11,9 @@ export default {
     return {}
   },
   methods: {
-
   },
-  computed: {
-
-  }
+  computed: {}
 };
 </script>
 <style scoped>
-
 </style>
