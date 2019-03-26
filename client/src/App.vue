@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <Header/>
-    <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
+    <router-view id="content"/>
   </div>
 </template>
 
@@ -11,13 +10,16 @@ import Header from './components/Header'
 export default {
   name: 'App',
   components: {
-    'Header': Header
+    Header: Header
   }
 }
 </script>
 
 <style>
 #app {
-    height: 100%;
+  height: 100%;
+}
+#content {
+  margin-top: 60px;
 }
 </style>

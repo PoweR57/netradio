@@ -1,6 +1,6 @@
 
 <template>
-  <div class="ui large top fixed hidden menu">
+  <div class="ui large fixed top hidden menu">
     <div class="ui container">
       <a class="item" id="acc" v-on:click="goTo('acceuil')">Acceuil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
@@ -13,10 +13,10 @@
       </div>
       <div class="right menu">
         <div class="item">
-          <a class="ui button">Log in</a>
+          <a class="ui button" v-on:click="$router.push('login')">Log in</a>
         </div>
         <div class="item">
-          <a class="ui primary button">Sign Up</a>
+          <a class="ui primary button" v-on:click="$router.push('signup')">Sign Up</a>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@
   <div>
     <form class="ui form">
       <div class="field">
-        <label>email</label>
+        <label>Email</label>
         <input v-model="login" type="email" name="email" placeholder="Login" required>
       </div>
       <div class="field">
@@ -48,9 +48,8 @@ export default {
 <style scoped>
   form{
     width:30% ;
-    margin-left: auto;
-    margin-right: auto;
-
+    margin:auto;
+    padding-top: 2%;
   }
 
   label{
