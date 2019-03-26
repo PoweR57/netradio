@@ -108,10 +108,10 @@ function deletePlaylistById($id) {
     }
 }
 
-function createPlaylist($title) {
+function createPlaylist($title,$liste) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     try {
-        $sql = "INSERT INTO playlist (title) values ('$title')";
+        $sql = "INSERT INTO playlist (title,liste_musique) values ('$title','$liste')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;

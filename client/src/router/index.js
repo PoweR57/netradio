@@ -5,6 +5,7 @@ import Hello from '@/components/Hello'
 import Posts from '@/components/Posts'
 import Controls from '@/components/Controls'
 import Playlists from '@/components/Playlists'
+import CreerPlaylist from '@/components/CreerPlaylist'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/controls',
       name: 'controls',
       component: Controls
+    },
+    {
+      path: '/creerPlaylist',
+      name: 'creerPlaylist',
+      component: CreerPlaylist
     },
     {
       path: '/playlists',

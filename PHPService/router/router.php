@@ -37,7 +37,7 @@ $app->get('/playlists', function ($request, $response) {
 
 $app->post('/playlists', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createPlaylist($json->title));
+    $response->send(createPlaylist($json->title,$json->liste_musique));
 });
 
 $app->delete('/playlists/:id', function ($request, $response) {
