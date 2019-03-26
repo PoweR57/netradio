@@ -144,3 +144,37 @@ function putMusiqueInPlaylistById($id_p,$id_m) {
         echo $e;
     }
 }
+
+function getUserByLogin($email,$mdp){
+    $connection = connectionDataBase();
+    $result = "";
+    try{
+        $sql = "SELECT * FROM user where email=\"". $email ."\"";
+        $result = $connection->query($sql);
+        
+        // $donnees = $result->fetch();
+        foreach ($result as $res) {
+            echo ($res['mdp']);
+        }
+        // if (password_verify($mdp, $result['mdp'])){
+        //     echo ("c'est génial");
+        // }
+        // $result->closeCursor();
+        $result = "";
+    }catch (PDOException $e){
+        echo $e;
+    }
+    return $result;
+}
+
+function createUser($email,$nom,$prenom,$mdp){
+    $connection = connectionDataBase();
+    try{
+        $mdp = password_hash($mdp, PASSWORD_BCRYPT);
+        $sql = "INSERT INTO user (email,nom,prenom,mdp) values ('$email','$nom','$prenom','$mdp')";
+        $connection->query($sql);
+    }catch(PDOException $e){
+        echo $e;
+    }
+   
+}

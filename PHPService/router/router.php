@@ -52,7 +52,15 @@ $app->get('/playlists/:id_p/musiques/:id_m', function ($request, $response) {
     $response->send(putMusiqueInPlaylistById($request["params"]["id_p"],$request["params"]["id_m"]));
 });
 
+$app->post('/login', function ($request, $response) {
+    $json = json_decode($request['raw']);
+    $response->send(getUserByLogin($json->email,$json->mdp));
+});
 
+$app->post('/signup' ,function ($request, $response){
+    $json = json_decode($request['raw']);
+    $response->send(createUser($json->login,$json->nom,$json->prenom,$json->mdp));
+});
 
 // $app->any('/getAllMusic', function ($request, $response) {
 //     $response->send("ANY request");

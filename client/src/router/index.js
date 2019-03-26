@@ -7,6 +7,8 @@ import Controls from '@/components/Controls'
 import Playlists from '@/components/Playlists'
 import EditPlaylist from '@/components/EditPlaylist'
 import CreerPlaylist from '@/components/CreerPlaylist'
+import Login from '@/components/Login'
+import SignUp from '@/components/SignUp'
 
 Vue.use(Router)
 
@@ -14,7 +16,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
+      name: 'hello',
       component: Hello
     },
     {
@@ -41,6 +43,16 @@ export default new Router({
       path: '/playlists',
       name: 'playlists',
       component: Playlists
+    },
+    {
+      path:'/login',
+      name:'login',
+      component: Login
+    },
+    {
+      path:'/signup',
+      name:'signup',
+      component: SignUp
     }
   ]
 })
