@@ -3,7 +3,12 @@
         <button v-on:click="startPresenter()">Animateur Start</button>
         <button v-on:click="stopPresenter()">Animateur Stop</button>
         <input type="text" id="debug">
-        <button v-on:click="stopMusic()">Stop</button>
+        <br>
+        <button v-on:click="startreccord()">Reccord Start</button>
+        <button v-on:click="stopreccord()">Reccord Stop</button>
+        <br>
+        <button v-on:click="stopMusic()">Stop Music In Radio</button>
+        <div id="audio"></div>
     </div>
 </template>
 
@@ -11,6 +16,12 @@
 /* eslint-disable */
 import ServicePHP from "@/services/ServicePHP";
 import Config from "@/config/config";
+
+var fs = require("fs");
+const MicRecorder = require("mic-recorder-to-mp3");
+const recorder = new MicRecorder({
+    bitRate: 128
+});
 
 var socket = null;
 var presenterMedia = null;
@@ -57,6 +68,35 @@ export default {
         },
         stopMusic: function() {
             socket.emit("stop");
+        },
+        startreccord() {
+            recorder
+                .start()
+                .then(() => {
+
+                })
+                .catch(e => {
+                    console.error(e);
+                });
+        },
+        stopreccord() {
+            recorder
+                .stop()
+                .getMp3()
+                .then(([buffer, blob]) => {
+                    const file = new File(buffer, "myFile.mp3", {
+                        type: blob.type,
+                        lastModified: Date.now()
+                    });
+                    const player = new Audio(URL.createObjectURL(file));
+                    player.controls = true;
+                    $('#audio').empty();
+                    document.querySelector("#audio").appendChild(player);
+                })
+                .catch(e => {
+                    alert("We could not retrieve your message");
+                    console.log(e);
+                });
         }
     }
 };
