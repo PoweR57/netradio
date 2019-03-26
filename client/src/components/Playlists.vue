@@ -36,7 +36,7 @@
                     </tr>
 
                     <h2 id="header" slot="header">
-                        <div class="ui buttons" v-if="MusicRuning">
+                        <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
                                 <i class="play icon"></i>
                             </button>
