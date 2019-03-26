@@ -102,7 +102,7 @@ $(document).ready(function() {
 });
 
 export default {
-    name: "playlists",
+    name: "editplaylist",
     components: {
         draggable
     },

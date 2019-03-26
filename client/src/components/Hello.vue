@@ -7,9 +7,6 @@
 <script>
 /* eslint-disable */
 export default {
-  data() {
-
-  },
   methods: {
 
   },

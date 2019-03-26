@@ -152,6 +152,7 @@
                         </thead>
                         <draggable
                             class="dragArea list-group"
+                            v-if="playlist.liste_musique[0] != undefined"
                             :list="playlist.liste_musique"
                             tag="tbody"
                             :group="{ name: 'people', pull: 'clone', put: false }"
@@ -203,7 +204,7 @@ export default {
     components: {
         draggable
     },
-    data() {
+    data: function() {
         return {
             filter: "album",
             albums: null,
@@ -215,13 +216,13 @@ export default {
         };
     },
     created() {
-        socket = io(Config.service.music.URL);
-    },
-    mounted() {
         this.getAlbums();
         this.getMusicWaiting();
         this.getMusicPlaying();
         this.getPlaylist();
+        socket = io(Config.service.music.URL);
+    },
+    mounted() {
         var getClass = this;
         socket.on("update", function() {
             console.log("update");
@@ -289,7 +290,7 @@ export default {
             ServiceMusic.postMusicList(this.listOfMusicWhoWaitForPlaying);
         },
         changeFilter(filter) {
-            this.filter = filter
+            this.filter = filter;
         }
     }
 };

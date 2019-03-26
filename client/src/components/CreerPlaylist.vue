@@ -22,7 +22,7 @@
 import ServicePHP from "@/services/ServicePHP";
 
 export default {
-    name: "playlists",
+    name: "creerplaylist",
     data() {
         return {
             name: "",
