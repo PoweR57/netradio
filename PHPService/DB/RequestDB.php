@@ -108,15 +108,25 @@ function deletePlaylistById($id) {
     }
 }
 
-function createPlaylist($title,$liste) {
+function createPlaylist($title,$descr) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     try {
-        $sql = "INSERT INTO playlist (title,liste_musique) values ('$title','$liste')";
+        $sql = "INSERT INTO playlist (title) values ('$title')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;
     }
 }
+
+// function createPlaylist($title,$liste) {
+//     $connection = connectionDataBase(); //Récupérer la connection à la bdd
+//     try {
+//         $sql = "INSERT INTO playlist (title,liste_musique) values ('$title','$liste')";
+//         $connection->query($sql);
+//     } catch (PDOException $e) {
+//         echo $e;
+//     }
+// }
 
 function putMusiqueInPlaylistById($id_p,$id_m) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd

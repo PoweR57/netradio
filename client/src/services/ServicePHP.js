@@ -26,6 +26,16 @@ export default {
     getPlaylists() {
         return ApiPHP().get('/playlists')
     },
+    postPlaylist(title,description) {
+        var json = 
+        `
+        {
+            "title":"` + title + `",
+            "descr":"` + description + `"
+        }
+        `;
+        return ApiPHP().post('/playlist',json)
+    },
     savePlaylist(playlist,title) {
         var strList = ""
         playlist.forEach(element => {
