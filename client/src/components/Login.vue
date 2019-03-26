@@ -3,11 +3,11 @@
     <form class="ui form">
       <div class="field">
         <label>Login</label>
-        <input v-model="login" type="text" name="email" placeholder="Login">
+        <input v-model="login" type="email" name="email" placeholder="Login" required>
       </div>
       <div class="field">
         <label>Mot de passe</label>
-        <input v-model="mdp" type="text" name="mdp" placeholder="Mot de passe">
+        <input v-model="mdp" type="password" name="mdp" placeholder="Mot de passe" required>
       </div>
       <div class="field"></div>
       <button class="ui button" @click="getUserByLogin()">Valider</button>

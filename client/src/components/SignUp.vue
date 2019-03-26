@@ -1,25 +1,25 @@
 <template>
   <div>
-    <div class="ui form">
+    <form class="ui form">
       <div class="field">
-        <label>Login</label>
-        <input v-model="login" type="text" name="email" placeholder="Login">
+        <label>email</label>
+        <input v-model="login" type="email" name="email" placeholder="Login" required>
       </div>
       <div class="field">
         <label>Nom</label>
-        <input v-model="nom" type="text" name="nom" placeholder="Nom">
+        <input v-model="nom" type="text" name="nom" placeholder="Nom" required>
       </div>
       <div class="field">
         <label>Prénom</label>
-        <input v-model="prenom" type="text" name="prenom" placeholder="Prenom">
+        <input v-model="prenom" type="text" name="prenom" placeholder="Prenom" required>
       </div>
       <div class="field">
         <label>Mot de passe</label>
-        <input v-model="mdp" type="text" name="mdp" placeholder="Mot de passe">
+        <input v-model="mdp" type="password" name="mdp" placeholder="Mot de passe" required>
       </div>
       <div class="field"></div>
       <button class="ui button" @click="createUser()">Valider</button>
-    </div>
+    </form>
   </div>
 </template>
 
