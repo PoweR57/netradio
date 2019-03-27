@@ -40,7 +40,6 @@ export default {
             // await ServicePHP.createPoadcast(this.titre, this.descr);
 
             var file_data = document.querySelector("#file").files[0];
-            console.log(file_data.name)
             var form_data = new FormData();
             form_data.append("file", file_data);
             const response = await ServicePHP.sendPoadcast(form_data);
