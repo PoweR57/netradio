@@ -28,7 +28,12 @@ var presenterMedia = null;
 
 export default {
     name: "controls",
-    created: function() {
+        data(){
+        return {
+            isCalling: false,
+        };
+    },
+    created(){
         socket = io(Config.service.music.URL);
         presenterMedia = new ScarletsMediaPresenter(
             {
@@ -41,9 +46,9 @@ export default {
         );
     },
     methods: {
-        startPresenter: function() {
+        startPresenter(){
             // Set latency to 100ms (Equal with streamer)
-
+            this.isCalling = true;
             presenterMedia.onRecordingReady = function(arrayBuffer) {
                 console.log("Recording started!");
                 console.log("Header size: " + arrayBuffer.byteLength);
@@ -63,21 +68,24 @@ export default {
 
             presenterMedia.startRecording();
         },
-        stopPresenter: function() {
+        stopPresenter(){
+            this.isCalling = false;
             presenterMedia.stopRecording();
         },
-        stopMusic: function() {
+        stopMusic(){
             socket.emit("stop");
         },
         startreccord() {
-            recorder
-                .start()
-                .then(() => {
-
-                })
-                .catch(e => {
-                    console.error(e);
-                });
+            if (this.isCalling == true) {
+                recorder
+                    .start()
+                    .then(() => {
+    
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    });
+            }
         },
         stopreccord() {
             recorder

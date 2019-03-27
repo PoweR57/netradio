@@ -37,7 +37,7 @@ $app->get('/playlists', function ($request, $response) {
 
 $app->post('/playlist', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createPlaylist($json->title,$json->descr));
+    $response->send(createPlaylist($json->title, $json->descr));
 });
 
 $app->delete('/playlists/:id', function ($request, $response) {
@@ -49,17 +49,31 @@ $app->get('/playlists/:id', function ($request, $response) {
 });
 
 $app->get('/playlists/:id_p/musiques/:id_m', function ($request, $response) {
-    $response->send(putMusiqueInPlaylistById($request["params"]["id_p"],$request["params"]["id_m"]));
+    $response->send(putMusiqueInPlaylistById($request["params"]["id_p"], $request["params"]["id_m"]));
 });
 
 $app->post('/login', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(getUserByLogin($json->email,$json->mdp));
+    $response->send(getUserByLogin($json->email, $json->mdp));
 });
 
-$app->post('/signup' ,function ($request, $response){
+$app->post('/poadcast', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createUser($json->login,$json->nom,$json->prenom,$json->mdp));
+    $response->send(createPoadcast($json->titre, $json->descr));
+});
+
+$app->post('/poadcast/file', function ($request, $response) {
+    if (0 < $_FILES['file']['error']) {
+        echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+    } else {
+        echo $_FILES['file']['name'];
+        move_uploaded_file($_FILES['file']['tmp_name'], './'.$_FILES['file']['name']);
+    }
+});
+
+$app->post('/signup', function ($request, $response) {
+    $json = json_decode($request['raw']);
+    $response->send(createUser($json->login, $json->nom, $json->prenom, $json->mdp));
 });
 
 // $app->any('/getAllMusic', function ($request, $response) {

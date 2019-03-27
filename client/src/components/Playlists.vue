@@ -240,6 +240,8 @@ export default {
                 this.id_album = id;
                 const response = await ServicePHP.getMusicByAlbum(id + 1);
                 this.listOfMusic = response.data;
+            } else {
+                this.listOfMusic = [];
             }
         },
         async getMusicWaiting() {

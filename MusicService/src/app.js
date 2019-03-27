@@ -13,7 +13,11 @@ const util = require('util')
 
 app.use(morgan('combined'))
 app.use(bodyParser.json())
-app.use(cors())
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;

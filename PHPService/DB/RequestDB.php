@@ -178,3 +178,15 @@ function createUser($email,$nom,$prenom,$mdp){
     }
    
 }
+
+function createPoadcast($titre,$descr){
+    $connection = connectionDataBase();
+    $filepath = "D:/un/chemin";
+    try{
+        $sql = "INSERT INTO poadcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
+        $connection->query($sql);
+    }catch(PDOException $e){
+        echo $e;
+    }
+   
+}

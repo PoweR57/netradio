@@ -10,6 +10,7 @@ import EditPlaylist from '@/components/EditPlaylist'
 import CreerPlaylist from '@/components/CreerPlaylist'
 import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
+import PoadcastUpload from '@/components/PoadcastUpload'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path:'/login',
       name:'login',
       component: Login
+    },
+    {
+      path:'/poadcastupload',
+      name:'poadcastupload',
+      component: PoadcastUpload
     },
     {
       path:'/signup',
