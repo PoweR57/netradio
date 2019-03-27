@@ -28,13 +28,10 @@ export default {
         return ApiPHP().get('/playlists')
     },
     postPlaylist(title, description) {
-        var json =
-            `
-        {
+        var json =`{
             "title":"` + title + `",
             "descr":"` + description + `"
-        }
-        `;
+        }`;
         return ApiPHP().post('/playlist', json)
     },
     savePlaylist(playlist, title) {
@@ -46,13 +43,10 @@ export default {
                 strList += ',' + element.id
             }
         });
-        var json =
-            `
-        {
+        var json =`{
             "title":"` + title + `",
             "liste_musique":"` + strList + `"
-        }
-        `;
+        }`;
         return ApiPHP().post('/playlists', json)
     },
     getUserByLogin(login, mdp) {
@@ -72,14 +66,17 @@ export default {
         console.log(json);
         return ApiPHP().post('/signup', json)
     },
-    createPoadcast(titre, descr) {
-        var json = '{"titre":"' + titre + '","descr":"' + descr + '"}';
+    createPoadcast(titre, descr, uuid) {
+        var json = `{
+            "titre":"` + titre + `",
+            "uuid":"` + uuid + `",
+            "descr":"` + descr + `"
+        }`;
         return ApiPHP().post('/poadcast', json)
     },
-    sendPoadcast(file) {
-        
+    sendPoadcast(file, uuid) {
         $.ajax({
-            url: "http://" + Config.service.dataBase.URL + "/poadcast/file",
+            url: "http://" + Config.service.dataBase.URL + "/poadcast/file/"+uuid,
             filetype: "audio/mp3",
             cache: false,
             processData: false,

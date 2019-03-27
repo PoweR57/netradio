@@ -37,12 +37,13 @@ export default {
     },
     methods: {
         async createPoadcast() {
-            // await ServicePHP.createPoadcast(this.titre, this.descr);
-
+            var uuid = uuidv1();
+            alert(uuid);
+            await ServicePHP.createPoadcast(this.titre, this.descr, uuid);
             var file_data = document.querySelector("#file").files[0];
             var form_data = new FormData();
             form_data.append("file", file_data);
-            const response = await ServicePHP.sendPoadcast(form_data);
+            const response = await ServicePHP.sendPoadcast(form_data, uuid);
         }
     },
     computed: {}
