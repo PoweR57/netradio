@@ -1,22 +1,28 @@
 
 <template>
-  <div class="ui large fixed top hidden menu">
+  <div id="header" class="ui large fixed top hidden menu">
     <div class="ui container">
-      <a class="item" id="acc" v-on:click="goTo('acceuil')">Acceuil</a>
+      <a class="item" id="acc" v-on:click="goTo('/')">Acceuil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
       <a class="item" id="pod" v-on:click="goTo('podcasts')">Podcasts</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
       <div class="middle">
-        <button id="controls" class="bouton17" v-on:click="playerStart()">
-          <img class="resize" src="../19314.png">
-        </button>
+          <img class="logo" src="../logo.png">
       </div>
       <div class="right menu">
         <div class="item">
-          <a class="ui button" v-on:click="$router.push('login')">Log in</a>
+          <a
+            class="ui secondary button"
+            style="border: solid 1px white"
+            v-on:click="$router.push('login')"
+          >Log in</a>
         </div>
         <div class="item">
-          <a class="ui primary button" v-on:click="$router.push('signup')">Sign Up</a>
+          <a
+            class="ui button"
+            style="border: solid 1px black;background:white;color:black;"
+            v-on:click="$router.push('signup')"
+          >Sign Up</a>
         </div>
       </div>
     </div>
@@ -39,22 +45,50 @@ var socket = null;
 var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
 
 export default {
-  name: "posts",
+  name: "appHeader",
   data() {
     return {
       URL: "http://" + Config.service.music.URL + "/",
       msgButton: "Click for play"
     };
   },
-  created: function() {
+  created() {
     audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
     socket = io(Config.service.music.URL);
     this.startStreamer();
   },
+  mounted() {
+    switch ($(location)[0].hash) {
+      case "#/":
+        $("#acc").addClass("active");
+        $("#pla").removeClass("active");
+        $("#pod").removeClass("active");
+        $("#pan").removeClass("active");
+        break;
+      case "#/planning":
+        $("#acc").removeClass("active");
+        $("#pla").addClass("active");
+        $("#pod").removeClass("active");
+        $("#pan").removeClass("active");
+        break;
+      case "#/podcasts":
+        $("#acc").removeClass("active");
+        $("#pla").removeClass("active");
+        $("#pod").addClass("active");
+        $("#pan").removeClass("active");
+        break;
+      case "#/panel":
+        $("#acc").removeClass("active");
+        $("#pla").removeClass("active");
+        $("#pod").removeClass("active");
+        $("#pan").addClass("active");
+        break;
+    }
+  },
   methods: {
     goTo(page) {
       switch (page) {
-        case "acceuil":
+        case "/":
           $("#acc").addClass("active");
           $("#pla").removeClass("active");
           $("#pod").removeClass("active");
@@ -81,7 +115,7 @@ export default {
           $("#pod").removeClass("active");
           $("#pan").addClass("active");
           this.$router.push(page);
-        break;
+          break;
       }
     },
     displayPlayer() {
@@ -152,10 +186,12 @@ export default {
   display: none;
 }
 .middle {
-  margin-left: 20%;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin: auto;
 }
+.active {
+  text-shadow: 0 0 10px white;
+}
+
 .bouton17 {
   width: 40px;
   height: 40px;
@@ -171,5 +207,14 @@ export default {
   height: 25px;
   margin: auto;
   margin-left: 3px;
+}
+#header {
+  background-image: url("../bckgrnd.jpg");
+  border-bottom: 2px solid black;
+  height: 100px;
+}
+#header a {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 120%
 }
 </style>
