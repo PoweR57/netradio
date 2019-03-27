@@ -38,7 +38,8 @@ export default {
   name: "controls",
   data() {
     return {
-      live: "off air"
+      live: "off air",
+      broadcast:false,
     };
   },
   created: function() {
