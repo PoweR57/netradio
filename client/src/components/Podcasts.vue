@@ -9,15 +9,13 @@
         <div class="ui small feed">
           <div class="event">
             <div class="content">
-              <div class="summary">
-                {{pod.descr}}
-              </div>
+              <div class="summary">{{pod.descr}}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="extra content">
-        <button class="ui button">faire la méthode de dl </button>
+        <button class="ui button">faire la méthode de dl</button>
       </div>
     </div>
   </div>
@@ -34,7 +32,7 @@ export default {
     };
   },
   created() {
-    this.getPodcast();
+    // this.getPodcast();
   },
   methods: {
     async getPodcast() {
@@ -47,11 +45,11 @@ export default {
 };
 </script>
 <style scoped>
-#container{
+#container {
   display: flex;
   flex-direction: row;
 }
-#card{
+#card {
   margin-top: 1%;
   margin-left: 2%;
 }

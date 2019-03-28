@@ -17,35 +17,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="extra content">
-                    <div class="ui three buttons">
-                        <button class="ui basic green button" v-on:click="startPresenter()">live</button>
-                        <button class="ui basic red button" v-on:click="stopPresenter()">stop</button>
-                        <button class="ui basic red button" v-on:click="stopMusic()">stop music</button>
-                    </div>
-                </div>
             </div>
         </div>
-        <table class="ui celled table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td data-label="Name">James</td>
-                    <td class="collapsing">
-                        <div class="ui fitted slider checkbox">
-                            <input type="checkbox">
-                            <label></label>
-                        </div>
-                        <i class="microphone icon"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </template>
 
@@ -54,6 +27,7 @@
 import ServicePHP from "@/services/ServicePHP";
 import Config from "@/config/config";
 
+var fs = require("fs");
 const MicRecorder = require("mic-recorder-to-mp3");
 const recorder = new MicRecorder({
     bitRate: 128
@@ -63,19 +37,14 @@ var socket = null;
 var presenterMedia = null;
 
 export default {
-    name: "controls",
+    name: "invite",
     data() {
         return {
+            broadcast: false,
             isCalling: false,
             live: "off air",
-            broadcast: false,
-            tableOfUserPresent: []
+            id: "sdgihodfiihodfihodgshio"
         };
-    },
-    mounted() {
-        socket.on("updateUser", function(table) {
-            this.tableOfUserPresent = table;
-        });
     },
     created() {
         socket = io(Config.service.music.URL);
@@ -88,38 +57,17 @@ export default {
             },
             100
         );
+        socket.emit("UserVoice", this.id);
+    },
+    mounted() {
+        socket.on("startUserVoice", function() {
+            startPresenter();
+        });
+        socket.on("stopUserVoice", function() {
+            stopPresenter();
+        });
     },
     methods: {
-        startreccord() {
-            if (this.isCalling == true) {
-                recorder
-                    .start()
-                    .then(() => {})
-                    .catch(e => {
-                        console.error(e);
-                    });
-            }
-        },
-        stopreccord() {
-            recorder
-                .stop()
-                .getMp3()
-                .then(([buffer, blob]) => {
-                    const file = new File(buffer, "myFile.mp3", {
-                        type: blob.type,
-                        lastModified: Date.now()
-                    });
-                    const player = new Audio(URL.createObjectURL(file));
-                    player.controls = true;
-                    $("#audio").empty();
-                    document.querySelector("#audio").appendChild(player);
-                })
-                .catch(e => {
-                    alert("We could not retrieve your message");
-                    console.log(e);
-                });
-        },
-
         startPresenter() {
             // Set latency to 100ms (Equal with streamer)
 
@@ -148,9 +96,6 @@ export default {
             presenterMedia.stopRecording();
             this.live = "off air";
             this.broadcast = false;
-        },
-        stopMusic() {
-            socket.emit("stop");
         }
     }
 };

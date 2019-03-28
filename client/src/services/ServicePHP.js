@@ -76,17 +76,17 @@ export default {
         `;
         return ApiPHP().post('/playlist',json)
     },
-    createPoadcast(titre, descr, uuid) {
+    createPodcast(titre, descr, uuid) {
         var json = `{
             "titre":"` + titre + `",
             "uuid":"` + uuid + `",
             "descr":"` + descr + `"
         }`;
-        return ApiPHP().post('/poadcast', json)
+        return ApiPHP().post('/podcast', json)
     },
-    sendPoadcast(file, uuid) {
+    sendPodcast(file, uuid) {
         $.ajax({
-            url: "http://" + Config.service.dataBase.URL + "/poadcast/file/"+uuid,
+            url: "http://" + Config.service.dataBase.URL + "/podcast/file/"+uuid,
             filetype: "audio/mp3",
             cache: false,
             processData: false,
@@ -120,7 +120,7 @@ export default {
         `;
         return ApiPHP().post('/playlists', json)
     },
-    getPoadcast() {
-        return ApiPHP().get('/poadcasts')
+    getPodcast() {
+        return ApiPHP().get('/podcasts')
     },
 }

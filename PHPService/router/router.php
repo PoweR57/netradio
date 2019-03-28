@@ -57,27 +57,27 @@ $app->post('/login', function ($request, $response) {
     $response->send(getUserByLogin($json->email, $json->mdp));
 });
 
-$app->post('/poadcast', function ($request, $response) {
+$app->post('/podcast', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createPoadcast($json->titre, $json->descr, $json->uuid));
+    $response->send(createPodcast($json->titre, $json->descr, $json->uuid));
 });
 
-$app->post('/poadcast/file/:uuid', function ($request, $response) {
+$app->post('/podcast/file/:uuid', function ($request, $response) {
     if (0 < $_FILES['file']['error']) {
         echo 'Error: ' . $_FILES['file']['error'] . '<br>';
     } else {
-        move_uploaded_file($_FILES['file']['tmp_name'], 'D:/Musique/Poadcast/'.$request["params"]["uuid"].'.mp3');
+        move_uploaded_file($_FILES['file']['tmp_name'], 'D:/Musique/Podcast/'.$request["params"]["uuid"].'.mp3');
     }
 });
 
 $app->post('/signup', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createUser($json->login, $json->nom, $json->prenom, $json->mdp));
+    $response->send(createUser($json->email, $json->nom, $json->prenom, $json->mdp));
 });
 
-$app->get('/poadcasts', function ($request, $response) {
+$app->get('/podcasts', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(getPoadcast());
+    $response->send(getPodcast());
 });
 
 
