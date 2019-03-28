@@ -1,41 +1,39 @@
 <template>
-    <div id="foot" class="ui inverted vertical footer segment">
-        <div class="ui container">
-            <div class="ui stackable inverted divided equal height stackable grid">
-                <div class="two wide column">
-                    <h4 class="ui inverted header">About</h4>
-                    <div class="ui inverted link list">
-                        <a href="#" class="item">Sitemap</a>
-                        <a href="#" class="item">Contact Us</a>
-                    </div>
-                </div>
-                <div class="two wide column">
-                    <h4 class="ui inverted header">Services</h4>
-                    <div class="ui inverted link list">
-                        <a href="#" class="item">Banana Pre-Order</a>
-                        <a href="#" class="item">DNA FAQ</a>
-                    </div>
-                </div>
-                <div class="eight wide column">
-                    <button
-                        v-if="play==true"
-                        id="controls"
-                        class="bouton17"
-                        v-on:click="playerStart()"
-                    >
-                        <img class="resize" src="../assets/play.png">
-                    </button>
-                    <button v-else id="controls" class="bouton17" v-on:click="playerStart()">
-                        <img class="resize" src="../assets/pause.png">
-                    </button>
-                </div>
-                <div class="four wide column">
-                    <h4 class="ui inverted header">Footer Header</h4>
-                    <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
-                </div>
-            </div>
+  <div id="foot" class="ui inverted vertical footer segment">
+    <div class="ui container">
+      <div class="ui stackable inverted divided equal height stackable grid">
+        <div class="two wide column">
+          <h4 class="ui inverted header">About</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Sitemap</a>
+            <a href="#" class="item">Contact Us</a>
+          </div>
         </div>
+        <div class="two wide column">
+          <h4 class="ui inverted header">Services</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Banana Pre-Order</a>
+            <a href="#" class="item">DNA FAQ</a>
+          </div>
+        </div>
+        <div id="middleFlex" class="eight wide column">
+          <div class="circle">
+            <button id="listen" v-on:click="drive()" class="playButton"></button>
+          </div>
+        </div>
+        <div class="four wide column">
+          <h4 class="ui inverted header">Footer Header</h4>
+          <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+        </div>
+      </div>
     </div>
+    <div class="debug">
+      <input type="text" id="debug">
+      <div id="update">
+        <!-- Conteneur du player audio -->
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,12 +46,12 @@ var socket = null;
 var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
 
 export default {
-    name: "foo",
+    name: "appFooter",
     data() {
         return {
+            play: false,
             URL: "http://" + Config.service.music.URL + "/",
-            msgButton: "Click for play",
-            play: false
+            msgButton: "Click for play"
         };
     },
     created() {
@@ -62,6 +60,17 @@ export default {
         this.startStreamer();
     },
     methods: {
+        drive() {
+            if (!this.play) {
+                $("#listen").addClass("pause");
+                this.playerStart();
+                this.play = true;
+            } else {
+                $("#listen").removeClass("pause");
+                this.playerStart();
+                this.play = false;
+            }
+        },
         displayPlayer() {
             document.getElementById("update").innerHTML =
                 '<audio id="player" src="http://' +
@@ -93,11 +102,9 @@ export default {
                 this.msgButton = "Click for Play";
                 $("#update").empty();
                 document.querySelector("#debug").value = "";
-                this.play = true;
             } else {
                 this.msgButton = "Click for Pause";
                 this.displayPlayer();
-                this.play = false;
 
                 var audio = document.getElementById("player");
                 if (audio.currentTime == 0) {
@@ -139,14 +146,37 @@ export default {
     height: 100px;
     z-index: 101;
 }
-.pause {
-    width: 74px;
-    height: 74px;
+#middleFlex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.circle {
+    border: 4px solid white;
+    border-radius: 70px;
+    padding: 3px;
+    width: 60px;
+    height: 60px;
+}
+.playButton {
+    margin-left: 11px;
+    margin-top: 4px;
+    box-sizing: border-box;
+    height: 37px;
+    width: 37px;
+    border-color: transparent transparent transparent white;
+    transition: 100ms all ease;
+    will-change: border-width;
+    cursor: pointer;
     border-style: solid;
-    border-width: 37px;
-    border-color: white;
-    border-style: double;
-    border-width: 0px 0px 0px 37px;
+    border-width: 18px 0 18px 30px;
     background: transparent;
+}
+.pause {
+    border-style: double;
+    border-width: 0px 0 0px 24px;
+}
+.debug {
+    display: none;
 }
 </style>
