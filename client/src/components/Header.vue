@@ -2,7 +2,7 @@
 <template>
   <div class="ui large top fixed hidden menu">
     <div class="ui container">
-      <a class="item" id="acc" v-on:click="goTo('acceuil')">Acceuil</a>
+      <a class="item" id="acc" v-on:click="goTo('accueil')">Accueil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
       <a class="item" id="pod" v-on:click="goTo('control')">Control</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
