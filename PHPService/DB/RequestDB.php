@@ -164,11 +164,11 @@ function createUser($email,$nom,$prenom,$mdp){
    
 }
 
-function createPoadcast($titre,$descr, $uuid){
+function createPodcast($titre,$descr, $uuid){
     $connection = connectionDataBase();
-    $filepath = "D:/Musique/Poadcast/".$uuid.".mp3";
+    $filepath = "D:/Musique/Podcast/".$uuid.".mp3";
     try{
-        $sql = "INSERT INTO poadcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
+        $sql = "INSERT INTO podcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
         $connection->query($sql);
     }catch(PDOException $e){
         echo $e;
@@ -176,11 +176,11 @@ function createPoadcast($titre,$descr, $uuid){
    
 }
 
-function getPoadcast(){
+function getPodcast(){
     $connection = connectionDataBase();
     $result='';
     try{
-        $sql = "SELECT * FROM poadcast";
+        $sql = "SELECT * FROM podcast";
         $result = $connection->query($sql);
         $result = formatToJson($result);
     }catch(PDOException $e){

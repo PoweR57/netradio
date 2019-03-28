@@ -26,7 +26,7 @@
 import ServicePHP from "@/services/ServicePHP";
 
 export default {
-    name: "poadcastupload",
+    name: "podcastupload",
     data() {
         return {
             titre: "",

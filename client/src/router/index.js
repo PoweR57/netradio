@@ -8,10 +8,9 @@ import Login from '@/components/Login'
 import Panel from '@/components/Panel'
 import Invite from '@/components/Invite'
 import Planning from '@/components/Planning'
-// import Podcasts from '@/components/Podcasts'
 import Control from '@/components/Control'
 import SignUp from '@/components/SignUp'
-import PoadcastUpload from '@/components/PoadcastUpload'
+import PodcastUpload from '@/components/PodcastUpload'
 
 Vue.use(Router)
 
@@ -27,11 +26,6 @@ export default new Router({
       name: 'planning',
       component: Planning
     },
-    // {
-    //   path: '/podcasts',
-    //   name: 'podcasts',
-    //   component: Podcasts
-    // },
     {
       path: '/panel',
       name: 'panel',
@@ -53,9 +47,9 @@ export default new Router({
       component: Login
     },
     {
-      path:'/poadcastupload',
-      name:'poadcastupload',
-      component: PoadcastUpload
+      path:'/podcastupload',
+      name:'podcastupload',
+      component: PodcastUpload
     },
     {
       path:'/invite',
