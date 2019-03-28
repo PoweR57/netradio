@@ -7,7 +7,7 @@
             <a class="item" id="ctl" v-on:click="goTo('control')">Control</a>
             <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
             <div class="middle">
-                <img class="logo" src="../logo.png">
+                <img class="logo" src="../assets/logo.png">
             </div>
             <div class="right menu">
                 <div class="item">
@@ -115,7 +115,7 @@ export default {
     margin-left: 3px;
 }
 #top {
-    background-image: url("../bckgrnd.jpg");
+    background-image: url("../assets/bckgrnd.jpg");
     border-bottom: 2px solid black;
     height: 100px;
 }

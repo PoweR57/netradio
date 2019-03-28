@@ -157,7 +157,9 @@ export default {
 </script>
 <style scoped>
 #interface {
-    width: 30%;
+    margin-top: 5%;
+    margin-bottom: 8%;
+    width: 50%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -175,7 +177,6 @@ export default {
     margin-left: 2%;
     vertical-align: center;
 }
-
 .rouge {
     width: 25px;
     height: 25px;
@@ -193,7 +194,11 @@ export default {
     margin-right: 2%;
     background-color: whitesmoke;
 }
-
+.controls{
+    width:30% ;
+    margin: auto;
+    padding-top: 2%
+}
 @keyframes rouge {
     0% {
         background: white;
