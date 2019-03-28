@@ -55,6 +55,9 @@ export default {
             case "#/":
                 $("#acc").addClass("active");
                 break;
+            case "#/accueil":
+                $("#acc").addClass("active");
+                break;
             case "#/planning":
                 $("#pla").addClass("active");
                 break;
