@@ -9,40 +9,28 @@
             <div class="middle">
                 <img class="logo" src="../logo.png">
             </div>
-      <div class="right menu">
-        <div class="item">
-          <a
-            class="ui secondary button"
-            style="border: solid 1px white"
-            v-on:click="$router.push('login')"
-          >Log in</a>
+            <div class="right menu">
+                <div class="item">
+                    <a
+                        class="ui secondary button"
+                        style="border: solid 1px white"
+                        v-on:click="$router.push('login')"
+                    >Log in</a>
+                </div>
+                <div class="item">
+                    <a
+                        class="ui button"
+                        style="border: solid 1px black;background:white;color:black;"
+                        v-on:click="$router.push('signup')"
+                    >Sign Up</a>
+                </div>
+            </div>
         </div>
-        <div class="item">
-          <a
-            class="ui button"
-            style="border: solid 1px black;background:white;color:black;"
-            v-on:click="$router.push('signup')"
-          >Sign Up</a>
-        </div>
-      </div>
     </div>
-    <div class="debug">
-      <input type="text" id="debug">
-      <div id="update">
-        <!-- Conteneur du player audio -->
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
 /* eslint-disable */
-import ServiceMusic from "@/services/ServiceMusic";
-import Config from "@/config/config";
-
-var audioStreamer = null;
-var socket = null;
-var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
 
 export default {
     name: "appHeader",
@@ -103,9 +91,6 @@ export default {
 
 <style>
 /* Console log de la musique */
-.debug {
-    display: none;
-}
 .middle {
     margin: auto;
 }
