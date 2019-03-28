@@ -7,7 +7,7 @@ import CreerPlaylist from '@/components/CreerPlaylist'
 import Login from '@/components/Login'
 import Panel from '@/components/Panel'
 import Planning from '@/components/Planning'
-// import Podcasts from '@/components/Podcasts'
+import Podcasts from '@/components/Podcasts'
 import Control from '@/components/Control'
 import SignUp from '@/components/SignUp'
 import PoadcastUpload from '@/components/PoadcastUpload'
@@ -26,11 +26,11 @@ export default new Router({
       name: 'planning',
       component: Planning
     },
-    // {
-    //   path: '/podcasts',
-    //   name: 'podcasts',
-    //   component: Podcasts
-    // },
+    {
+      path: '/podcasts',
+      name: 'podcasts',
+      component: Podcasts
+    },
     {
       path: '/panel',
       name: 'panel',
