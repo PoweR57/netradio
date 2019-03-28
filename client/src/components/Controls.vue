@@ -42,7 +42,8 @@ export default {
   data() {
     return {
       live: "off air",
-      broadcast: false
+      broadcast: false,
+      checked: true
     };
   },
   created: function() {
