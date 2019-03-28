@@ -139,18 +139,6 @@ export default {
     height: 100px;
     z-index: 101;
 }
-.play {
-    box-sizing: border-box;
-    width: 74px;
-    height: 74px;
-    border-style: solid;
-    border-width: 37px;
-    border-color: #202020;
-    border-width: 37px 0px 37px 74px;
-    border-color: red blue green yellow;
-    border-color: transparent transparent transparent white;
-    background: transparent;
-}
 .pause {
     width: 74px;
     height: 74px;
