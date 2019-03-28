@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button v-on:click="refresh()">lol</button>
       <div id="calendar"></div>
   </div>
 </template>

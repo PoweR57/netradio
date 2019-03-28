@@ -53,6 +53,7 @@
 <script>
 /* eslint-disable */
 export default {
+  name: "accueil",
   methods: {
   },
   computed: {}

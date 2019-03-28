@@ -22,6 +22,11 @@ export default new Router({
       component: Accueil
     },
     {
+      path: '/accueil',
+      name: 'accueil',
+      component: Accueil
+    },
+    {
       path: '/planning',
       name: 'planning',
       component: Planning
