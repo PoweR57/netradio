@@ -32,7 +32,7 @@ export default {
     };
   },
   created() {
-    // this.getPodcast();
+    this.getPodcast();
   },
   methods: {
     async getPodcast() {
