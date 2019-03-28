@@ -14,22 +14,30 @@
                     <img class="resize" src="../assets/pause.png">
                 </button>
             </div>
-            <div class="right menu">
-                <div class="item">
-                    <a class="ui button" v-on:click="goTo('login')">Log in</a>
-                </div>
-                <div class="item">
-                    <a class="ui primary button" v-on:click="goTo('signup')">Sign Up</a>
-                </div>
-            </div>
+      <div class="right menu">
+        <div class="item">
+          <a
+            class="ui secondary button"
+            style="border: solid 1px white"
+            v-on:click="$router.push('login')"
+          >Log in</a>
         </div>
-        <div class="debug">
-            <input type="text" id="debug">
-            <div id="update">
-                <!-- Conteneur du player audio -->
-            </div>
+        <div class="item">
+          <a
+            class="ui button"
+            style="border: solid 1px black;background:white;color:black;"
+            v-on:click="$router.push('signup')"
+          >Sign Up</a>
         </div>
+      </div>
     </div>
+    <div class="debug">
+      <input type="text" id="debug">
+      <div id="update">
+        <!-- Conteneur du player audio -->
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
