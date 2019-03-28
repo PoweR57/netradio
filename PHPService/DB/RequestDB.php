@@ -118,16 +118,6 @@ function createPlaylist($title,$descr) {
     }
 }
 
-// function createPlaylist($title,$liste) {
-//     $connection = connectionDataBase(); //Récupérer la connection à la bdd
-//     try {
-//         $sql = "INSERT INTO playlist (title,liste_musique) values ('$title','$liste')";
-//         $connection->query($sql);
-//     } catch (PDOException $e) {
-//         echo $e;
-//     }
-// }
-
 function putMusiqueInPlaylistById($id_p,$id_m) {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
 
@@ -169,6 +159,18 @@ function createUser($email,$nom,$prenom,$mdp){
     try{
         $mdp = password_hash($mdp, PASSWORD_BCRYPT);
         $sql = "INSERT INTO user (email,nom,prenom,mdp) values ('$email','$nom','$prenom','$mdp')";
+        $connection->query($sql);
+    }catch(PDOException $e){
+        echo $e;
+    }
+   
+}
+
+function createPoadcast($titre,$descr, $uuid){
+    $connection = connectionDataBase();
+    $filepath = "D:/Musique/Poadcast/".$uuid.".mp3";
+    try{
+        $sql = "INSERT INTO poadcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
         $connection->query($sql);
     }catch(PDOException $e){
         echo $e;

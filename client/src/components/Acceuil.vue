@@ -6,9 +6,13 @@
 
 <script>
 /* eslint-disable */
-import ServicePHP from "@/services/ServicePHP";
-
 export default {
+<<<<<<< HEAD:client/src/components/Hello.vue
+=======
+  data() {
+    return {}
+  },
+>>>>>>> alex:client/src/components/Acceuil.vue
   methods: {
   },
   computed: {}

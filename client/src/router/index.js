@@ -1,33 +1,38 @@
 /* eslint-disable */
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Posts from '@/components/Posts'
-import Controls from '@/components/Controls'
-import Playlists from '@/components/Playlists'
-import Login from '@/components/Login'
-import SignUp from '@/components/SignUp'
+import Acceuil from '@/components/Acceuil'
 import EditPlaylist from '@/components/EditPlaylist'
 import CreerPlaylist from '@/components/CreerPlaylist'
-
+import Login from '@/components/Login'
+import Panel from '@/components/Panel'
+import Planning from '@/components/Planning'
+import Podcasts from '@/components/Podcasts'
+import SignUp from '@/components/SignUp'
+import PoadcastUpload from '@/components/PoadcastUpload'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'hello',
-      component: Hello
+      name: 'acceuil',
+      component: Acceuil
     },
     {
-      path: '/posts',
-      name: 'posts',
-      component: Posts
+      path: '/planning',
+      name: 'planning',
+      component: Planning
     },
     {
-      path: '/controls',
-      name: 'controls',
-      component: Controls
+      path: '/podcasts',
+      name: 'podcasts',
+      component: Podcasts
+    },
+    {
+      path: '/panel',
+      name: 'panel',
+      component: Panel
     },
     {
       path: '/editplaylist',
@@ -40,14 +45,14 @@ export default new Router({
       component: CreerPlaylist
     },
     {
-      path: '/playlists',
-      name: 'playlists',
-      component: Playlists
-    },
-    {
       path:'/login',
       name:'login',
       component: Login
+    },
+    {
+      path:'/poadcastupload',
+      name:'poadcastupload',
+      component: PoadcastUpload
     },
     {
       path:'/signup',

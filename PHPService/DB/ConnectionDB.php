@@ -58,7 +58,17 @@ function createDataBase($connection)
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
-        try {
+    try {
+        $sql = "CREATE TABLE poadcast (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            titre VARCHAR(3000) NOT NULL,
+            descr VARCHAR(3000) NOT NULL,
+            filepath VARCHAR(3000) NOT NULL
+            ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+        $connection->exec($sql);
+    } catch (PDOException $e) {
+    }
+    try {
         $sql = "CREATE TABLE musique (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             titre VARCHAR(3000) DEFAULT NULL,
@@ -68,19 +78,20 @@ function createDataBase($connection)
             annee VARCHAR(3000) DEFAULT NULL,
             duree VARCHAR(3000) DEFAULT NULL,
             filepath VARCHAR(3000) DEFAULT NULL,
-            id_album INT(6) DEFAULT NULL        
+            id_album INT(6) DEFAULT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
-        try {
+    try {
         $sql = "ALTER TABLE `musique` ADD KEY `id_album` (`id_album`);";
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
 }
 
-function peopleDataBaseHard() {
+function peopleDataBaseHard()
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     resetDataBase($connection); //Supprime toutes les tables
     createDataBase($connection); //Creer la BDD
@@ -88,20 +99,20 @@ function peopleDataBaseHard() {
     $dir = "D:/Musique/Radio/";
     $array = scandir($dir);
 
-    for ($i=2; $i < sizeof($array); $i++) {
+    for ($i = 2; $i < sizeof($array); $i++) {
         $conn = connectionDataBase();
         try {
             $sql = "INSERT INTO album (titre) VALUES (\"$array[$i]\")";
             $conn->exec($sql);
         } catch (PDOException $e) {
         }
-        peopleDataBase($conn,$dir . $array[$i],$i-1);
+        peopleDataBase($conn, $dir . $array[$i], $i - 1);
     }
     // $getID3 = new getID3();
     // print_r($getID3->analyze("D:/Alexandre/Musique/Radio/Avicii/13 - Avicii - Waiting For Love.mp3"));
 }
 
-function peopleDataBase($conn,$dir, $ref_album)
+function peopleDataBase($conn, $dir, $ref_album)
 {
     $files = scandir($dir);
     $getID3 = new getID3();
@@ -117,7 +128,7 @@ function peopleDataBase($conn,$dir, $ref_album)
         $duree = " ";
         $filepath = " ";
         if (isset($ThisFileInfo['tags']['id3v2']['album'])) {
-            $album = str_replace("100% ", "", implode(",", $ThisFileInfo['tags']['id3v2']['album']));
+            $album = preg_replace('#\((.+)\)#U', '',str_replace("100% ", "", implode(",", $ThisFileInfo['tags']['id3v2']['album'])));
         }
         if (isset($ThisFileInfo['tags']['id3v2']['genre'])) {
             $genre = implode(",", $ThisFileInfo['tags']['id3v2']['genre']);

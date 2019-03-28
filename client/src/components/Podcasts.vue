@@ -34,6 +34,12 @@
 import ServicePHP from "@/services/ServicePHP";
 import Config from "@/config/config";
 
+var fs = require("fs");
+const MicRecorder = require("mic-recorder-to-mp3");
+const recorder = new MicRecorder({
+  bitRate: 128
+});
+
 var socket = null;
 var presenterMedia = null;
 
@@ -41,12 +47,10 @@ export default {
   name: "controls",
   data() {
     return {
-      live: "off air",
-      broadcast: false,
-      checked: true
+      isCalling: false
     };
   },
-  created: function() {
+  created() {
     socket = io(Config.service.music.URL);
     presenterMedia = new ScarletsMediaPresenter(
       {
@@ -59,6 +63,36 @@ export default {
     );
   },
   methods: {
+    startreccord() {
+      if (this.isCalling == true) {
+        recorder
+          .start()
+          .then(() => {})
+          .catch(e => {
+            console.error(e);
+          });
+      }
+    },
+    stopreccord() {
+      recorder
+        .stop()
+        .getMp3()
+        .then(([buffer, blob]) => {
+          const file = new File(buffer, "myFile.mp3", {
+            type: blob.type,
+            lastModified: Date.now()
+          });
+          const player = new Audio(URL.createObjectURL(file));
+          player.controls = true;
+          $("#audio").empty();
+          document.querySelector("#audio").appendChild(player);
+        })
+        .catch(e => {
+          alert("We could not retrieve your message");
+          console.log(e);
+        });
+    },
+
     startPresenter: function() {
       // Set latency to 100ms (Equal with streamer)
 

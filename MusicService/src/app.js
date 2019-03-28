@@ -8,10 +8,16 @@ const io = require('socket.io')(http)
 const fs = require('fs')
 const mp3Duration = require('mp3-duration')
 const Timer = require('tiny-timer')
+const mm = require('musicmetadata');
+const util = require('util')
 
 app.use(morgan('combined'))
 app.use(bodyParser.json())
-app.use(cors())
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;
@@ -88,18 +94,45 @@ app.get('/', (req, res) => {
 })
 
 // Get Array : Musique en cours
+app.get('/LoadingFiles', (req, res) => {
+    var path = "D:/Musique/Radio";
+    var albumFolder = fs.readdirSync(path)
+    albumFolder.forEach((album) => {
+        var musicFolder = fs.readdirSync(path + '/' + album)
+        musicFolder.forEach((music) => {
+            console.log(path + '/' + album + '/' + music)
+            // mp3Duration(path + '/' + album + '/' + music, function (err, duration) {
+            //     if (err) return console.log(err.message);
+            //     var nb = Math.round(duration % 60)
+            //     if (nb < 10) {
+            //         nb = "0" + nb
+            //     }
+            //     var time = Math.round(duration / 60) + ":" + nb;
+            //     console.log(time)
+            // });
+
+            // mm(fs.createReadStream(path + '/' + album + '/' + music), function (err, metadata) {
+            //     metadata.picture = "";
+            //     console.log(metadata)
+            // });
+        })
+    })
+    res.send({ list: "metadata" })
+})
+
+// Get Array : Musique en cours
 app.get('/Playing', (req, res) => {
-    res.send({isPlaying: musicIsPlay})
+    res.send({ isPlaying: musicIsPlay })
 })
 
 // Get Array : Musique en attente
 app.get('/Waiting', (req, res) => {
-    res.send({waiting: arrayOfWaitingMusicForPlay})
+    res.send({ waiting: arrayOfWaitingMusicForPlay })
 })
 
 // Get Array : Musique en attente + en cours
 app.get('/WaitingAndPlaying', (req, res) => {
-    res.send({isPlaying: musicIsPlay, waiting: arrayOfWaitingMusicForPlay})
+    res.send({ isPlaying: musicIsPlay, waiting: arrayOfWaitingMusicForPlay })
 })
 
 // Post Array : Actualisation de la liste des musiques

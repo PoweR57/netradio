@@ -1,12 +1,12 @@
 {
     "service": {
         "music": {
-            "_comment": "Service de gestion pour la diffusion des musiques et des streams en direct",
-            "URL": "localhost:8081"
+            "_comment": "Service de gestion pour la diffusion des musiques et des streams en direct. PORT 8081",
+            "URL": "869ab3f7.ngrok.io"
         },
         "dataBase": {
-            "_comment": "Service d'authentification & gestion des musiques en BDD",
-            "URL": "localhost:3000"
+            "_comment": "Service d'authentification & gestion des musiques en BDD. PORT 3000",
+            "URL": "f2240d6a.ngrok.io"
         }
     }
 }
