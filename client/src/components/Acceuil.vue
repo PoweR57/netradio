@@ -6,9 +6,10 @@
 
 <script>
 /* eslint-disable */
-import ServicePHP from "@/services/ServicePHP";
-
 export default {
+  data() {
+    return {}
+  },
   methods: {
   },
   computed: {}

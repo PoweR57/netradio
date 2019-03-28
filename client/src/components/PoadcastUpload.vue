@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="ui form">
+        <div class="ui form">
             <div class="field">
                 <label>Titre</label>
                 <input v-model="titre" type="text" name="titre" placeholder="Titre" required>
@@ -10,16 +10,14 @@
                 <input v-model="descr" type="text" name="descr" placeholder="Description" required>
             </div>
             <div class="field">
-                <div>
-                    <label for="file" class="ui icon button">
-                        <i class="file icon"></i>
-                        Insérer le fichier
-                    </label>
-                    <input ref="myFile" type="file" id="file" style="display:none">
-                </div>
+                <label for="file" class="ui icon button">
+                    <i class="file icon"></i>
+                    Insérer le fichier
+                </label>
+                <input ref="myFile" type="file" id="file" style="display:none">
+                <button class="ui button" @click="createPoadcast()">Valider</button>
             </div>
-            <button class="ui button" @click="createPoadcast()">Valider</button>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -38,7 +36,6 @@ export default {
     methods: {
         async createPoadcast() {
             var uuid = uuidv1();
-            alert(uuid);
             await ServicePHP.createPoadcast(this.titre, this.descr, uuid);
             var file_data = document.querySelector("#file").files[0];
             var form_data = new FormData();
@@ -50,7 +47,7 @@ export default {
 };
 </script>
 <style scoped>
-form {
+.form {
     width: 30%;
     margin-left: auto;
     margin-right: auto;

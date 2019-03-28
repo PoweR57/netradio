@@ -1,11 +1,10 @@
 /* eslint-disable */
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Posts from '@/components/Posts'
-import Controls from '@/components/Controls'
 import Planning from '@/components/Planning'
-import Playlists from '@/components/Playlists'
+import Acceuil from '@/components/Acceuil'
+import Podcasts from '@/components/Podcasts'
+import Panel from '@/components/Panel'
 import EditPlaylist from '@/components/EditPlaylist'
 import CreerPlaylist from '@/components/CreerPlaylist'
 import Login from '@/components/Login'
@@ -18,13 +17,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'hello',
-      component: Hello
-    },
-    {
-      path: '/posts',
-      name: 'posts',
-      component: Posts
+      name: 'acceuil',
+      component: Acceuil
     },
     {
       path: '/planning',
@@ -32,9 +26,14 @@ export default new Router({
       component: Planning
     },
     {
-      path: '/controls',
-      name: 'controls',
-      component: Controls
+      path: '/podcasts',
+      name: 'podcasts',
+      component: Podcasts
+    },
+    {
+      path: '/panel',
+      name: 'panel',
+      component: Panel
     },
     {
       path: '/editplaylist',
@@ -45,11 +44,6 @@ export default new Router({
       path: '/creerplaylist',
       name: 'creerplaylist',
       component: CreerPlaylist
-    },
-    {
-      path: '/playlists',
-      name: 'playlists',
-      component: Playlists
     },
     {
       path:'/login',
