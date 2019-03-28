@@ -1,14 +1,27 @@
 <template>
     <div class="controls">
-        <button v-on:click="startPresenter()">Animateur Start</button>
-        <button v-on:click="stopPresenter()">Animateur Stop</button>
-        <input type="text" id="debug">
-        <br>
-        <button v-on:click="startreccord()">Reccord Start</button>
-        <button v-on:click="stopreccord()">Reccord Stop</button>
-        <br>
-        <button v-on:click="stopMusic()">Stop Music In Radio</button>
-        <div id="audio"></div>
+        <div class="ui cards">
+            <div id="interface" class="card">
+                <div class="content">
+                    <div id="interfaceHeader" class="header">Net'Radio Broadcast</div>
+                    <div class="description">
+                        <div id="status">
+                            <div id="air">
+                                <div class="rouge"></div>
+                                {{this.live}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui three buttons">
+                        <button class="ui basic green button" v-on:click="startPresenter()">live</button>
+                        <button class="ui basic red button" v-on:click="stopPresenter()">stop</button>
+                        <button class="ui basic red button" v-on:click="stopMusic()">stop music</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -28,12 +41,13 @@ var presenterMedia = null;
 
 export default {
     name: "controls",
-        data(){
+    data() {
         return {
             isCalling: false,
+            live: "off air"
         };
     },
-    created(){
+    created: function() {
         socket = io(Config.service.music.URL);
         presenterMedia = new ScarletsMediaPresenter(
             {
@@ -67,10 +81,12 @@ export default {
             };
 
             presenterMedia.startRecording();
+            this.live = "on air";
         },
         stopPresenter(){
             this.isCalling = false;
             presenterMedia.stopRecording();
+            this.live = "off air";
         },
         stopMusic(){
             socket.emit("stop");
@@ -109,3 +125,49 @@ export default {
     }
 };
 </script>
+<style scoped>
+#interface {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#interfaceHeader {
+    text-align: center;
+}
+
+#air {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: black;
+    margin-left: 2%;
+    vertical-align: center;
+}
+
+#status {
+    width: 100%;
+    text-align: center;
+}
+
+.rouge {
+    width: 25px;
+    height: 25px;
+    border-radius: 50px;
+    position: relative;
+    animation: rouge 2s ease-in-out infinite;
+}
+
+@keyframes rouge {
+    0% {
+        background:white;
+    }
+    50% {
+        background:red ;
+    }
+    100% {
+        background:white ;
+    }
+}
+</style>

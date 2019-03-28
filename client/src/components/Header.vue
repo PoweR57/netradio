@@ -8,7 +8,7 @@
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
       <div class="middle">
         <button id="controls" class="bouton17" v-on:click="playerStart()">
-          <img class="resize" src="../19314.png">
+          <img class="resize" src="../assets/play.png">
         </button>
       </div>
       <div class="right menu">

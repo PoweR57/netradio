@@ -64,7 +64,17 @@ export default {
         }
         `;
         console.log(json);
-        return ApiPHP().post('/signup', json)
+        return ApiPHP().post('/signup', json);
+    },
+    postPlaylist(title,description) {
+        var json = 
+        `
+        {
+            "title":"` + title + `",
+            "descr":"` + description + `"
+        }
+        `;
+        return ApiPHP().post('/playlist',json)
     },
     createPoadcast(titre, descr, uuid) {
         var json = `{
@@ -101,5 +111,13 @@ export default {
                 return xhr;
             }
         });
-    },
+        var json = 
+        `
+        {
+            "title":"` + title + `",
+            "liste_musique":"` + strList + `"
+        }
+        `;
+        return ApiPHP().post('/playlists', json)
+    }
 }

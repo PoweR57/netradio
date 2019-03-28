@@ -1,13 +1,13 @@
 /* eslint-disable */
 import Vue from 'vue'
 import Router from 'vue-router'
-import Planning from '@/components/Planning'
 import Acceuil from '@/components/Acceuil'
-import Podcasts from '@/components/Podcasts'
-import Panel from '@/components/Panel'
 import EditPlaylist from '@/components/EditPlaylist'
 import CreerPlaylist from '@/components/CreerPlaylist'
 import Login from '@/components/Login'
+import Panel from '@/components/Panel'
+import Planning from '@/components/Planning'
+import Podcasts from '@/components/Podcasts'
 import SignUp from '@/components/SignUp'
 import PoadcastUpload from '@/components/PoadcastUpload'
 
