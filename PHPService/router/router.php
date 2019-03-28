@@ -72,7 +72,7 @@ $app->post('/poadcast/file/:uuid', function ($request, $response) {
 
 $app->post('/signup', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createUser($json->login, $json->nom, $json->prenom, $json->mdp));
+    $response->send(createUser($json->email, $json->nom, $json->prenom, $json->mdp));
 });
 
 $app->start();

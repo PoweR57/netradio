@@ -13,10 +13,10 @@
       </div>
       <div class="right menu">
         <div class="item">
-          <a class="ui button">Log in</a>
+          <a class="ui button" v-on:click="goTo('login')">Log in</a>
         </div>
         <div class="item">
-          <a class="ui primary button">Sign Up</a>
+          <a class="ui primary button" v-on:click="goTo('signup')">Sign Up</a>
         </div>
       </div>
     </div>
@@ -72,6 +72,9 @@ export default {
           break;
         case "panel":
           $("#pan").addClass("active");
+          this.$router.push(page);
+        break;
+        default:
           this.$router.push(page);
         break;
       }

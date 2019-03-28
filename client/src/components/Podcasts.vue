@@ -49,11 +49,12 @@ export default {
             isCalling: false,
             live: "off air",
             broadcast: false,
+            tableOfUserPresent: []
         };
     },
     mounted() {
         socket.on("updateUser", function(table) {
-          console.log(table)
+            this.tableOfUserPresent = table
         });
     },
     created() {

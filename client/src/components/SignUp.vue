@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="ui form">
+    <form class="ui form" action="/#/login">
       <div class="field">
         <label>email</label>
         <input v-model="login" type="email" name="email" placeholder="Login" required>

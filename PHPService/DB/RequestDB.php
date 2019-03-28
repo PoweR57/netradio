@@ -142,12 +142,10 @@ function getUserByLogin($email,$mdp){
         $sql = "SELECT * FROM user where email=\"". $email ."\"";
         $result = $connection->query($sql);
         foreach ($result as $res) {
-            echo ($res['mdp']);
             if (password_verify($mdp, $res['mdp'])){
-                echo ("c'est génial");
+                $result = true;
             }
         }
-        $result = "";
     }catch (PDOException $e){
         echo $e;
     }
