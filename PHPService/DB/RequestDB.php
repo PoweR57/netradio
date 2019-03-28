@@ -175,3 +175,16 @@ function createPoadcast($titre,$descr, $uuid){
     }
    
 }
+
+function getPoadcast(){
+    $connection = connectionDataBase();
+    $result='';
+    try{
+        $sql = "SELECT * FROM poadcast";
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    }catch(PDOException $e){
+        echo $e;
+    }
+    return $result;
+}

@@ -2,13 +2,16 @@
 <template>
   <div class="ui large top fixed hidden menu">
     <div class="ui container">
-      <a class="item" id="acc" v-on:click="goTo('accueil')">Acceuil</a>
+      <a class="item" id="acc" v-on:click="goTo('accueil')">Accueil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
-      <a class="item" id="pod" v-on:click="goTo('podcasts')">Podcasts</a>
+      <a class="item" id="ctl" v-on:click="goTo('control')">Control</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
       <div class="middle">
-        <button id="controls" class="bouton17" v-on:click="playerStart()">
+        <button v-if ="play==true" id="controls" class="bouton17" v-on:click="playerStart()">
           <img class="resize" src="../assets/play.png">
+        </button>
+        <button v-else id="controls" class="bouton17" v-on:click="playerStart()">
+          <img class="resize" src="../assets/pause.png">
         </button>
       </div>
       <div class="right menu">
@@ -43,7 +46,8 @@ export default {
   data() {
     return {
       URL: "http://" + Config.service.music.URL + "/",
-      msgButton: "Click for play"
+      msgButton: "Click for play",
+      play: false
     };
   },
   created: function() {
@@ -54,7 +58,7 @@ export default {
   methods: {
     goTo(page) {
       $("#pla").removeClass("active");
-      $("#pod").removeClass("active");
+      $("#ctl").removeClass("active");
       $("#pan").removeClass("active");
       $("#acc").removeClass("active"); 
       switch (page) {
@@ -66,8 +70,8 @@ export default {
           $("#pla").addClass("active");
           this.$router.push(page);
           break;
-        case "podcasts":
-          $("#pod").addClass("active");
+        case "control":
+          $("#ctl").addClass("active");
           this.$router.push(page);
           break;
         case "panel":
@@ -110,13 +114,16 @@ export default {
         this.msgButton = "Click for Play";
         $("#update").empty();
         document.querySelector("#debug").value = "";
+        this.play=true;
       } else {
         this.msgButton = "Click for Pause";
         this.displayPlayer();
+        this.play=false;
 
         var audio = document.getElementById("player");
         if (audio.currentTime == 0) {
           audio.play();
+          
         }
 
         socket.on("update", function() {

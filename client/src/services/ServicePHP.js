@@ -119,5 +119,8 @@ export default {
         }
         `;
         return ApiPHP().post('/playlists', json)
-    }
+    },
+    getPoadcast() {
+        return ApiPHP().get('/poadcasts')
+    },
 }
