@@ -31,19 +31,20 @@ export default {
    async getUserByLogin(){
       const response = await ServicePHP.getUserByLogin(this.login,this.mdp);
       console.log(response);
+      /*
+      localStorage.token = response.token
+      */
     }
   },
   computed: {}
 };
 </script>
 <style scoped>
-  form{
-    width:60% ;
-    margin-left: auto;
-    margin-right: auto;
-
+  .form{
+    width:30% ;
+    margin: auto;
+    padding-top: 2%
   }
-
   label{
     font-size: medium;
   }

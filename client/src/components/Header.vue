@@ -1,6 +1,6 @@
 
 <template>
-  <div class="ui large top fixed hidden menu">
+  <div id="top" class="ui large fixed top hidden menu">
     <div class="ui container">
       <a class="item" id="acc" v-on:click="goTo('accueil')">Accueil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
@@ -42,7 +42,7 @@ var socket = null;
 var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou pas (false)
 
 export default {
-  name: "posts",
+  name: "appHeader",
   data() {
     return {
       URL: "http://" + Config.service.music.URL + "/",
@@ -50,7 +50,7 @@ export default {
       play: false
     };
   },
-  created: function() {
+  created() {
     audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
     socket = io(Config.service.music.URL);
     this.startStreamer();
@@ -154,10 +154,12 @@ export default {
   display: none;
 }
 .middle {
-  margin-left: 20%;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin: auto;
 }
+.active {
+  text-shadow: 0 0 10px white;
+}
+
 .bouton17 {
   width: 40px;
   height: 40px;
@@ -173,5 +175,14 @@ export default {
   height: 25px;
   margin: auto;
   margin-left: 3px;
+}
+#top {
+  background-image: url("../bckgrnd.jpg");
+  border-bottom: 2px solid black;
+  height: 100px;
+}
+#top a {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 120%
 }
 </style>

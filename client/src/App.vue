@@ -1,24 +1,29 @@
 <template>
   <div id="app">
     <Header/>
-    <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
+    <router-view id="content"/>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import Header from './components/Header'
+import Footer from './components/Footer'
 export default {
   name: 'App',
   components: {
-    'Header': Header
+    Header: Header,
+    Footer: Footer
   }
 }
 </script>
 
 <style>
 #app {
-    height: 100%;
-    margin: 60px;
+  height: 100%;
+  margin:0;
+}
+#content {
+  margin-top: 100px;
 }
 </style>
