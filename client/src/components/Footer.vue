@@ -151,6 +151,9 @@ export default {
     justify-content: center;
     align-items: center;
 }
+.playButton:focus {
+    outline: none;
+}
 .circle {
     border: 4px solid white;
     border-radius: 70px;
