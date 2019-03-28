@@ -7,7 +7,7 @@
       <a class="item" id="pod" v-on:click="goTo('podcasts')">Podcasts</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
       <div class="middle">
-        <button v-if ="play==false" id="controls" class="bouton17" v-on:click="playerStart()">
+        <button v-if ="play==true" id="controls" class="bouton17" v-on:click="playerStart()">
           <img class="resize" src="../assets/play.png">
         </button>
         <button v-else id="controls" class="bouton17" v-on:click="playerStart()">

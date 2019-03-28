@@ -75,4 +75,10 @@ $app->post('/signup', function ($request, $response) {
     $response->send(createUser($json->login, $json->nom, $json->prenom, $json->mdp));
 });
 
+$app->get('/poadcasts', function ($request, $response) {
+    $json = json_decode($request['raw']);
+    $response->send(getPoadcast());
+});
+
+
 $app->start();

@@ -26,6 +26,27 @@
         </div>
       </div>
     </div>
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Name">James</td>
+          <td class="collapsing">
+            <div class="ui fitted slider checkbox">
+              <input type="checkbox">
+              <label></label>
+            </div>
+            <i class="microphone icon"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>{{this.poadcasts[0]}}</p>
   </div>
 </template>
 
@@ -44,26 +65,33 @@ var socket = null;
 var presenterMedia = null;
 
 export default {
-    name: "controls",
-    data() {
-        return {
-            isCalling: false,
-            live: "off air"
-        };
-    },
-    created: function() {
-        socket = io(Config.service.music.URL);
-        presenterMedia = new ScarletsMediaPresenter(
-            {
-                audio: {
-                    channelCount: 1,
-                    echoCancellation: false
-                }
-            },
-            100
-        );
-},
+  name: "controls",
+  data() {
+    return {
+      isCalling: false,
+      live: "off air",
+      poadcasts: []
+    };
+  },
+  created: function() {
+    socket = io(Config.service.music.URL);
+    presenterMedia = new ScarletsMediaPresenter(
+      {
+        audio: {
+          channelCount: 1,
+          echoCancellation: false
+        }
+      },
+      100
+    );
+    this.getPoadcast();
+  },
   methods: {
+    async getPoadcast() {
+      const response = await ServicePHP.getPoadcast();
+      this.poadcasts = response.data;
+      console.log(this.poadcasts);
+    },
     startreccord() {
       if (this.isCalling == true) {
         recorder
