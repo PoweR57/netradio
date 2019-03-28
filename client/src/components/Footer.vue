@@ -30,14 +30,14 @@
 
 <script>
 export default {
-  name: "foot",
-  data() {
-    return {};
+  name: 'foot',
+  data () {
+    return {}
   },
   methods: {
-    drive() {
-      $("#listen").addClass("play");
-      $("#listen").removeClass("pause");
+    drive () {
+      // $('#listen').addClass('play')
+      // $('#listen').removeClass('pause')
     }
   }
 }
