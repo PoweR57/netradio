@@ -1,5 +1,4 @@
 const bodyParser = require('body-parser')
-const cors = require('cors')
 const morgan = require('morgan')
 const express = require('express')
 const app = express()
@@ -8,21 +7,20 @@ const io = require('socket.io')(http)
 const fs = require('fs')
 const mp3Duration = require('mp3-duration')
 const Timer = require('tiny-timer')
-const mm = require('musicmetadata');
-const util = require('util')
 
 app.use(morgan('combined'))
 app.use(bodyParser.json())
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-  });
+});
 
 // Every new streamer must have the buffer header from the presenter
 var bufferHeader = null;
 var saveStat = "stopped";
 // Event listener
+var table = [];
 io.on('connection', function (socket) {
     /* Presenter */
     socket.on('bufferHeader', function (packet) {
@@ -34,6 +32,25 @@ io.on('connection', function (socket) {
     // Broadcast the received buffer
     socket.on('stream', function (packet) {
         socket.broadcast.emit('stream', packet);
+    });
+
+    // Broadcast the received buffer
+    socket.on('UserVoice', function (id) {
+        var include = false;
+        for (let index = 0; index < table.length; index++) {
+            if (table[index].user_id == id) {
+                include = true;
+                table[index].socket_id = socket.id;
+            }         
+        }
+        if (include == false) {
+            var user = {
+                socket_id : socket.id,
+                user_id : id
+            }
+            table.push(user);
+        }
+        socket.broadcast.emit('updateUser',table)
     });
 
     // Send buffer header to new user
@@ -93,31 +110,9 @@ app.get('/', (req, res) => {
     }
 })
 
-// Get Array : Musique en cours
-app.get('/LoadingFiles', (req, res) => {
-    var path = "D:/Musique/Radio";
-    var albumFolder = fs.readdirSync(path)
-    albumFolder.forEach((album) => {
-        var musicFolder = fs.readdirSync(path + '/' + album)
-        musicFolder.forEach((music) => {
-            console.log(path + '/' + album + '/' + music)
-            // mp3Duration(path + '/' + album + '/' + music, function (err, duration) {
-            //     if (err) return console.log(err.message);
-            //     var nb = Math.round(duration % 60)
-            //     if (nb < 10) {
-            //         nb = "0" + nb
-            //     }
-            //     var time = Math.round(duration / 60) + ":" + nb;
-            //     console.log(time)
-            // });
-
-            // mm(fs.createReadStream(path + '/' + album + '/' + music), function (err, metadata) {
-            //     metadata.picture = "";
-            //     console.log(metadata)
-            // });
-        })
-    })
-    res.send({ list: "metadata" })
+// Get Array : Invités log
+app.get('/Invite', (req, res) => {
+    res.send({ invites: table })
 })
 
 // Get Array : Musique en cours

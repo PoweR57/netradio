@@ -2,7 +2,7 @@
 <template>
   <div class="ui large top fixed hidden menu">
     <div class="ui container">
-      <a class="item" id="acc" v-on:click="goTo('acceuil')">Acceuil</a>
+      <a class="item" id="acc" v-on:click="goTo('accueil')">Acceuil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
       <a class="item" id="pod" v-on:click="goTo('podcasts')">Podcasts</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
@@ -53,32 +53,24 @@ export default {
   },
   methods: {
     goTo(page) {
+      $("#pla").removeClass("active");
+      $("#pod").removeClass("active");
+      $("#pan").removeClass("active");
+      $("#acc").removeClass("active"); 
       switch (page) {
-        case "acceuil":
+        case "accueil":
           $("#acc").addClass("active");
-          $("#pla").removeClass("active");
-          $("#pod").removeClass("active");
-          $("#pan").removeClass("active");
           this.$router.push(page);
           break;
         case "planning":
-          $("#acc").removeClass("active");
           $("#pla").addClass("active");
-          $("#pod").removeClass("active");
-          $("#pan").removeClass("active");
           this.$router.push(page);
           break;
         case "podcasts":
-          $("#acc").removeClass("active");
-          $("#pla").removeClass("active");
           $("#pod").addClass("active");
-          $("#pan").removeClass("active");
           this.$router.push(page);
           break;
         case "panel":
-          $("#acc").removeClass("active");
-          $("#pla").removeClass("active");
-          $("#pod").removeClass("active");
           $("#pan").addClass("active");
           this.$router.push(page);
         break;
