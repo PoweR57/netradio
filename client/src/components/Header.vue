@@ -7,12 +7,6 @@
             <a class="item" id="ctl" v-on:click="goTo('control')">Control</a>
             <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
             <div class="middle">
-                <button v-if="play==true" id="controls" class="bouton17" v-on:click="playerStart()">
-                    <img class="resize" src="../assets/play.png">
-                </button>
-                <button v-else id="controls" class="bouton17" v-on:click="playerStart()">
-                    <img class="resize" src="../assets/pause.png">
-                </button>
                 <img class="logo" src="../logo.png">
             </div>
       <div class="right menu">
@@ -52,18 +46,6 @@ var playerStatus = false; // L'utilisateur souhaite écouter la radio (true) ou 
 
 export default {
     name: "appHeader",
-    data() {
-        return {
-            URL: "http://" + Config.service.music.URL + "/",
-            msgButton: "Click for play",
-            play: false
-        };
-    },
-    created() {
-        audioStreamer = new ScarletsAudioBufferStreamer(3, 100);
-        socket = io(Config.service.music.URL);
-        this.startStreamer();
-    },
     mounted() {
         $("#acc").removeClass("active");
         $("#pla").removeClass("active");
@@ -111,66 +93,6 @@ export default {
                     this.$router.push(page);
                     break;
             }
-        },
-        displayPlayer() {
-            document.getElementById("update").innerHTML =
-                '<audio id="player" src="http://' +
-                Config.service.music.URL +
-                '" controls autoplay></audio>';
-        },
-        startStreamer() {
-            audioStreamer.playStream();
-
-            // Buffer header must be received first
-            socket.on("bufferHeader", function(packet) {
-                audioStreamer.mimeType = packet.mimeType;
-                audioStreamer.setBufferHeader(packet.data);
-            });
-
-            // Receive buffer and play it
-            socket.on("stream", function(packet) {
-                if (playerStatus == true) {
-                    document.querySelector("#debug").value =
-                        "Buffer received: " + packet[0].byteLength + "bytes";
-                    audioStreamer.realtimeBufferPlay(packet);
-                }
-            });
-            // Request buffer header
-            socket.emit("requestBufferHeader", "");
-        },
-        playerStart() {
-            if (playerStatus) {
-                this.msgButton = "Click for Play";
-                $("#update").empty();
-                document.querySelector("#debug").value = "";
-                this.play = true;
-            } else {
-                this.msgButton = "Click for Pause";
-                this.displayPlayer();
-                this.play = false;
-
-                var audio = document.getElementById("player");
-                if (audio.currentTime == 0) {
-                    audio.play();
-                }
-
-                socket.on("update", function() {
-                    if (playerStatus == true) {
-                        var audio = document.getElementById("player");
-                        audio.src = "http://" + Config.service.music.URL;
-                        audio.play();
-                    }
-                });
-
-                socket.on("stop", function() {
-                    if (playerStatus == true) {
-                        var audio = document.getElementById("player");
-                        audio.setAttribute("src", " "); //change the source
-                        audio.load(); //change the source
-                    }
-                });
-            }
-            playerStatus = !playerStatus;
         }
     }
 };
