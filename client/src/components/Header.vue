@@ -1,6 +1,6 @@
 
 <template>
-  <div id="header" class="ui large fixed top hidden menu">
+  <div id="top" class="ui large fixed top hidden menu">
     <div class="ui container">
       <a class="item" id="acc" v-on:click="goTo('/')">Acceuil</a>
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
@@ -208,12 +208,12 @@ export default {
   margin: auto;
   margin-left: 3px;
 }
-#header {
+#top {
   background-image: url("../bckgrnd.jpg");
   border-bottom: 2px solid black;
   height: 100px;
 }
-#header a {
+#top a {
   color: rgba(255, 255, 255, 0.9);
   font-size: 120%
 }
