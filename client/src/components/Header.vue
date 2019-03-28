@@ -13,6 +13,7 @@
                 <button v-else id="controls" class="bouton17" v-on:click="playerStart()">
                     <img class="resize" src="../assets/pause.png">
                 </button>
+                <img class="logo" src="../logo.png">
             </div>
       <div class="right menu">
         <div class="item">
