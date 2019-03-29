@@ -112,6 +112,7 @@ export default {
                 }
 
                 socket.on("update", function() {
+                    console.log("update");
                     if (playerStatus == true) {
                         var audio = document.getElementById("player");
                         audio.src = "http://" + Config.service.music.URL;

@@ -15,7 +15,7 @@
                     Insérer le fichier
                 </label>
                 <input ref="myFile" type="file" id="file" style="display:none">
-                <button class="ui button" @click="createPoadcast()">Valider</button>
+                <button class="ui button" @click="createPodcast()">Valider</button>
             </div>
         </div>
     </div>
@@ -34,13 +34,13 @@ export default {
         };
     },
     methods: {
-        async createPoadcast() {
-            var uuid = uuidv1();
-            await ServicePHP.createPoadcast(this.titre, this.descr, uuid);
+        async createPodcast() {
+            var uuid ="qfsfsdfsdmfk,ms"
+            await ServicePHP.createPodcast(this.titre, this.descr, uuid);
             var file_data = document.querySelector("#file").files[0];
             var form_data = new FormData();
             form_data.append("file", file_data);
-            const response = await ServicePHP.sendPoadcast(form_data, uuid);
+            const response = await ServicePHP.sendPodcast(form_data, uuid);
         }
     },
     computed: {}
