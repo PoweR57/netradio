@@ -12,7 +12,7 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "*");
     next();
 });
 
@@ -34,7 +34,15 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('stream', packet);
     });
 
-    // Broadcast the received buffer
+    socket.on('CutUserVoice', function (id) {
+        for (let index = 0; index < table.length; index++) {
+            console.log(table[index].user_id +" "+id)
+            if (table[index].user_id == id) {
+                table[index].listen = !table[index].listen;
+            } 
+        }
+    });
+
     socket.on('UserVoice', function (id) {
         var include = false;
         for (let index = 0; index < table.length; index++) {
@@ -45,11 +53,14 @@ io.on('connection', function (socket) {
         }
         if (include == false) {
             var user = {
+                name : "customname",
                 socket_id : socket.id,
-                user_id : id
+                user_id : id,
+                listen : false
             }
             table.push(user);
         }
+        console.log(table)
         socket.broadcast.emit('updateUser',table)
     });
 
@@ -114,7 +125,6 @@ app.get('/', (req, res) => {
 app.get('/Invite', (req, res) => {
     res.send({ invites: table })
 })
-
 // Get Array : Musique en cours
 app.get('/Playing', (req, res) => {
     res.send({ isPlaying: musicIsPlay })

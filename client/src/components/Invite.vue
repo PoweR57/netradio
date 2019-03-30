@@ -43,7 +43,7 @@ export default {
             broadcast: false,
             isCalling: false,
             live: "off air",
-            id: "sdgihodfiihodfihodgshio"
+            id: Math.floor(Math.random() * Math.floor(999999999999))
         };
     },
     created() {

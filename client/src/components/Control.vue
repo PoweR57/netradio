@@ -22,6 +22,7 @@
                         <button class="ui basic green button" v-on:click="startPresenter()">live</button>
                         <button class="ui basic red button" v-on:click="stopPresenter()">stop</button>
                         <button class="ui basic red button" v-on:click="stopMusic()">stop music</button>
+                        <div id="audioSave"></div>
                     </div>
                 </div>
             </div>
@@ -30,15 +31,17 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Speak or Not</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td data-label="Name">James</td>
+                <tr v-for="(man,id) in tableOfUserPresent" :key="id">
+                    <td data-label="Name">{{man.name}}</td>
+                    <td data-label="Name">{{man.listen}}</td>
                     <td class="collapsing">
                         <div class="ui fitted slider checkbox">
-                            <input type="checkbox">
+                            <input type="checkbox" @click="changeVoice(id)">
                             <label></label>
                         </div>
                         <i class="microphone icon"></i>
@@ -52,6 +55,7 @@
 <script>
 /* eslint-disable */
 import ServicePHP from "@/services/ServicePHP";
+import ServiceMusic from "@/services/ServiceMusic";
 import Config from "@/config/config";
 
 const MicRecorder = require("mic-recorder-to-mp3");
@@ -69,12 +73,13 @@ export default {
             isCalling: false,
             live: "off air",
             broadcast: false,
-            tableOfUserPresent: []
+            tableOfUserPresent: [],
         };
     },
     mounted() {
+        var getClass = this
         socket.on("updateUser", function(table) {
-            this.tableOfUserPresent = table;
+            getClass.change(table)
         });
     },
     created() {
@@ -88,8 +93,27 @@ export default {
             },
             100
         );
+        this.getInvite()
     },
     methods: {
+        change(table) {
+            var getClass = this
+            this.tableOfUserPresent = [];
+            table.forEach(element => {
+                element.listen = false
+                getClass.tableOfUserPresent.push(element)
+            });
+        },
+        async getInvite() {
+            const response = await ServiceMusic.getInvites();
+            this.tableOfUserPresent = response.data.invites
+        },
+        changeVoice(id) {
+            this.tableOfUserPresent[id].listen = !this.tableOfUserPresent[id].listen
+            if (this.tableOfUserPresent[id].listen) {
+            }
+            socket.emit('CutUserVoice',this.tableOfUserPresent[id].user_id)
+        },
         startreccord() {
             if (this.isCalling == true) {
                 recorder
@@ -111,15 +135,14 @@ export default {
                     });
                     const player = new Audio(URL.createObjectURL(file));
                     player.controls = true;
-                    $("#audio").empty();
-                    document.querySelector("#audio").appendChild(player);
+                    $("#audioSave").empty();
+                    document.querySelector("#audioSave").appendChild(player);
                 })
                 .catch(e => {
                     alert("We could not retrieve your message");
                     console.log(e);
                 });
         },
-
         startPresenter() {
             // Set latency to 100ms (Equal with streamer)
 
@@ -140,6 +163,7 @@ export default {
                 socket.emit("stream", streamData);
             };
 
+            this.startreccord();
             presenterMedia.startRecording();
             this.live = "on air";
             this.broadcast = true;
@@ -148,6 +172,7 @@ export default {
             presenterMedia.stopRecording();
             this.live = "off air";
             this.broadcast = false;
+            this.stopreccord();
         },
         stopMusic() {
             socket.emit("stop");
