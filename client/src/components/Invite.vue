@@ -60,9 +60,10 @@ export default {
         socket.emit("UserVoice", this.id);
     },
     mounted() {
+        var getClass = this
         socket.on("SpeakChange", function(id) {
-            if (id == this.id) {
-                this.ChangeVoice();
+            if (getClass.id == id) {
+                getClass.ChangeVoice();
             }
         });
     },
