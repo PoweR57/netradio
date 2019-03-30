@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
         for (let index = 0; index < table.length; index++) {
             if (table[index].user_id == id) {
                 table[index].listen = !table[index].listen;
-                socket.broadcast.emit('SpeakChange', id);
+                socket.broadcast.emit('SpeakChange', table[index].user_id);
             }
         }
     });
