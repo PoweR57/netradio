@@ -159,16 +159,16 @@ export default {
           "Buffer sent: " + streamData[0].byteLength + "bytes";
         socket.emit("stream", streamData);
       };
-    //   this.startreccord();
       presenterMedia.startRecording();
+      this.startreccord();
       this.live = "on air";
       this.broadcast = true;
     },
     stopPresenter() {
       presenterMedia.stopRecording();
+      this.stopreccord();
       this.live = "off air";
       this.broadcast = false;
-    //   this.stopreccord();
     },
     stopMusic() {
       socket.emit("stop");

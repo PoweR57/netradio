@@ -36,10 +36,10 @@ io.on('connection', function (socket) {
 
     socket.on('CutUserVoice', function (id) {
         for (let index = 0; index < table.length; index++) {
-            console.log(table[index].user_id +" "+id)
             if (table[index].user_id == id) {
                 table[index].listen = !table[index].listen;
-            } 
+                socket.broadcast.emit('SpeakChange', id);
+            }
         }
     });
 

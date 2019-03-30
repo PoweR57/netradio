@@ -60,14 +60,21 @@ export default {
         socket.emit("UserVoice", this.id);
     },
     mounted() {
-        socket.on("startUserVoice", function() {
-            startPresenter();
-        });
-        socket.on("stopUserVoice", function() {
-            stopPresenter();
+        socket.on("SpeakChange", function(id) {
+            if (id == this.id) {
+                this.ChangeVoice();
+            }
         });
     },
     methods: {
+        ChangeVoice() {
+            this.isCalling = !this.isCalling;
+            if (this.isCalling) {
+                this.startPresenter();
+            } else {
+                this.stopPresenter();
+            }
+        },
         startPresenter() {
             // Set latency to 100ms (Equal with streamer)
 
