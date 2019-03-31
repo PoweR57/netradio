@@ -60,7 +60,6 @@ io.on('connection', function (socket) {
             }
             table.push(user);
         }
-        console.log(table)
         socket.broadcast.emit('updateUser',table)
     });
 
@@ -91,6 +90,15 @@ io.on('connection', function (socket) {
         resetParams()
         timer.stop()
         socket.broadcast.emit('stop', '')
+    });
+
+    socket.on('disconnect', function () {
+        for (let index = 0; index < table.length; index++) {
+            if (table[index].socket_id == socket.id) {
+                table.splice(index,1)
+                socket.broadcast.emit('updateUser',table)
+            }         
+        }
     });
 
     // Quand on arrete le serveur.
