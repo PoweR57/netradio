@@ -41,10 +41,11 @@
           <td data-label="Name">{{man.listen}}</td>
           <td class="collapsing">
             <div class="ui fitted slider checkbox">
-              <input type="checkbox" @click="changeVoice(id)">
+              <input type="checkbox" @click="changeVoice(id)" v-model="invite">
               <label></label>
             </div>
-            <i class="microphone icon"></i>
+            <i v-if="invite" class="microphone icon"></i>
+            <i v-else class="microphone slash icon"></i>
           </td>
         </tr>
       </tbody>
@@ -72,7 +73,8 @@ export default {
     return {
       live: "off air",
       broadcast: false,
-      tableOfUserPresent: []
+      tableOfUserPresent: [],
+      invite: false
     };
   },
   mounted() {
