@@ -14,6 +14,7 @@
                 <div class="blanc"></div>
                 {{this.live}}
               </div>
+              <div id="audioSave"></div>
             </div>
           </div>
         </div>
@@ -22,7 +23,7 @@
             <button class="ui basic green button" v-on:click="startPresenter()">live</button>
             <button class="ui basic red button" v-on:click="stopPresenter()">stop</button>
             <button class="ui basic red button" v-on:click="stopMusic()">stop music</button>
-            <div id="audioSave"></div>
+            
           </div>
         </div>
       </div>
@@ -32,20 +33,20 @@
         <tr>
           <th>Name</th>
           <th>Speak or Not</th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(man,id) in tableOfUserPresent" :key="id">
           <td data-label="Name">{{man.name}}</td>
-          <td data-label="Name">{{man.listen}}</td>
-          <td class="collapsing">
+          <!-- <td data-label="Name">{{man.listen}}</td> -->
+          <td >
             <div class="ui fitted slider checkbox">
               <input v-if="man.listen" type="checkbox" @click="changeVoice(id)" checked>
               <input v-else type="checkbox" @click="changeVoice(id)">
               <label></label>
             </div>
-            <i class="microphone icon"></i>
+            <i v-if="invite" class="microphone icon"></i>
+            <i v-else class="microphone slash icon"></i>
           </td>
         </tr>
       </tbody>
@@ -73,7 +74,8 @@ export default {
     return {
       live: "off air",
       broadcast: false,
-      tableOfUserPresent: []
+      tableOfUserPresent: [],
+      invite: false
     };
   },
   mounted() {
@@ -226,5 +228,10 @@ export default {
   100% {
     background: white;
   }
+}
+
+#audioSave{
+  text-align: center;
+  padding-top: 2%;
 }
 </style>

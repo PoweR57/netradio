@@ -163,13 +163,13 @@ function getUserByLogin($email, $mdp)
     try {
         $sql = "SELECT * FROM user where email=\"" . $email . "\"";
         $result = $connection->query($sql);
-        foreach ($result as $res) {
-            if (password_verify($mdp, $res['mdp'])) {
-                $token = bin2hex(random_bytes(50));
-                $result = '{ result: true, token:"' . $token . '"}';
-            }
-        }
-    } catch (PDOException $e) {
+        // foreach ($result as $res) {
+        //     if (password_verify($mdp, $res['mdp'])){
+        //         $token = bin2hex(random_bytes(50));
+        //         $result = '{ result: true, token:"'.$token.'"}';
+        //     }
+        // }
+    }catch (PDOException $e){
         echo $e;
     }
     return $result;
@@ -180,7 +180,7 @@ function createUser($email, $nom, $prenom, $mdp)
     $connection = connectionDataBase();
     try {
         $mdp = password_hash($mdp, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO user (email,nom,prenom,mdp) values ('$email','$nom','$prenom','$mdp')";
+        $sql = "INSERT INTO user (email,nom,prenom,mdp,token) values ('$email','$nom','$prenom','$mdp')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;
