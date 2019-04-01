@@ -6,7 +6,7 @@
         },
         "dataBase": {
             "_comment": "Service d'authentification & gestion des musiques en BDD. PORT 3000",
-            "URL": "desiit.serveo.net"
+            "URL": "localhost:3000"
         }
     }
 }
