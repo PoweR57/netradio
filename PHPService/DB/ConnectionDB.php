@@ -21,7 +21,14 @@ function connectionDataBase()
 function resetDataBase($connection)
 {
     try {
-        $sql = "DROP TABLE musique;DROP TABLE user;DROP TABLE playlist;DROP TABLE album;";
+        $sql = "
+        DROP TABLE musique;
+        DROP TABLE user;
+        DROP TABLE playlist;
+        DROP TABLE podcast;
+        DROP TABLE album;
+        DROP TABLE planning;
+        ";
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
@@ -73,8 +80,9 @@ function createDataBase($connection)
         $sql = "CREATE TABLE planning (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             descr VARCHAR(3000) NOT NULL,
-            h_debut VARCHAR(3000) NOT NULL,
-            h_fin VARCHAR(3000) NOT NULL
+            date_debut DATETIME NOT NULL,
+            date_fin DATETIME NOT NULL,
+            id_animateur VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
     } catch (PDOException $e) {

@@ -194,11 +194,6 @@ import Config from "@/config/config";
 
 var socket = null;
 
-$(document).ready(function() {
-    $(".ui.accordion").accordion();
-    $(".ui.dropdown").dropdown();
-});
-
 export default {
     name: "playlists",
     components: {
@@ -223,6 +218,10 @@ export default {
         socket = io(Config.service.music.URL);
     },
     mounted() {
+        $(document).ready(function() {
+            $(".ui.accordion").accordion();
+            $(".ui.dropdown").dropdown();
+        });
         var getClass = this;
         socket.on("update", function() {
             console.log("update");

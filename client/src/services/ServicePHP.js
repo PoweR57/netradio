@@ -27,27 +27,31 @@ export default {
     getPlaylists() {
         return ApiPHP().get('/playlists')
     },
+    getPlaylistById(id) {
+        return ApiPHP().get('/playlists/' + id)
+    },
     postPlaylist(title, description) {
-        var json =`{
+        var json = `{
             "title":"` + title + `",
             "descr":"` + description + `"
         }`;
         return ApiPHP().post('/playlist', json)
     },
-    savePlaylist(playlist, title) {
+    savePlaylist(playlist, id) {
         var strList = ""
         playlist.forEach(element => {
-            if (strList == "") {
-                strList = element.id
-            } else {
-                strList += ',' + element.id
-            }
+            if (element) 
+                if (strList == "") {
+                    strList = element.id
+                } else {
+                    strList += ',' + element.id
+                }
         });
-        var json =`{
-            "title":"` + title + `",
-            "liste_musique":"` + strList + `"
+        var json = `{
+            "id":` + id + `,
+            "liste":"` + strList + `"
         }`;
-        return ApiPHP().post('/playlists', json)
+        ApiPHP().put('/playlists', json)
     },
     getUserByLogin(login, mdp) {
         var json = '{"email":"' + login + '","mdp":"' + mdp + '"}';
@@ -66,15 +70,15 @@ export default {
         console.log(json);
         return ApiPHP().post('/signup', json);
     },
-    postPlaylist(title,description) {
-        var json = 
-        `
+    postPlaylist(title, description) {
+        var json =
+            `
         {
             "title":"` + title + `",
             "descr":"` + description + `"
         }
         `;
-        return ApiPHP().post('/playlist',json)
+        return ApiPHP().post('/playlist', json)
     },
     createPodcast(titre, descr, uuid) {
         var json = `{
@@ -86,25 +90,25 @@ export default {
     },
     sendPodcast(file, uuid) {
         $.ajax({
-            url: "http://" + Config.service.dataBase.URL + "/podcast/file/"+uuid,
+            url: "http://" + Config.service.dataBase.URL + "/podcast/file/" + uuid,
             filetype: "audio/mp3",
             cache: false,
             processData: false,
             data: file,
             contentType: false,
             type: "post",
-            success: function(php_script_response) {
+            success: function (php_script_response) {
                 alert(php_script_response); // display response from the PHP script, if any
             },
-            xhr: function() {
+            xhr: function () {
                 // get the native XmlHttpRequest object
                 var xhr = $.ajaxSettings.xhr();
                 // set the onprogress event handler
-                xhr.upload.onprogress = function(evt) {
+                xhr.upload.onprogress = function (evt) {
                     console.log("progress", (evt.loaded / evt.total) * 100);
                 };
                 // set the onload event handler
-                xhr.upload.onload = function() {
+                xhr.upload.onload = function () {
                     console.log("DONE!");
                 };
                 // return the customized object
