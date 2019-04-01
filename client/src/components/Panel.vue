@@ -29,8 +29,10 @@
                                 </button>
                                 <div class="or" data-text="⏱"></div>
                                 <button class="ui orange button">{{element.duree}}</button>
-                                <div class="or" data-text="🎵"></div>
-                                <button class="ui yellow button">{{element.titre}}</button>
+                                <div v-if="element.artist != null" class="or" data-text="🎵"></div>
+                                <div v-else class="or" data-text="🎤"></div>
+                                <button v-if="element.artist != null" class="ui yellow button">{{element.titre}}</button>
+                                <button v-else class="ui blue button">{{element.titre}}</button>
                             </div>
                         </td>
                     </tr>
@@ -42,8 +44,10 @@
                             </button>
                             <div class="or" data-text="⏱"></div>
                             <button class="ui orange button">{{MusicRuning.duree}}</button>
-                            <div class="or" data-text="🎵"></div>
-                            <button class="ui yellow button">{{MusicRuning.titre}}</button>
+                            <div v-if="MusicRuning.artist != null" class="or" data-text="🎵"></div>
+                            <div v-else class="or" data-text="🎤"></div>
+                            <button v-if="MusicRuning.artist != null" class="ui yellow button">{{MusicRuning.titre}}</button>
+                            <button v-else class="ui blue button">{{MusicRuning.titre}}</button>
                         </div>
                         <div v-else>...</div>
                     </h2>
@@ -83,73 +87,6 @@
                     {{album.titre}}
                 </div>
                 <div class="content">
-
-                        <draggable
-                            class="dragArea list-group"
-                            :list="listOfMusic"
-                            tag="tbody"
-                            :group="{ name: 'people', pull: 'clone', put: false }"
-                        >
-                            <tr
-                                class="list-group-item"
-                                v-for="(element,idx) in listOfMusic"
-                                :key="idx"
-                            >
-                                <td>
-                                    <div class="ui buttons">
-                                        <button
-                                            class="ui negative icon button"
-                                            @click="addToArray(idx)"
-                                        >
-                                            <i class="arrow left icon"></i>
-                                        </button>
-                                        <div class="or" data-text="⏱"></div>
-                                        <button class="ui orange button">{{element.duree}}</button>
-                                        <div class="or" data-text="🎵"></div>
-                                        <button class="ui yellow button">{{element.titre}}</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </draggable>
-                </div>
-            </div>
-        </div>
-        <div
-            class="ui styled accordion segment"
-            id="right-component"
-            v-else-if="filter == 'podcast'"
-        >
-            <div style="margin-bottom: 14px; text-align: center;" slot="header">
-                <div class="ui yellow floating labeled icon dropdown button">
-                    <i class="filter icon"></i>
-                    <span class="text" id="header">Albums</span>
-                    <div class="menu">
-                        <div class="header">
-                            <i class="tags icon"></i>
-                            Select your tag
-                        </div>
-                        <div class="divider"></div>
-                        <div class="item" @click="changeFilter('album')">
-                            <i class="user outline icon"></i>
-                            Albums
-                        </div>
-                        <div class="item" @click="changeFilter('playlist')">
-                            <i class="folder icon"></i>
-                            Playlist
-                        </div>
-                        <div class="item" @click="changeFilter('podcast')">
-                            <i class="microphone icon"></i>
-                            Podcast
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-for="(podcast,idl) in podcasts" :key="idl">
-                <div class="title" @click="downloadMusicByAlbum(idl)">
-                    <i class="dropdown icon"></i>
-                    {{podcast.titre}}
-                </div>
-                <div class="content">
                     <table class="ui striped table">
                         <thead>
                             <tr>
@@ -186,6 +123,61 @@
                     </table>
                 </div>
             </div>
+        </div>
+        <div class="ui styled accordion segment" id="right-component" v-else-if="filter == 'podcast'">
+            <div style="margin-bottom: 14px; text-align: center;" slot="header">
+                <div class="ui yellow floating labeled icon dropdown button">
+                    <i class="filter icon"></i>
+                    <span class="text" id="header">Albums</span>
+                    <div class="menu">
+                        <div class="header">
+                            <i class="tags icon"></i>
+                            Select your tag
+                        </div>
+                        <div class="divider"></div>
+                        <div class="item" @click="changeFilter('album')">
+                            <i class="user outline icon"></i>
+                            Albums
+                        </div>
+                        <div class="item" @click="changeFilter('playlist')">
+                            <i class="folder icon"></i>
+                            Playlist
+                        </div>
+                        <div class="item" @click="changeFilter('podcast')">
+                            <i class="microphone icon"></i>
+                            Podcast
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="ui striped table">
+                <draggable
+                    group="people"
+                    draggable=".dragMe"
+                    tag="tbody"
+                    v-model="listOfMusicWhoWaitForPlaying"
+                    @start="isDragging = true"
+                    @end="isDragging = false"
+                >
+                    <tr
+                        class="list-group-item dragMe"
+                        v-for="(element,idx) in podcasts"
+                        :key="idx"
+                    >
+                        <td id="padding">
+                            <div class="ui buttons">
+                                <button class="ui negative button" @click="addToArrayElement(element)">
+                                    <i class="arrow left icon"></i>
+                                </button>
+                                <div class="or" data-text="⏱"></div>
+                                <button class="ui orange button">{{element.duree}}</button>
+                                <div class="or" data-text="🎤"></div>
+                                <button class="ui blue button">{{element.titre}}</button>
+                            </div>
+                        </td>
+                    </tr>
+                </draggable>
+            </table>
         </div>
         <div class="ui styled accordion segment" id="right-component" v-else>
             <div style="margin-bottom: 14px; text-align: center;" slot="header">
