@@ -188,12 +188,12 @@ function createUser($email, $nom, $prenom, $mdp)
 
 }
 
-function createPodcast($titre, $descr, $uuid)
+function createPodcast($titre, $descr, $uuid, $duree)
 {
     $connection = connectionDataBase();
     $filepath = "D:/Musique/Podcast/" . $uuid . ".mp3";
     try {
-        $sql = "INSERT INTO podcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
+        $sql = "INSERT INTO podcast (titre,descr,filepath, duree) values ('$titre','$descr','$filepath','$duree')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;

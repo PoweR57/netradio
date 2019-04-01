@@ -18,6 +18,7 @@
                 <button class="ui button" @click="createPodcast()">Valider</button>
             </div>
         </div>
+        <audio id="audio_2"></audio>
     </div>
 </template>
 
@@ -35,12 +36,22 @@ export default {
     },
     methods: {
         async createPodcast() {
-            var uuid ="qfsfsdfsdmfk,ms"
-            await ServicePHP.createPodcast(this.titre, this.descr, uuid);
+            var getClass = this
+            var uuid = "qfsfsdfsdmfk,ms";
             var file_data = document.querySelector("#file").files[0];
-            var form_data = new FormData();
-            form_data.append("file", file_data);
-            const response = await ServicePHP.sendPodcast(form_data, uuid);
+
+            var objectUrl;
+
+            $("#audio_2").on("canplaythrough", async function(e) {
+                var seconds = e.currentTarget.duration;
+                var temps = Math.round(seconds / 60) + ":" + Math.round(seconds % 60);
+                ServicePHP.createPodcast(getClass.titre, getClass.descr, uuid, temps);
+                var form_data = new FormData();
+                form_data.append("file", file_data);
+                const response = await ServicePHP.sendPodcast(form_data, uuid);
+            });
+            var objectUrl = URL.createObjectURL(file_data);
+            $("#audio_2").prop("src", objectUrl);
         }
     },
     computed: {}
@@ -55,5 +66,9 @@ export default {
 
 label {
     font-size: medium;
+}
+
+#audio_2 {
+    display: none;
 }
 </style>

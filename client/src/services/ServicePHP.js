@@ -80,10 +80,11 @@ export default {
         `;
         return ApiPHP().post('/playlist', json)
     },
-    createPodcast(titre, descr, uuid) {
+    createPodcast(titre, descr, uuid, temps) {
         var json = `{
             "titre":"` + titre + `",
             "uuid":"` + uuid + `",
+            "duree":"` + temps + `",
             "descr":"` + descr + `"
         }`;
         return ApiPHP().post('/podcast', json)

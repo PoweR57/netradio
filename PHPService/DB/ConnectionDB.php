@@ -70,6 +70,7 @@ function createDataBase($connection)
         $sql = "CREATE TABLE podcast (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             titre VARCHAR(3000) NOT NULL,
+            duree VARCHAR(3000) NOT NULL,
             descr VARCHAR(3000) NOT NULL,
             filepath VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";

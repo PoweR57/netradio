@@ -64,7 +64,7 @@ $app->post('/login', function ($request, $response) {
 
 $app->post('/podcast', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createPodcast($json->titre, $json->descr, $json->uuid));
+    $response->send(createPodcast($json->titre, $json->descr, $json->uuid, $json->duree));
 });
 
 $app->post('/podcast/file/:uuid', function ($request, $response) {
