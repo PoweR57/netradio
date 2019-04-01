@@ -27,7 +27,8 @@
     "socket.io-client": "^2.2.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuedraggable": "^2.19.3"
+    "vuedraggable": "^2.19.3",
+    "vuejs-progress-bar": "^1.0.9"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
