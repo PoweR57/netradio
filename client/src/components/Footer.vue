@@ -112,6 +112,7 @@ export default {
                 }
 
                 socket.on("update", function() {
+                    console.log("update");
                     if (playerStatus == true) {
                         var audio = document.getElementById("player");
                         audio.src = "http://" + Config.service.music.URL;
@@ -150,6 +151,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.playButton:focus {
+    outline: none;
 }
 .circle {
     border: 4px solid white;

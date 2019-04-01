@@ -111,14 +111,6 @@ export default {
                 return xhr;
             }
         });
-        var json = 
-        `
-        {
-            "title":"` + title + `",
-            "liste_musique":"` + strList + `"
-        }
-        `;
-        return ApiPHP().post('/playlists', json)
     },
     getPodcast() {
         return ApiPHP().get('/podcasts')

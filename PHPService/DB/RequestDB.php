@@ -141,6 +141,12 @@ function getUserByLogin($email,$mdp){
     try{
         $sql = "SELECT * FROM user where email=\"". $email ."\"";
         $result = $connection->query($sql);
+        // foreach ($result as $res) {
+        //     if (password_verify($mdp, $res['mdp'])){
+        //         $token = bin2hex(random_bytes(50));
+        //         $result = '{ result: true, token:"'.$token.'"}';
+        //     }
+        // }
     }catch (PDOException $e){
         echo $e;
     }

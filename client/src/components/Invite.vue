@@ -43,7 +43,7 @@ export default {
             broadcast: false,
             isCalling: false,
             live: "off air",
-            id: "sdgihodfiihodfihodgshio"
+            id: Math.floor(Math.random() * Math.floor(999999999999))
         };
     },
     created() {
@@ -60,14 +60,22 @@ export default {
         socket.emit("UserVoice", this.id);
     },
     mounted() {
-        socket.on("startUserVoice", function() {
-            startPresenter();
-        });
-        socket.on("stopUserVoice", function() {
-            stopPresenter();
+        var getClass = this
+        socket.on("SpeakChange", function(id) {
+            if (getClass.id == id) {
+                getClass.ChangeVoice();
+            }
         });
     },
     methods: {
+        ChangeVoice() {
+            this.isCalling = !this.isCalling;
+            if (this.isCalling) {
+                this.startPresenter();
+            } else {
+                this.stopPresenter();
+            }
+        },
         startPresenter() {
             // Set latency to 100ms (Equal with streamer)
 
