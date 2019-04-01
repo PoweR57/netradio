@@ -141,11 +141,6 @@ function getUserByLogin($email,$mdp){
     try{
         $sql = "SELECT * FROM user where email=\"". $email ."\"";
         $result = $connection->query($sql);
-        foreach ($result as $res) {
-            if (password_verify($mdp, $res['mdp'])){
-                $result = true;
-            }
-        }
     }catch (PDOException $e){
         echo $e;
     }
@@ -156,7 +151,7 @@ function createUser($email,$nom,$prenom,$mdp){
     $connection = connectionDataBase();
     try{
         $mdp = password_hash($mdp, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO user (email,nom,prenom,mdp) values ('$email','$nom','$prenom','$mdp')";
+        $sql = "INSERT INTO user (email,nom,prenom,mdp,token) values ('$email','$nom','$prenom','$mdp')";
         $connection->query($sql);
     }catch(PDOException $e){
         echo $e;
