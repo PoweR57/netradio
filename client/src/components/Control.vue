@@ -41,7 +41,8 @@
           <td data-label="Name">{{man.listen}}</td>
           <td class="collapsing">
             <div class="ui fitted slider checkbox">
-              <input type="checkbox" @click="changeVoice(id)">
+              <input v-if="man.listen" type="checkbox" @click="changeVoice(id)" checked>
+              <input v-else type="checkbox" @click="changeVoice(id)">
               <label></label>
             </div>
             <i class="microphone icon"></i>
