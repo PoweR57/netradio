@@ -70,6 +70,10 @@
                             <i class="folder icon"></i>
                             Playlist
                         </div>
+                        <div class="item" @click="changeFilter('podcast')">
+                            <i class="microphone icon"></i>
+                            Podcast
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,6 +81,73 @@
                 <div class="title" @click="downloadMusicByAlbum(idl)">
                     <i class="dropdown icon"></i>
                     {{album.titre}}
+                </div>
+                <div class="content">
+
+                        <draggable
+                            class="dragArea list-group"
+                            :list="listOfMusic"
+                            tag="tbody"
+                            :group="{ name: 'people', pull: 'clone', put: false }"
+                        >
+                            <tr
+                                class="list-group-item"
+                                v-for="(element,idx) in listOfMusic"
+                                :key="idx"
+                            >
+                                <td>
+                                    <div class="ui buttons">
+                                        <button
+                                            class="ui negative icon button"
+                                            @click="addToArray(idx)"
+                                        >
+                                            <i class="arrow left icon"></i>
+                                        </button>
+                                        <div class="or" data-text="⏱"></div>
+                                        <button class="ui orange button">{{element.duree}}</button>
+                                        <div class="or" data-text="🎵"></div>
+                                        <button class="ui yellow button">{{element.titre}}</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </draggable>
+                </div>
+            </div>
+        </div>
+        <div
+            class="ui styled accordion segment"
+            id="right-component"
+            v-else-if="filter == 'podcast'"
+        >
+            <div style="margin-bottom: 14px; text-align: center;" slot="header">
+                <div class="ui yellow floating labeled icon dropdown button">
+                    <i class="filter icon"></i>
+                    <span class="text" id="header">Albums</span>
+                    <div class="menu">
+                        <div class="header">
+                            <i class="tags icon"></i>
+                            Select your tag
+                        </div>
+                        <div class="divider"></div>
+                        <div class="item" @click="changeFilter('album')">
+                            <i class="user outline icon"></i>
+                            Albums
+                        </div>
+                        <div class="item" @click="changeFilter('playlist')">
+                            <i class="folder icon"></i>
+                            Playlist
+                        </div>
+                        <div class="item" @click="changeFilter('podcast')">
+                            <i class="microphone icon"></i>
+                            Podcast
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-for="(podcast,idl) in podcasts" :key="idl">
+                <div class="title" @click="downloadMusicByAlbum(idl)">
+                    <i class="dropdown icon"></i>
+                    {{podcast.titre}}
                 </div>
                 <div class="content">
                     <table class="ui striped table">
@@ -134,6 +205,10 @@
                         <div class="item" @click="changeFilter('playlist')">
                             <i class="folder icon"></i>
                             Playlist
+                        </div>
+                        <div class="item" @click="changeFilter('podcast')">
+                            <i class="microphone icon"></i>
+                            Podcast
                         </div>
                     </div>
                 </div>
@@ -204,6 +279,7 @@ export default {
             filter: "album",
             albums: null,
             playlists: null,
+            podcasts: null,
             id_album: null,
             MusicRuning: null,
             listOfMusic: [],
@@ -212,6 +288,7 @@ export default {
     },
     created() {
         this.getAlbums();
+        this.getPodcasts();
         this.getMusicWaiting();
         this.getMusicPlaying();
         this.getPlaylist();
@@ -233,6 +310,11 @@ export default {
         async getAlbums() {
             const response = await ServicePHP.getAlbums();
             this.albums = response.data;
+        },
+        async getPodcasts() {
+            const response = await ServicePHP.getPodcast();
+            this.podcasts = response.data;
+            console.log(this.podcasts);
         },
         async downloadMusicByAlbum(id) {
             if (this.id_album !== id) {
