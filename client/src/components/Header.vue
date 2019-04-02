@@ -6,7 +6,6 @@
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
       <a class="item" id="ctl" v-on:click="goTo('control')">Control</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
-      <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
 
       <div class="middle">
         <img class="logo" src="../logo.png">
