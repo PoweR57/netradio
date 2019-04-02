@@ -23,7 +23,6 @@
             <button class="ui basic green button" v-on:click="startPresenter()">live</button>
             <button class="ui basic red button" v-on:click="stopPresenter()">stop</button>
             <button class="ui basic red button" v-on:click="stopMusic()">stop music</button>
-            
           </div>
         </div>
       </div>
