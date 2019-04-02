@@ -306,7 +306,6 @@ export default {
         async getPodcasts() {
             const response = await ServicePHP.getPodcast();
             this.podcasts = response.data;
-            console.log(this.podcasts);
         },
         async downloadMusicByAlbum(id) {
             if (this.id_album !== id) {

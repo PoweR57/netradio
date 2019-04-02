@@ -45,7 +45,7 @@ export default {
             $("#audio_2").on("canplaythrough", async function(e) {
                 var seconds = e.currentTarget.duration;
                 var temps =
-                    Math.round(seconds / 60) + ":" + Math.round(seconds % 60);
+                Math.round(seconds / 60) + ":" + Math.round(seconds % 60);
                 ServicePHP.createPodcast(
                     getClass.titre,
                     getClass.descr,
