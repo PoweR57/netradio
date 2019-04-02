@@ -14,11 +14,12 @@
           <i class="file icon"></i>
           Insérer le fichier
         </label>
+        <input ref="myFile" type="file" id="file" style="display:none">
         <button class="ui button" @click="createPodcast()">Valider</button>
+        <div v-if="endUpload" id="bar">
+          <div  v-bind:style="{ width: progress + '%' }" class="prog"></div>
+        </div>
       </div>
-    </div>
-    <div id="bar">
-      <div v-bind:style ="{ width: progress + '%' }" class="prog"></div>
     </div>
   </div>
 </template>
@@ -36,6 +37,7 @@ export default {
       descr: "",
       upload: false,
       progress: 0,
+      endUpload:false
     };
   },
   methods: {
@@ -48,6 +50,7 @@ export default {
       const response = this.sendPodcast(form_data, uuid);
     },
     sendPodcast(file, uuid) {
+      let that = this;
       $.ajax({
         url: "http://" + Config.service.dataBase.URL + "/podcast/file/" + uuid,
         filetype: "audio/mp3",
@@ -58,14 +61,20 @@ export default {
         type: "post",
         success: function(php_script_response) {
           alert(php_script_response); // display response from the PHP script, if any
+          console.log("test");
         },
         xhr: function() {
           // get the native XmlHttpRequest object
           var xhr = $.ajaxSettings.xhr();
           // set the onprogress event handler
           xhr.upload.onprogress = function(evt) {
+            that.endUpload = true;
             console.log("progress", (evt.loaded / evt.total) * 100);
-            // this.progress = (evt.loaded / evt.total) * 100;
+            that.progress = (evt.loaded / evt.total) * 100;
+            if (that.progress === 100) {
+              that.endUpload = false;
+              that.progress = 0;
+            }
           };
           // set the onload event handler
           xhr.upload.onload = function() {
@@ -97,9 +106,9 @@ label {
   overflow: hidden;
 }
 
-.prog{
-    float: left;
-    padding: 15px;
-    background: red;
+.prog {
+  float: left;
+  padding: 15px;
+  background: red;
 }
 </style>
