@@ -152,15 +152,15 @@
             </div>
             <table class="ui striped table">
                 <draggable
-                    group="people"
-                    draggable=".dragMe"
+                    class="dragArea list-group"
                     tag="tbody"
-                    v-model="listOfMusicWhoWaitForPlaying"
+                    v-model="podcasts"
                     @start="isDragging = true"
                     @end="isDragging = false"
+                    :group="{ name: 'people', pull: 'clone', put: false }"
                 >
                     <tr
-                        class="list-group-item dragMe"
+                        class="list-group-item"
                         v-for="(element,idx) in podcasts"
                         :key="idx"
                     >
