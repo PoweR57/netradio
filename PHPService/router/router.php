@@ -19,6 +19,10 @@ $app->get('/musiques', function ($request, $response) {
     $response->send(getMusic());
 });
 
+$app->get('/plannings', function ($request, $response) {
+    $response->send(getPlannings());
+});
+
 $app->get('/musiques/random', function ($request, $response) {
     $response->send(getMusicRandom());
 });
@@ -40,16 +44,17 @@ $app->post('/playlist', function ($request, $response) {
     $response->send(createPlaylist($json->title, $json->descr));
 });
 
+$app->put('/playlists', function ($request, $response) {
+    $json = json_decode($request['raw']);
+    $response->send(putPlaylistById($json->id,$json->liste));
+});
+
 $app->delete('/playlists/:id', function ($request, $response) {
     $response->send(deletePlaylistById($request["params"]["id"]));
 });
 
 $app->get('/playlists/:id', function ($request, $response) {
     $response->send(getPlaylistById($request["params"]["id"]));
-});
-
-$app->get('/playlists/:id_p/musiques/:id_m', function ($request, $response) {
-    $response->send(putMusiqueInPlaylistById($request["params"]["id_p"], $request["params"]["id_m"]));
 });
 
 $app->post('/login', function ($request, $response) {

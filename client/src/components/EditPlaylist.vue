@@ -3,6 +3,28 @@
         <div id="left-component" class="ui segment">
             <div style="display: flex; justify-content: space-around;" slot="header">
                 <h2 id="header">Playlist</h2>
+                <div style="margin-bottom: 14px; text-align: center;" slot="header">
+                    <div class="ui yellow floating labeled icon dropdown button">
+                        <i class="filter icon"></i>
+                        <span class="text" id="header">Playlists</span>
+                        <div class="menu">
+                            <div class="header">
+                                <i class="tags icon"></i>
+                                Select your playlist
+                            </div>
+                            <div class="divider"></div>
+                            <div
+                                v-for="(onePlaylist,idx) in listPlaylists"
+                                :key="idx"
+                                class="item"
+                                @click="changeFilter(onePlaylist.id)"
+                            >
+                                <i class="folder icon"></i>
+                                {{onePlaylist.title}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <table class="ui striped table">
                 <draggable
@@ -14,7 +36,7 @@
                     @end="isDragging = false"
                 >
                     <tr class="list-group-item dragMe" v-for="(element,idx) in playlist" :key="idx">
-                        <td id="padding">
+                        <td id="padding" v-if="element">
                             <div class="ui buttons">
                                 <button class="ui negative button" @click="removeFromArray(idx)">
                                     <i class="close icon"></i>
@@ -27,7 +49,7 @@
                         </td>
                     </tr>
 
-                    <h2 id="header" slot="header">
+                    <h2 id="header" slot="header" v-if="idPlaylist">
                         <button class="ui blue button" @click="savePlaylist()">
                             <i class="save icon"></i>
                             Sauvegarder
@@ -96,11 +118,6 @@ import Config from "@/config/config";
 
 var socket = null;
 
-$(document).ready(function() {
-    $(".ui.accordion").accordion();
-    $(".ui.dropdown").dropdown();
-});
-
 export default {
     name: "editplaylist",
     components: {
@@ -108,19 +125,43 @@ export default {
     },
     data() {
         return {
-            filter: "album",
+            idPlaylist: "",
             albums: null,
             listOfMusic: [],
-            playlist: []
+            playlist: [],
+            listPlaylists: []
         };
     },
     mounted() {
+        $(document).ready(function() {
+            $(".ui.accordion").accordion();
+            $(".ui.dropdown").dropdown();
+        });
         this.getAlbums();
+        this.getPlaylists();
     },
     methods: {
         async getAlbums() {
             const response = await ServicePHP.getAlbums();
             this.albums = response.data;
+        },
+        async getPlaylists() {
+            const response = await ServicePHP.getPlaylists();
+            this.listPlaylists = response.data;
+        },
+        async getPlaylistById(id) {
+            const response = await ServicePHP.getPlaylistById(id);
+            var listeId = response.data[0].liste_musique;
+            var listeIdMusic = listeId.split(",");
+            for (let index = 0; index < listeIdMusic.length; index++) {
+                const rep = await ServicePHP.getMusiquesById(listeIdMusic[index])
+                this.playlist.push(rep.data[0]);
+            }
+        },
+        changeFilter(id) {
+            this.playlist = [];
+            this.idPlaylist = id;
+            this.getPlaylistById(id);
         },
         removeFromArray(id) {
             this.playlist.splice(id, 1);
@@ -132,7 +173,7 @@ export default {
             this.playlist.push(element);
         },
         savePlaylist() {
-            ServicePHP.savePlaylist(this.playlist,"title");
+            ServicePHP.savePlaylist(this.playlist, this.idPlaylist);
         },
         async downloadMusicByAlbum(id) {
             if (this.id_album !== id) {

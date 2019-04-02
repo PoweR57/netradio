@@ -12,7 +12,7 @@
                 <textarea v-model="description" placeholder="Description"></textarea>
             </div>
             <br>
-            <button class="ui button" @click="createPlaylist()" >Créer la playlist</button>
+            <button class="ui button" @click="createPlaylist()">Créer la playlist</button>
         </div>
     </div>
 </template>
@@ -35,7 +35,7 @@ export default {
     methods: {
         async createPlaylist() {
             await ServicePHP.postPlaylist(this.name,this.description);
-            // this.albums = response.data;
+            this.$router.push("editplaylist");
         },
     }
 };

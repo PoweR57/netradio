@@ -1,13 +1,15 @@
-<?php 
+<?php
 
 // Transforme la response PDO en format json
-function formatToJson($response) {
+function formatToJson($response)
+{
     $results = $response->fetchAll(PDO::FETCH_ASSOC);
-    $json= json_encode($results);
+    $json = json_encode($results);
     return $json;
 }
 
-function getMusic() {
+function getMusic()
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -20,7 +22,8 @@ function getMusic() {
     return $result;
 }
 
-function getMusicRandom() {
+function getMusicRandom()
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -33,7 +36,8 @@ function getMusicRandom() {
     return $result;
 }
 
-function getAlbum() {
+function getAlbum()
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -46,7 +50,8 @@ function getAlbum() {
     return $result;
 }
 
-function getMusicByAlbum($id) {
+function getMusicByAlbum($id)
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -59,7 +64,8 @@ function getMusicByAlbum($id) {
     return $result;
 }
 
-function getMusicById($id) {
+function getMusicById($id)
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -72,7 +78,8 @@ function getMusicById($id) {
     return $result;
 }
 
-function getPlaylist() {
+function getPlaylist()
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -85,7 +92,22 @@ function getPlaylist() {
     return $result;
 }
 
-function getPlaylistById($id) {
+function getPlannings()
+{
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    $result = "";
+    try {
+        $sql = "SELECT * FROM planning";
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    return $result;
+}
+
+function getPlaylistById($id)
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
@@ -98,7 +120,22 @@ function getPlaylistById($id) {
     return $result;
 }
 
-function deletePlaylistById($id) {
+function putPlaylistById($id, $liste)
+{
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    $result = "";
+    try {
+        $sql = "UPDATE playlist set liste_musique=\"" . $liste . "\" where id=" . $id;
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    return $result;
+}
+
+function deletePlaylistById($id)
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     try {
         $sql = "DELETE FROM playlist where id=" . $id;
@@ -108,7 +145,8 @@ function deletePlaylistById($id) {
     }
 }
 
-function createPlaylist($title,$descr) {
+function createPlaylist($title, $descr)
+{
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     try {
         $sql = "INSERT INTO playlist (title) values ('$title')";
@@ -118,72 +156,60 @@ function createPlaylist($title,$descr) {
     }
 }
 
-function putMusiqueInPlaylistById($id_p,$id_m) {
-    $connection = connectionDataBase(); //Récupérer la connection à la bdd
-
-    $playlist = json_decode(getPlaylistById($id_p));
-
-    $array = explode(",",$playlist[0]->liste_musique);
-    array_push($array,$id_m);
-    $str = implode(",", $array);
-
-    try {
-        $sql = "UPDATE playlist set liste_musique= \"". $str ."\" where id=" . $id_p;
-        $result = $connection->query($sql);
-    } catch (PDOException $e) {
-        echo $e;
-    }
-}
-
-function getUserByLogin($email,$mdp){
+function getUserByLogin($email, $mdp)
+{
     $connection = connectionDataBase();
     $result = "";
-    try{
-        $sql = "SELECT * FROM user where email=\"". $email ."\"";
+    try {
+        $sql = "SELECT * FROM user where email=\"" . $email . "\"";
         $result = $connection->query($sql);
-        foreach ($result as $res) {
-            if (password_verify($mdp, $res['mdp'])){
-                $result = true;
-            }
-        }
+        // foreach ($result as $res) {
+        //     if (password_verify($mdp, $res['mdp'])){
+        //         $token = bin2hex(random_bytes(50));
+        //         $result = '{ result: true, token:"'.$token.'"}';
+        //     }
+        // }
     }catch (PDOException $e){
         echo $e;
     }
     return $result;
 }
 
-function createUser($email,$nom,$prenom,$mdp){
+function createUser($email, $nom, $prenom, $mdp)
+{
     $connection = connectionDataBase();
-    try{
+    try {
         $mdp = password_hash($mdp, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO user (email,nom,prenom,mdp) values ('$email','$nom','$prenom','$mdp')";
+        $sql = "INSERT INTO user (email,nom,prenom,mdp,token) values ('$email','$nom','$prenom','$mdp')";
         $connection->query($sql);
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         echo $e;
     }
-   
+
 }
 
-function createPodcast($titre,$descr, $uuid){
+function createPodcast($titre, $descr, $uuid)
+{
     $connection = connectionDataBase();
-    $filepath = "D:/Musique/Podcast/".$uuid.".mp3";
-    try{
+    $filepath = "D:/Musique/Podcast/" . $uuid . ".mp3";
+    try {
         $sql = "INSERT INTO podcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
         $connection->query($sql);
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         echo $e;
     }
-   
+
 }
 
-function getPodcast(){
+function getPodcast()
+{
     $connection = connectionDataBase();
-    $result='';
-    try{
+    $result = '';
+    try {
         $sql = "SELECT * FROM podcast";
         $result = $connection->query($sql);
         $result = formatToJson($result);
-    }catch(PDOException $e){
+    } catch (PDOException $e) {
         echo $e;
     }
     return $result;

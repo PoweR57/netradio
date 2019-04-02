@@ -21,7 +21,14 @@ function connectionDataBase()
 function resetDataBase($connection)
 {
     try {
-        $sql = "DROP TABLE musique;DROP TABLE user;DROP TABLE playlist;DROP TABLE album;";
+        $sql = "
+        DROP TABLE musique;
+        DROP TABLE user;
+        DROP TABLE playlist;
+        DROP TABLE podcast;
+        DROP TABLE album;
+        DROP TABLE planning;
+        ";
         $connection->exec($sql);
     } catch (PDOException $e) {
     }
@@ -44,7 +51,8 @@ function createDataBase($connection)
             mdp VARCHAR(3000) NOT NULL,
             email VARCHAR(3000) NOT NULL,
             nom VARCHAR(3000) NOT NULL,
-            prenom VARCHAR(3000) NOT NULL
+            prenom VARCHAR(3000) NOT NULL,
+            role VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
     } catch (PDOException $e) {
@@ -64,6 +72,17 @@ function createDataBase($connection)
             titre VARCHAR(3000) NOT NULL,
             descr VARCHAR(3000) NOT NULL,
             filepath VARCHAR(3000) NOT NULL
+            ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+        $connection->exec($sql);
+    } catch (PDOException $e) {
+    }
+    try {
+        $sql = "CREATE TABLE planning (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            descr VARCHAR(3000) NOT NULL,
+            date_debut DATETIME NOT NULL,
+            date_fin DATETIME NOT NULL,
+            id_animateur VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
     } catch (PDOException $e) {

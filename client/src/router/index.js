@@ -8,6 +8,7 @@ import Login from '@/components/Login'
 import Panel from '@/components/Panel'
 import Invite from '@/components/Invite'
 import Planning from '@/components/Planning'
+import Podcasts from '@/components/Podcasts'
 import Control from '@/components/Control'
 import SignUp from '@/components/SignUp'
 import PodcastUpload from '@/components/PodcastUpload'
@@ -30,6 +31,11 @@ export default new Router({
       path: '/planning',
       name: 'planning',
       component: Planning
+    },
+    {
+      path: '/podcasts',
+      name: 'podcasts',
+      component: Podcasts
     },
     {
       path: '/panel',
