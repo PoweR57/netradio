@@ -2,11 +2,11 @@
     "service": {
         "music": {
             "_comment": "Service de gestion pour la diffusion des musiques et des streams en direct. PORT 8081",
-            "URL": "memor.serveo.net"
+            "URL": "desiit.serveo.net"
         },
         "dataBase": {
             "_comment": "Service d'authentification & gestion des musiques en BDD. PORT 3000",
-            "URL": "desiit.serveo.net"
+            "URL": "sibimet.serveo.net"
         }
     }
 }

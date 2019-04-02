@@ -36,22 +36,49 @@ export default {
     },
     methods: {
         async createPodcast() {
-            var getClass = this
-            var uuid = "qfsfsdfsdmfk,ms";
+            var getClass = this;
+            var uuid = this.guid();
             var file_data = document.querySelector("#file").files[0];
 
             var objectUrl;
 
             $("#audio_2").on("canplaythrough", async function(e) {
                 var seconds = e.currentTarget.duration;
-                var temps = Math.round(seconds / 60) + ":" + Math.round(seconds % 60);
-                ServicePHP.createPodcast(getClass.titre, getClass.descr, uuid, temps);
+                var temps =
+                    Math.round(seconds / 60) + ":" + Math.round(seconds % 60);
+                ServicePHP.createPodcast(
+                    getClass.titre,
+                    getClass.descr,
+                    uuid,
+                    temps
+                );
                 var form_data = new FormData();
                 form_data.append("file", file_data);
                 const response = await ServicePHP.sendPodcast(form_data, uuid);
             });
             var objectUrl = URL.createObjectURL(file_data);
             $("#audio_2").prop("src", objectUrl);
+        },
+        guid() {
+            return (
+                this.s4() +
+                this.s4() +
+                "-" +
+                this.s4() +
+                "-" +
+                this.s4() +
+                "-" +
+                this.s4() +
+                "-" +
+                this.s4() +
+                this.s4() +
+                this.s4()
+            );
+        },
+        s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
         }
     },
     computed: {}
