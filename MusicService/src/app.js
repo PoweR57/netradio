@@ -155,6 +155,7 @@ app.post('/list', (req, res) => {
     if (timer.status == 'stopped') {
         startMusic()
     }
+    res.send()
 })
 
 // Permet de demarrer de maniere factice la musique

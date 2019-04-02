@@ -55,7 +55,7 @@ function getMusicByAlbum($id)
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
-        $sql = "SELECT * FROM musique where id_album=" . $id;
+        $sql = "SELECT * FROM musique where id_album=" . $id. " ORDER BY titre";
         $result = $connection->query($sql);
         $result = formatToJson($result);
     } catch (PDOException $e) {
