@@ -6,10 +6,12 @@
         <div id="calendar"></div>
       </div>
       <div class="four wide column">
+        <div v-if="role === 'administrateur'">
         <div class="ui input">
           <input type="text" v-model="titre" placeholder="Search...">
         </div>
         <button class="ui button" v-on:click="pushEvent()">push</button>
+      </div>
       </div>
     </div>
   </div>
@@ -31,7 +33,8 @@ export default {
   data() {
     return {
       eventsList: [],
-      titre: ""
+      titre: "",
+      role: ""
     };
   },
   methods: {
@@ -118,6 +121,10 @@ export default {
         localStorage.idAnim
       );*/
     }
+  },
+  created() {
+    this.role = sessionStorage.role
+    console.log(this.role)
   },
   mounted() {
     if(sessionStorage === "administrateur"){

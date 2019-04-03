@@ -1,6 +1,10 @@
 <template>
     <div>
+<<<<<<< HEAD
         <form class="ui form" v-on:submit.prevent="createUser()">
+=======
+        <form class="ui form">
+>>>>>>> 3f6828258ba894daa4a56b3afc21019e5cedf442
             <div class="field">
                 <label>Email</label>
                 <input v-model="login" type="email" name="email" placeholder="Email" required>
@@ -18,7 +22,11 @@
                 <input v-model="mdp" type="password" name="mdp" placeholder="Mot de passe" required>
             </div>
             <div class="field"></div>
+<<<<<<< HEAD
             <button class="ui button">Valider</button>
+=======
+            <button class="ui button" @click="createUser()">Valider</button>
+>>>>>>> 3f6828258ba894daa4a56b3afc21019e5cedf442
         </form>
     </div>
 </template>
