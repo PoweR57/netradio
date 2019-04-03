@@ -37,6 +37,7 @@
                         </td>
                     </tr>
                     <input v-model="duree"/>
+                    <input v-model="timeSTr"/>
                     <h2 id="header" slot="header">
                         <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
@@ -55,7 +56,6 @@
                 </draggable>
             </table>
         </div>
-
         <div class="ui styled accordion segment" id="right-component" v-if="filter == 'album'">
             <div style="margin-bottom: 14px; text-align: center;" slot="header">
                 <div class="ui yellow floating labeled icon dropdown button">
@@ -242,7 +242,6 @@
                                         <button class="ui orange button">{{element.duree}}</button>
                                         <div class="or" data-text="🎵"></div>
                                         <button class="ui yellow button">{{element.titre}}</button>
-                                        
                                     </div>
                                 </td>
                             </tr>
@@ -278,8 +277,8 @@ export default {
             MusicRuning: null,
             listOfMusic: [],
             listOfMusicWhoWaitForPlaying: [],
-            duree: 0.0,
-            couper: '',
+            duree: 0,
+            timeSTr: "",
             couperEnCour: ''
 
         };
@@ -325,14 +324,23 @@ export default {
         async getMusicWaiting() {
             const response = await ServiceMusic.getMusicWaiting();
             this.listOfMusicWhoWaitForPlaying = response.data.waiting;
-            let tmp;
             for (let i =0 ; i<= this.listOfMusicWhoWaitForPlaying.length ; i++){
                 this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
-                this.tmp= parseInt(this.couperEnCour[0])*60+ parseInt(this.couperEnCour[1]);
-                console.log(this.tmp);
-                this.duree=this.duree+ this.tmp/ 60+":"+this.tmp%60
+                var tmp = parseInt(this.couperEnCour[0])*60+ parseInt(this.couperEnCour[1]);
+                this.duree = this.duree + tmp
+                var secondes = Math.round(this.duree%60)
+                var minutes = Math.round(this.duree/60)
+                var minutesConvert = Math.round(minutes%60)
+                
+                var heures = Math.round(minutes/60)
+                if (secondes < 10) {
+                    secondes  = "0"+secondes
+                }
+                if (minutesConvert < 10) {
+                    minutesConvert  = "0"+minutesConvert
+                }
+                this.timeSTr = heures+"H "+ minutesConvert + "M " + secondes + "S"
             }
-            
         },
         async getMusicPlaying() {
             const response = await ServiceMusic.getMusicPlaying();
