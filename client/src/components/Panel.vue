@@ -40,7 +40,6 @@
                             </div>
                         </td>
                     </tr>
-                    
                     <h2 id="header" slot="header">
                         <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
@@ -55,7 +54,6 @@
                                 class="ui yellow button"
                             >{{MusicRuning.titre}}</button>
                             <button v-else class="ui blue button">{{MusicRuning.titre}}</button>
-                            
                         </div>
                         <div v-else>...</div>
                     </h2>
@@ -238,8 +236,7 @@
                             <tr
                                 class="list-group-item"
                                 v-for="(element,idx) in playlist.liste_musique"
-                                :key="idx"
-                            >
+                                :key="idx">
                                 <td>
                                     <div class="ui buttons">
                                         <button
@@ -319,10 +316,11 @@ export default {
             this.duree = 0
             for (let i =0 ; i<= this.listOfMusicWhoWaitForPlaying.length ; i++){
                 this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
-                var tmp = parseInt(this.couperEnCour[0])*60+ parseInt(this.couperEnCour[1]);
+                var tmp = (parseInt(parseInt(this.couperEnCour[0])) * 60 + parseInt(this.couperEnCour[1]));
+
                 this.duree = this.duree + tmp
                 var secondes = Math.round(this.duree%60)
-                var minutes = Math.round(this.duree/60)
+                var minutes = Math.floor(this.duree/60)
                 var minutesConvert = Math.round(minutes%60)
                 
                 var heures = Math.floor(minutes/60)
