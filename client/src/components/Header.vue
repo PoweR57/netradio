@@ -9,7 +9,7 @@
       <div class="middle">
         <img class="logo" src="../assets/logo.png">
       </div>
-      <div class="right menu">
+      <div class="right menu" v-if="co == false">
         <div class="item">
           <a
             class="ui secondary button"
@@ -25,6 +25,15 @@
           >Sign Up</a>
         </div>
       </div>
+      <div class="right menu" v-if="co == true">
+        <div class="item">
+          <a
+            class="ui secondary button"
+            style="border: solid 1px white"
+            v-on:click="deconnect()"
+          >Log out</a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,11 +45,15 @@ export default {
   name: "appHeader",
   data() {
     return {
-      role: ""
+      role: "",
+      co: false
     };
   },
   created() {
     this.role = sessionStorage.role;
+    if (sessionStorage.connect === "true") {
+      this.co = true;
+    }
   },
   mounted() {
     $("#acc").removeClass("active");
@@ -70,6 +83,11 @@ export default {
     }
   },
   methods: {
+    deconnect() {
+      sessionStorage.removeItem('role');
+      sessionStorage.removeItem('connect');
+      document.location.href = "/accueil";
+    },
     goTo(page) {
       $("#pla").removeClass("active");
       $("#ctl").removeClass("active");
@@ -135,9 +153,9 @@ export default {
   background-image: url("../assets/bckgrnd.jpg");
   border-bottom: 2px solid black;
   height: 100px;
-    background-image: url("../assets/bckgrnd.jpg");
-    border-bottom: 2px solid black;
-    height: 100px;
+  background-image: url("../assets/bckgrnd.jpg");
+  border-bottom: 2px solid black;
+  height: 100px;
 }
 #top a {
   color: rgba(255, 255, 255, 0.9);
