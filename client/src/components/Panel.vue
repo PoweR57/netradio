@@ -348,7 +348,7 @@ export default {
                 var minutes = Math.round(this.duree/60)
                 var minutesConvert = Math.round(minutes%60)
                 
-                var heures = Math.round(minutes/60)
+                var heures = Math.floor(minutes/60)
                 if (secondes < 10) {
                     secondes  = "0"+secondes
                 }
