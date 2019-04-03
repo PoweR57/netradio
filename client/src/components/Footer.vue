@@ -124,7 +124,7 @@ export default {
     text-align: center;
     width: 100%;
     bottom: 0;
-    background-image: url("../bckgrnd.jpg");
+    background-image: url("../assets/bckgrnd.jpg");
     border-top: 2px solid black;
     height: 100px;
     z-index: 101;

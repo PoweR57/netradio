@@ -79,7 +79,19 @@ export default {
         `;
         return ApiPHP().post('/playlist', json)
     },
-    createPodcast(titre, descr, uuid, temps) {
+    createEvent(title, start, end, id) {
+        var json =
+            `
+        {
+            "title":"` + title + `",
+            "start":"` + start + `",
+            "end":"` + end + `",
+            "id":"` + id + `"
+        }
+        `;
+        return ApiPHP().post('/plannings', json)
+    },
+    createPodcast(titre, descr, uuid) {
         var json = `{
             "titre":"` + titre + `",
             "uuid":"` + uuid + `",
@@ -91,4 +103,7 @@ export default {
     getPodcast() {
         return ApiPHP().get('/podcasts')
     },
+    getPlannings() {
+        return ApiPHP().get('/plannings')
+    }
 }
