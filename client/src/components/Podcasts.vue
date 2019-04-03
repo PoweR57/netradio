@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div class="container">
     <div v-for="(pod,id) in podcast" :key="id" id="card" class="ui card">
       <div class="content">
         <div class="header">{{pod.titre}}</div>
@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     async getPodcast() {
-      const response = await ServicePHP.getPoadcast();
+      const response = await ServicePHP.getPodcast();
       this.podcast = response.data;
       console.log(this.podcast);
     }
@@ -45,12 +45,12 @@ export default {
 };
 </script>
 <style scoped>
-#container {
+.container {
   display: flex;
   flex-direction: row;
 }
 #card {
-  margin-top: 1%;
+  margin-top: 6%;
   margin-left: 2%;
 }
 </style>

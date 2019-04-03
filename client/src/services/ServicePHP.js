@@ -1,6 +1,5 @@
 /* eslint-disable */
 import ApiPHP from '@/services/ApiPHP'
-import Config from "@/config/config"
 
 export default {
     getPlayLists() {
@@ -51,7 +50,7 @@ export default {
             "id":` + id + `,
             "liste":"` + strList + `"
         }`;
-        ApiPHP().put('/playlists', json)
+        return ApiPHP().put('/playlists', json)
     },
     getUserByLogin(login, mdp) {
         var json = '{"email":"' + login + '","mdp":"' + mdp + '"}';
@@ -96,37 +95,10 @@ export default {
         var json = `{
             "titre":"` + titre + `",
             "uuid":"` + uuid + `",
+            "duree":"` + temps + `",
             "descr":"` + descr + `"
         }`;
         return ApiPHP().post('/podcast', json)
-    },
-    sendPodcast(file, uuid) {
-        $.ajax({
-            url: "http://" + Config.service.dataBase.URL + "/podcast/file/" + uuid,
-            filetype: "audio/mp3",
-            cache: false,
-            processData: false,
-            data: file,
-            contentType: false,
-            type: "post",
-            success: function (php_script_response) {
-                alert(php_script_response); // display response from the PHP script, if any
-            },
-            xhr: function () {
-                // get the native XmlHttpRequest object
-                var xhr = $.ajaxSettings.xhr();
-                // set the onprogress event handler
-                xhr.upload.onprogress = function (evt) {
-                    console.log("progress", (evt.loaded / evt.total) * 100);
-                };
-                // set the onload event handler
-                xhr.upload.onload = function () {
-                    console.log("DONE!");
-                };
-                // return the customized object
-                return xhr;
-            }
-        });
     },
     getPodcast() {
         return ApiPHP().get('/podcasts')

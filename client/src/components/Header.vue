@@ -47,6 +47,7 @@ export default {
     $("#pla").removeClass("active");
     $("#ctl").removeClass("active");
     $("#pan").removeClass("active");
+    $("#inv").removeClass("active");
     switch ($(location)[0].hash) {
       case "#/":
         $("#acc").addClass("active");
@@ -63,6 +64,9 @@ export default {
       case "#/panel":
         $("#pan").addClass("active");
         break;
+      case "#/invite":
+        $("#inv").addClass("active");
+        break;
     }
   },
   methods: {
@@ -71,6 +75,7 @@ export default {
       $("#ctl").removeClass("active");
       $("#pan").removeClass("active");
       $("#acc").removeClass("active");
+      $("#inv").removeClass("active");
       switch (page) {
         case "accueil":
           $("#acc").addClass("active");
@@ -86,6 +91,10 @@ export default {
           break;
         case "panel":
           $("#pan").addClass("active");
+          this.$router.push(page);
+          break;
+        case "invite":
+          $("#inv").addClass("active");
           this.$router.push(page);
           break;
         default:
@@ -126,6 +135,9 @@ export default {
   background-image: url("../assets/bckgrnd.jpg");
   border-bottom: 2px solid black;
   height: 100px;
+    background-image: url("../assets/bckgrnd.jpg");
+    border-bottom: 2px solid black;
+    height: 100px;
 }
 #top a {
   color: rgba(255, 255, 255, 0.9);

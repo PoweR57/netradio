@@ -55,7 +55,7 @@ function getMusicByAlbum($id)
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     $result = "";
     try {
-        $sql = "SELECT * FROM musique where id_album=" . $id;
+        $sql = "SELECT * FROM musique where id_album=" . $id. " ORDER BY titre";
         $result = $connection->query($sql);
         $result = formatToJson($result);
     } catch (PDOException $e) {
@@ -174,12 +174,12 @@ function getUserByLogin($email, $mdp)
     try {
         $sql = "SELECT * FROM user where email=\"" . $email . "\"";
         $result = $connection->query($sql);
-        // foreach ($result as $res) {
-        //     if (password_verify($mdp, $res['mdp'])){
-        //         $token = bin2hex(random_bytes(50));
-        //         $result = '{ result: true, token:"'.$token.'"}';
-        //     }
-        // }
+        foreach ($result as $res) {
+            if (password_verify($mdp, $res['mdp'])){
+                $token = bin2hex(random_bytes(50));
+                $result = '{ result: true, token:"'.$token.'", role:"'.$res['role'].'"}';
+            }
+        }
     }catch (PDOException $e){
         echo $e;
     }
@@ -191,7 +191,7 @@ function createUser($email, $nom, $prenom, $mdp)
     $connection = connectionDataBase();
     try {
         $mdp = password_hash($mdp, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO user (email,nom,prenom,mdp,token) values ('$email','$nom','$prenom','$mdp')";
+        $sql = "INSERT INTO user (email,nom,prenom,mdp,role) values ('$email','$nom','$prenom','$mdp','auditeur')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;
@@ -199,12 +199,12 @@ function createUser($email, $nom, $prenom, $mdp)
 
 }
 
-function createPodcast($titre, $descr, $uuid)
+function createPodcast($titre, $descr, $uuid, $duree)
 {
     $connection = connectionDataBase();
     $filepath = "D:/Musique/Podcast/" . $uuid . ".mp3";
     try {
-        $sql = "INSERT INTO podcast (titre,descr,filepath) values ('$titre','$descr','$filepath')";
+        $sql = "INSERT INTO podcast (titre,descr,filepath, duree) values ('$titre','$descr','$filepath','$duree')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;

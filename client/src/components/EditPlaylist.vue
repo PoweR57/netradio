@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <table class="ui striped table">
+            <table class="ui striped table" v-if="idPlaylist">
                 <draggable
                     group="people"
                     draggable=".dragMe"
@@ -58,7 +58,6 @@
                 </draggable>
             </table>
         </div>
-
         <div class="ui styled accordion segment" id="right-component">
             <div style="margin-bottom: 14px; text-align: center;" slot="header">
                 <h2 class="text" id="header">Albums</h2>
@@ -172,8 +171,9 @@ export default {
         addToArrayElement(element) {
             this.playlist.push(element);
         },
-        savePlaylist() {
-            ServicePHP.savePlaylist(this.playlist, this.idPlaylist);
+        async savePlaylist() {
+            await ServicePHP.savePlaylist(this.playlist, this.idPlaylist);
+            this.$router.push("panel");
         },
         async downloadMusicByAlbum(id) {
             if (this.id_album !== id) {
