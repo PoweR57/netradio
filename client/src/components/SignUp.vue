@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="ui form" action="/#/login">
+    <div id="sign" class="ui form" action="/#/login">
       <div class="field">
         <label>Email</label>
         <input v-model="login" type="email" name="email" placeholder="Login" required>
@@ -46,7 +46,7 @@ export default {
 };
 </script>
 <style scoped>
-  form{
+  #sign{
     width:30% ;
     margin:auto;
     padding-top: 2%;
