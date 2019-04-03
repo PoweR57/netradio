@@ -66,7 +66,6 @@ export default {
             "mdp":"` + mdp + `"
         }
         `;
-        console.log(json);
         return ApiPHP().post('/signup', json);
     },
     postPlaylist(title, description) {
