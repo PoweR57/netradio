@@ -37,6 +37,6 @@ export default {
 }
 #content {
     margin-top: 150px;
-    margin-bottom: 150px;
+    margin-bottom: 100px;
 }
 </style>

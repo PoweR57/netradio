@@ -84,6 +84,7 @@ export default {
     });
   },
   created() {
+    if(sessionStorage.role === "animateur"){
     socket = io(Config.service.music.URL);
     presenterMedia = new ScarletsMediaPresenter(
       {
@@ -95,7 +96,7 @@ export default {
       100
     );
     this.getInvite();
-  },
+  }},
   methods: {
     change(table) {
       var getClass = this;

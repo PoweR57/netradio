@@ -35,7 +35,7 @@ export default {
     };
   },
   methods: {
-    async createCalendar() {
+    async createCalendarAdmin() {
       var res = await ServicePHP.getPlannings();
       for (var i = 0; i < res.data.length; i++) {
         var event = {
@@ -47,7 +47,6 @@ export default {
         };
         this.eventsList.push(event);
       }
-      var a = "rofl";
       var calendar = new Calendar(document.getElementById("calendar"), {
         plugins: [interactionPlugin, timeGridPlugin],
         timeZone: "UTC",
@@ -75,17 +74,57 @@ export default {
       });
       calendar.render();
     },
+     async createCalendar() {
+      var res = await ServicePHP.getPlannings();
+      for (var i = 0; i < res.data.length; i++) {
+        var event = {
+          title: res.data[i].descr,
+          start: res.data[i].date_debut,
+          end: res.data[i].date_fin,
+          backgroundColor: "red",
+          id: res.data[i].id
+        };
+        this.eventsList.push(event);
+      }
+      var calendar = new Calendar(document.getElementById("calendar"), {
+        plugins: [interactionPlugin, timeGridPlugin],
+        timeZone: "UTC",
+        defaultView: "timeGridWeek",
+        resourceLabelText: "Jours",
+        aspectRatio: 1.635,
+        allDaySlot: false,
+        slotDuration: "01:00:00",
+        slotLabelInterval: "02:00:00",
+        selectable: true,
+        eventTimeFormat: {
+          hour: "numeric",
+          minute: "2-digit",
+          meridiem: false
+        },
+        events: this.eventsList,
+        eventClick: function(info) {
+          alert("Event: " + info.event.title);
+        }
+      });
+      calendar.render();
+    },
     async pushEvent() {
+      sessionStorage.role = "animateur"
+      /*
       var res = await ServicePHP.createEvent(
         this.titre,
         localStorage.start,
         localStorage.end,
         localStorage.idAnim
-      );
+      );*/
     }
   },
   mounted() {
-    this.createCalendar();
+    if(sessionStorage === "administrateur"){
+    this.createCalendarAdmin();
+    }else{
+      this.createCalendar();
+    }
   }
 };
 </script>

@@ -16,7 +16,7 @@
           </div>
           <div class="row">
             <div class="center aligned column">
-              <h1 class="border">Clique en bas de la page sur le bouton Play !</h1>
+              <h2 class="border">Clique en bas de la page sur le bouton Play !</h2>
             </div>
           </div>
         </div>
@@ -36,20 +36,13 @@
 /* eslint-disable */
 export default {
   name: "accueil",
-  methods: {},
-  computed: {}
+  methods: {}
+
 };
 </script>
 <style scoped>
 .welImage {
   border-radius: 15px;
   width: 100%
-}
-.border {
-  margin: 3% auto;
-  width: 80%;
-  border: solid black 1px;
-  padding: 3%;
-  border-radius: 15px;
 }
 </style>

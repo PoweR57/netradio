@@ -287,12 +287,14 @@ export default {
         };
     },
     created() {
+        if(sessionStorage.role === "animateur"){
         this.getAlbums();
         this.getPodcasts();
         this.getMusicWaiting();
         this.getMusicPlaying();
         this.getPlaylist();
         socket = io(Config.service.music.URL);
+        }
     },
     mounted() {
         $(document).ready(function() {
