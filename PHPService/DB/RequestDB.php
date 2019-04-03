@@ -106,11 +106,11 @@ function getPlannings()
     return $result;
 }
 
-function createEvent($title, $start, $end, $id)
+function createEvent($title, $start, $end, $id, $couleur)
 {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     try {
-        $sql = "INSERT INTO planning (descr, date_debut,date_fin,id_animateur) values ('$title', '$start', '$end', '$id')";
+        $sql = "INSERT INTO planning (descr, date_debut,date_fin,id_animateur,couleur) values ('$title', '$start', '$end', '$id', '$couleur')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;
@@ -218,6 +218,20 @@ function getPodcast()
     $result = '';
     try {
         $sql = "SELECT * FROM podcast";
+        $result = $connection->query($sql);
+        $result = formatToJson($result);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+    return $result;
+}
+
+function getAnim()
+{
+    $connection = connectionDataBase();
+    $result = '';
+    try {
+        $sql = "SELECT * FROM user where role=\"animateur\"" ;
         $result = $connection->query($sql);
         $result = formatToJson($result);
     } catch (PDOException $e) {

@@ -7,11 +7,71 @@
       </div>
       <div class="four wide column">
         <div v-if="role === 'administrateur'">
-        <div class="ui input">
-          <input type="text" v-model="titre" placeholder="Search...">
+          <div class="ui relaxed divided list">
+            <div class="item" v-for="element in animList" :key="element.id">
+              <i class="large user middle aligned icon"></i>
+              <div class="content">
+                <p class="header" style="margin: 5px 30px">
+                  {{ element.nom }} - {{ element.prenom }}
+                  <input
+                    type="radio"
+                    v-bind:value="element.id"
+                    v-model="selectedAnim"
+                    style="margin-left: 30px; margin-top: 7px;"
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="ui relaxed divided list">
+            <div class="item">
+              <i class="large tint middle aligned icon" style="color: red"></i>
+              <div class="content">
+                <p class="header" style="margin: 5px 30px">
+                  Rouge
+                  <input
+                    type="radio"
+                    value="red"
+                    v-model="selectedColor"
+                    style="margin-left: 30px; margin-top: 7px;"
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="item">
+              <i class="large tint middle aligned icon" style="color: green"></i>
+              <div class="content">
+                <p class="header" style="margin: 5px 30px">
+                  Vert
+                  <input
+                    type="radio"
+                    value="green"
+                    v-model="selectedColor"
+                    style="margin-left: 30px; margin-top: 7px;"
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="item">  
+              <i class="large tint middle aligned icon" style="color: blue"></i>
+              <div class="content">
+                <p class="header" style="margin: 5px 30px">
+                  Bleu
+                  <input
+                    type="radio"
+                    value="blue"
+                    v-model="selectedColor"
+                    style="margin-left: 30px; margin-top: 7px;"
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="ui input" id="interact">
+            <input type="text" v-model="titre" placeholder="Titre de l'event">
+          </div>
+          <button class="ui button" v-on:click="pushEvent()">Ajouter l'event</button>
         </div>
-        <button class="ui button" v-on:click="pushEvent()">push</button>
-      </div>
       </div>
     </div>
   </div>
@@ -34,7 +94,10 @@ export default {
     return {
       eventsList: [],
       titre: "",
-      role: ""
+      role: "",
+      animList: [],
+      selectedAnim: "",
+      selectedColor: ""
     };
   },
   methods: {
@@ -45,7 +108,7 @@ export default {
           title: res.data[i].descr,
           start: res.data[i].date_debut,
           end: res.data[i].date_fin,
-          backgroundColor: "red",
+          backgroundColor: res.data[i].couleur,
           id: res.data[i].id
         };
         this.eventsList.push(event);
@@ -69,7 +132,6 @@ export default {
         select: function(info) {
           localStorage.start = info.startStr;
           localStorage.end = info.endStr;
-          localStorage.idAnim = 5;
         },
         eventClick: function(info) {
           alert("Event: " + info.event.title);
@@ -77,14 +139,14 @@ export default {
       });
       calendar.render();
     },
-     async createCalendar() {
+    async createCalendar() {
       var res = await ServicePHP.getPlannings();
       for (var i = 0; i < res.data.length; i++) {
         var event = {
           title: res.data[i].descr,
           start: res.data[i].date_debut,
           end: res.data[i].date_fin,
-          backgroundColor: "red",
+          backgroundColor: res.data[i].couleur,
           id: res.data[i].id
         };
         this.eventsList.push(event);
@@ -111,32 +173,52 @@ export default {
       });
       calendar.render();
     },
+    async getAnim() {
+      var res = await ServicePHP.getAnims();
+      this.animList = res.data;
+    },
     async pushEvent() {
-      sessionStorage.role = "animateur"
-      /*
-      var res = await ServicePHP.createEvent(
-        this.titre,
-        localStorage.start,
-        localStorage.end,
-        localStorage.idAnim
-      );*/
+      if (
+        this.titre == "" ||
+        this.selected == "" ||
+        localStorage.start == "" ||
+        localStorage.end == ""
+      ) {
+        alert(
+          "Verifiez de bien avoir renseigné tous les champs (date comprise)"
+        );
+      } else {
+        var res = await ServicePHP.createEvent(
+          this.titre,
+          localStorage.start,
+          localStorage.end,
+          this.selectedAnim,
+          this.selectedColor
+        );
+      }
     }
   },
   created() {
-    this.role = sessionStorage.role
-    console.log(this.role)
+    localStorage.start = "";
+    localStorage.end = "";
+    this.role = sessionStorage.role;
   },
   mounted() {
-    if(sessionStorage === "administrateur"){
-    this.createCalendarAdmin();
-    }else{
+    if (this.role == "administrateur") {
+      this.createCalendarAdmin();
+    } else {
       this.createCalendar();
     }
+    this.getAnim();
   }
 };
 </script>
 <style scoped>
 #calendar {
   max-width: 900px;
+}
+.list {
+  height: 200px;
+  overflow: auto;
 }
 </style>

@@ -20,6 +20,9 @@ export default {
     getAlbums() {
         return ApiPHP().get('/albums')
     },
+    getAnims() {
+        return ApiPHP().get('/animateurs')
+    },
     getMusicByAlbum(id) {
         return ApiPHP().get('/albums/' + id + '/musiques')
     },
@@ -78,14 +81,16 @@ export default {
         `;
         return ApiPHP().post('/playlist', json)
     },
-    createEvent(title, start, end, id) {
+    createEvent(title, start, end, id, couleur) {
         var json =
             `
         {
             "title":"` + title + `",
             "start":"` + start + `",
             "end":"` + end + `",
-            "id":"` + id + `"
+            "id_animateur":"` + id + `",
+            "couleur":"` + couleur + `"
+            
         }
         `;
         return ApiPHP().post('/plannings', json)
