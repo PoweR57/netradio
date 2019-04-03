@@ -34,6 +34,7 @@ export default {
                 this.mdp
             );
             var json = response;
+            console.log("gg")
             sessionStorage.role = json.role;
         }
     },
