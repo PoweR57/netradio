@@ -36,7 +36,7 @@
                             </div>
                         </td>
                     </tr>
-
+                    <input v-model="duree"/>
                     <h2 id="header" slot="header">
                         <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
@@ -48,6 +48,7 @@
                             <div v-else class="or" data-text="🎤"></div>
                             <button v-if="MusicRuning.artist != null" class="ui yellow button">{{MusicRuning.titre}}</button>
                             <button v-else class="ui blue button">{{MusicRuning.titre}}</button>
+                            
                         </div>
                         <div v-else>...</div>
                     </h2>
@@ -241,6 +242,7 @@
                                         <button class="ui orange button">{{element.duree}}</button>
                                         <div class="or" data-text="🎵"></div>
                                         <button class="ui yellow button">{{element.titre}}</button>
+                                        
                                     </div>
                                 </td>
                             </tr>
@@ -275,7 +277,11 @@ export default {
             id_album: null,
             MusicRuning: null,
             listOfMusic: [],
-            listOfMusicWhoWaitForPlaying: []
+            listOfMusicWhoWaitForPlaying: [],
+            duree: 0.0,
+            couper: '',
+            couperEnCour: ''
+
         };
     },
     created() {
@@ -319,10 +325,22 @@ export default {
         async getMusicWaiting() {
             const response = await ServiceMusic.getMusicWaiting();
             this.listOfMusicWhoWaitForPlaying = response.data.waiting;
+            let tmp;
+            for (let i =0 ; i<= this.listOfMusicWhoWaitForPlaying.length ; i++){
+                this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
+                this.tmp= parseInt(this.couperEnCour[0])*60+ parseInt(this.couperEnCour[1]);
+                console.log(this.tmp);
+                this.duree=this.duree+ this.tmp/ 60+":"+this.tmp%60
+            }
+            
         },
         async getMusicPlaying() {
             const response = await ServiceMusic.getMusicPlaying();
             this.MusicRuning = response.data.isPlaying;
+            // this.couper = this.MusicRuning.duree.split(':');
+            // let tmp = this.couper[0]+"."+this.couper[1];
+            // this.duree= parseFloat(this.duree) + parseFloat(tmp);
+            
         },
         async getPlaylist() {
             const response = await ServicePHP.getPlaylists();
