@@ -180,7 +180,7 @@ function createUser($email, $nom, $prenom, $mdp)
     $connection = connectionDataBase();
     try {
         $mdp = password_hash($mdp, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO user (email,nom,prenom,mdp,token) values ('$email','$nom','$prenom','$mdp')";
+        $sql = "INSERT INTO user (email,nom,prenom,mdp,role) values ('$email','$nom','$prenom','$mdp','auditeur')";
         $connection->query($sql);
     } catch (PDOException $e) {
         echo $e;
