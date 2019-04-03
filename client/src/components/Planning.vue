@@ -1,6 +1,17 @@
 <template>
   <div>
-    <div id="calendar"></div>
+    <div class="ui grid">
+      <div class="four wide column"></div>
+      <div class="eight wide column">
+        <div id="calendar"></div>
+      </div>
+      <div class="four wide column">
+        <div class="ui input">
+          <input type="text" v-model="titre" placeholder="Search...">
+        </div>
+        <button class="ui button" v-on:click="pushEvent()">push</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -11,7 +22,7 @@ import "@fullcalendar/core/main.css";
 import "@fullcalendar/timegrid/main.css";
 import { Calendar } from "@fullcalendar/core";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin from "@fullcalendar/interaction";
 import "fullcalendar";
 import $ from "jquery";
 import { getContentRect } from "fullcalendar";
@@ -19,7 +30,8 @@ import { getContentRect } from "fullcalendar";
 export default {
   data() {
     return {
-      eventsList: []
+      eventsList: [],
+      titre: ""
     };
   },
   methods: {
@@ -35,8 +47,9 @@ export default {
         };
         this.eventsList.push(event);
       }
+      var a = "rofl";
       var calendar = new Calendar(document.getElementById("calendar"), {
-        plugins: [interactionPlugin,timeGridPlugin],
+        plugins: [interactionPlugin, timeGridPlugin],
         timeZone: "UTC",
         defaultView: "timeGridWeek",
         resourceLabelText: "Jours",
@@ -52,12 +65,24 @@ export default {
         },
         events: this.eventsList,
         select: function(info) {
-          this.addEvent(info)
-      }
+          localStorage.start = info.startStr;
+          localStorage.end = info.endStr;
+          localStorage.idAnim = 5;
+        },
+        eventClick: function(info) {
+          alert("Event: " + info.event.title);
+        }
       });
       calendar.render();
-      console.log(this.eventsList);
     },
+    async pushEvent() {
+      var res = await ServicePHP.createEvent(
+        this.titre,
+        localStorage.start,
+        localStorage.end,
+        localStorage.idAnim
+      );
+    }
   },
   mounted() {
     this.createCalendar();
@@ -67,6 +92,5 @@ export default {
 <style scoped>
 #calendar {
   max-width: 900px;
-  margin: 40px auto;
 }
 </style>

@@ -80,6 +80,18 @@ export default {
         `;
         return ApiPHP().post('/playlist', json)
     },
+    createEvent(title, start, end, id) {
+        var json =
+            `
+        {
+            "title":"` + title + `",
+            "start":"` + start + `",
+            "end":"` + end + `",
+            "id":"` + id + `"
+        }
+        `;
+        return ApiPHP().post('/plannings', json)
+    },
     createPodcast(titre, descr, uuid) {
         var json = `{
             "titre":"` + titre + `",

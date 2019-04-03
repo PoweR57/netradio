@@ -106,6 +106,17 @@ function getPlannings()
     return $result;
 }
 
+function createEvent($title, $start, $end, $id)
+{
+    $connection = connectionDataBase(); //Récupérer la connection à la bdd
+    try {
+        $sql = "INSERT INTO planning (descr, date_debut,date_fin,id_animateur) values ('$title', '$start', '$end', '$id')";
+        $connection->query($sql);
+    } catch (PDOException $e) {
+        echo $e;
+    }
+}
+
 function getPlaylistById($id)
 {
     $connection = connectionDataBase(); //Récupérer la connection à la bdd

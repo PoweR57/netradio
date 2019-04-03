@@ -43,6 +43,10 @@ $app->post('/playlist', function ($request, $response) {
     $json = json_decode($request['raw']);
     $response->send(createPlaylist($json->title, $json->descr));
 });
+$app->post('/plannings', function ($request, $response) {
+    $json = json_decode($request['raw']);
+    $response->send(createEvent($json->title, $json->start,$json->end,$json->id));
+});
 
 $app->put('/playlists', function ($request, $response) {
     $json = json_decode($request['raw']);
