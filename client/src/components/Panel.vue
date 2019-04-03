@@ -3,6 +3,7 @@
         <div id="left-component" class="ui segment">
             <div style="display: flex; justify-content: space-around;" slot="header">
                 <h2 id="header">Musiques en attente d'être jouées</h2>
+                <input id = "temps" class="ui orange button" v-model="timeSTr" disabled="disabled" />
                 <button class="ui yellow button" @click="RandomInArray()">
                     <i class="random icon"></i>
                 </button>
@@ -36,8 +37,7 @@
                             </div>
                         </td>
                     </tr>
-                    <input v-model="duree"/>
-                    <input v-model="timeSTr"/>
+                    
                     <h2 id="header" slot="header">
                         <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
@@ -299,6 +299,7 @@ export default {
         var getClass = this;
         socket.on("update", function() {
             console.log("update");
+            getClass.duree=0;
             getClass.getMusicWaiting();
             getClass.getMusicPlaying();
         });
@@ -398,6 +399,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 table {
     min-height: 100px;
     overflow: auto;
