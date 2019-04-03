@@ -45,7 +45,7 @@ $app->post('/playlist', function ($request, $response) {
 });
 $app->post('/plannings', function ($request, $response) {
     $json = json_decode($request['raw']);
-    $response->send(createEvent($json->title, $json->start,$json->end,$json->id));
+    $response->send(createEvent($json->title, $json->start,$json->end,$json->id,$json->couleur));
 });
 
 $app->put('/playlists', function ($request, $response) {
@@ -59,6 +59,10 @@ $app->delete('/playlists/:id', function ($request, $response) {
 
 $app->get('/playlists/:id', function ($request, $response) {
     $response->send(getPlaylistById($request["params"]["id"]));
+});
+
+$app->get('/animateurs', function ($request, $response) {
+    $response->send(getAnim());
 });
 
 $app->post('/login', function ($request, $response) {
