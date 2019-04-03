@@ -75,6 +75,7 @@ io.on('connection', function (socket) {
             saveStat = status
             resetParams()
             startMusic()
+            socket.broadcast.emit('update')
         }
         if (status == 'running' && saveStat != status) {
             console.log('running : ', status)
