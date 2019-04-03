@@ -8,7 +8,7 @@
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
       <a class="item" id="inv" v-on:click="goTo('invite')">Invite</a>
       <div class="middle">
-        <img class="logo" src="../logo.png">
+        <img class="logo" src="../assets/logo.png">
       </div>
       <div class="right menu">
         <div class="item">
@@ -125,7 +125,7 @@ export default {
   margin-left: 3px;
 }
 #top {
-  background-image: url("../bckgrnd.jpg");
+  background-image: url("../assets/bckgrnd.jpg");
   border-bottom: 2px solid black;
   height: 100px;
     background-image: url("../assets/bckgrnd.jpg");

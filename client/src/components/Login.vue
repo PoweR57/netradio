@@ -34,9 +34,7 @@ export default {
                 this.mdp
             );
             var json = response;
-            console.log("ZZZZZZZZZZZ"+json);
-            
-            console.log("ZZZZZZZZZZZ"+json);
+            console.log(json);
         }
     },
     computed: {}
