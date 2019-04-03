@@ -306,7 +306,6 @@ export default {
         var getClass = this;
         socket.on("update", function() {
             console.log("update");
-            getClass.updateTime()
             getClass.getMusicWaiting();
             getClass.getMusicPlaying();
         });
@@ -314,24 +313,24 @@ export default {
     methods: {
         updateTime() {
             this.duree = 0
-            for (let i =0 ; i<= this.listOfMusicWhoWaitForPlaying.length ; i++){
-                this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
-                var tmp = (parseInt(parseInt(this.couperEnCour[0])) * 60 + parseInt(this.couperEnCour[1]));
-
-                this.duree = this.duree + tmp
-                var secondes = Math.round(this.duree%60)
-                var minutes = Math.floor(this.duree/60)
-                var minutesConvert = Math.round(minutes%60)
-                
-                var heures = Math.floor(minutes/60)
-                if (secondes < 10) {
-                    secondes  = "0"+secondes
+                for (let i =0 ; i< this.listOfMusicWhoWaitForPlaying.length ; i++){
+                    this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
+                    var tmp = (parseInt(parseInt(this.couperEnCour[0])) * 60 + parseInt(this.couperEnCour[1]));
+    
+                    this.duree = this.duree + tmp
+                    var secondes = Math.round(this.duree%60)
+                    var minutes = Math.floor(this.duree/60)
+                    var minutesConvert = Math.round(minutes%60)
+                    
+                    var heures = Math.floor(minutes/60)
+                    if (secondes < 10) {
+                        secondes  = "0"+secondes
+                    }
+                    if (minutesConvert < 10) {
+                        minutesConvert  = "0"+minutesConvert
+                    }
+                    this.timeSTr = heures+"H "+ minutesConvert + "M " + secondes + "S"
                 }
-                if (minutesConvert < 10) {
-                    minutesConvert  = "0"+minutesConvert
-                }
-                this.timeSTr = heures+"H "+ minutesConvert + "M " + secondes + "S"
-            }
         },
         goTo(page) {
             this.$router.push(page);
