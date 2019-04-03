@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="ui form">
+        <form class="ui form">
             <div class="field">
                 <label>Email</label>
                 <input v-model="login" type="email" name="email" placeholder="Email" required>
@@ -19,7 +19,7 @@
             </div>
             <div class="field"></div>
             <button class="ui button" @click="createUser()">Valider</button>
-        </div>
+        </form>
     </div>
 </template>
 
