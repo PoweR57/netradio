@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="ui form">
+        <form class="ui form" v-on:submit.prevent="createUser()">
             <div class="field">
                 <label>Email</label>
                 <input v-model="login" type="email" name="email" placeholder="Email" required>
@@ -18,7 +18,7 @@
                 <input v-model="mdp" type="password" name="mdp" placeholder="Mot de passe" required>
             </div>
             <div class="field"></div>
-            <button class="ui button" @click="createUser()">Valider</button>
+            <button class="ui button">Valider</button>
         </form>
     </div>
 </template>
@@ -39,29 +39,17 @@ export default {
     },
     methods: {
         async createUser() {
-            if (
-                this.login != "" &&
-                this.nom != "" &&
-                this.mdp != "" &&
-                this.prenom != ""
-            ) {
-                if (this.ValidateEmail(this.login)) {
-                    const response = await ServicePHP.createUser(
-                        this.login,
-                        this.nom,
-                        this.prenom,
-                        this.mdp
-                    );
-                    this.$router.push("login");
-                }
+            const response = await ServicePHP.createUser(
+                this.login,
+                this.nom,
+                this.prenom,
+                this.mdp
+            );
+            if (response.data == "") {
+                document.location.reload(true)
+            } else {
+                alert('Cet email existe déjà')
             }
-        },
-        ValidateEmail(mail) {
-            if (/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/.test(mail)) {
-                return true;
-            }
-            alert("You have entered an invalid email address!");
-            return false;
         }
     },
     computed: {}

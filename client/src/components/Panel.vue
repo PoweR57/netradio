@@ -40,7 +40,6 @@
                             </div>
                         </td>
                     </tr>
-                    
                     <h2 id="header" slot="header">
                         <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
@@ -55,7 +54,6 @@
                                 class="ui yellow button"
                             >{{MusicRuning.titre}}</button>
                             <button v-else class="ui blue button">{{MusicRuning.titre}}</button>
-                            
                         </div>
                         <div v-else>...</div>
                     </h2>
@@ -238,8 +236,7 @@
                             <tr
                                 class="list-group-item"
                                 v-for="(element,idx) in playlist.liste_musique"
-                                :key="idx"
-                            >
+                                :key="idx">
                                 <td>
                                     <div class="ui buttons">
                                         <button
@@ -311,12 +308,33 @@ export default {
         var getClass = this;
         socket.on("update", function() {
             console.log("update");
-            getClass.duree=0;
             getClass.getMusicWaiting();
             getClass.getMusicPlaying();
         });
     },
     methods: {
+        updateTime() {
+            this.duree = 0
+            this.timeSTr = "0H 00M 00S"
+                for (let i =0 ; i< this.listOfMusicWhoWaitForPlaying.length ; i++){
+                    this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
+                    var tmp = (parseInt(parseInt(this.couperEnCour[0])) * 60 + parseInt(this.couperEnCour[1]));
+    
+                    this.duree = this.duree + tmp
+                    var secondes = Math.round(this.duree%60)
+                    var minutes = Math.floor(this.duree/60)
+                    var minutesConvert = Math.round(minutes%60)
+                    
+                    var heures = Math.floor(minutes/60)
+                    if (secondes < 10) {
+                        secondes  = "0"+secondes
+                    }
+                    if (minutesConvert < 10) {
+                        minutesConvert  = "0"+minutesConvert
+                    }
+                    this.timeSTr = heures+"H "+ minutesConvert + "M " + secondes + "S"
+                }
+        },
         goTo(page) {
             this.$router.push(page);
         },
@@ -340,31 +358,11 @@ export default {
         async getMusicWaiting() {
             const response = await ServiceMusic.getMusicWaiting();
             this.listOfMusicWhoWaitForPlaying = response.data.waiting;
-            for (let i =0 ; i<= this.listOfMusicWhoWaitForPlaying.length ; i++){
-                this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
-                var tmp = parseInt(this.couperEnCour[0])*60+ parseInt(this.couperEnCour[1]);
-                this.duree = this.duree + tmp
-                var secondes = Math.round(this.duree%60)
-                var minutes = Math.round(this.duree/60)
-                var minutesConvert = Math.round(minutes%60)
-                
-                var heures = Math.floor(minutes/60)
-                if (secondes < 10) {
-                    secondes  = "0"+secondes
-                }
-                if (minutesConvert < 10) {
-                    minutesConvert  = "0"+minutesConvert
-                }
-                this.timeSTr = heures+"H "+ minutesConvert + "M " + secondes + "S"
-            }
+            this.updateTime()
         },
         async getMusicPlaying() {
             const response = await ServiceMusic.getMusicPlaying();
-            this.MusicRuning = response.data.isPlaying;
-            // this.couper = this.MusicRuning.duree.split(':');
-            // let tmp = this.couper[0]+"."+this.couper[1];
-            // this.duree= parseFloat(this.duree) + parseFloat(tmp);
-            
+            this.MusicRuning = response.data.isPlaying;            
         },
         async getPlaylist() {
             const response = await ServicePHP.getPlaylists();
@@ -403,6 +401,7 @@ export default {
             this.sendNewList();
         },
         sendNewList() {
+            this.updateTime()
             ServiceMusic.postMusicList(this.listOfMusicWhoWaitForPlaying);
         },
         changeFilter(filter) {

@@ -34,6 +34,22 @@ function resetDataBase($connection)
     }
 }
 
+function insertUser($connection)
+{
+    try {
+        $sql = "
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur2@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur3@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur4@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur5@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('admin@gmail.com','admin@gmail.com','admin@gmail.com','$2y$10$2ldZAWSBTkVJ2nvvb2PzO..lzwfp2hFrj1Qjyhz/CjzvtR3uWUUxC','admin');
+        ";
+        $connection->exec($sql);
+    } catch (PDOException $e) {
+    }
+}
+
 function createDataBase($connection)
 {
     try {
@@ -49,7 +65,7 @@ function createDataBase($connection)
         $sql = "CREATE TABLE user (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             mdp VARCHAR(3000) NOT NULL,
-            email VARCHAR(3000) NOT NULL,
+            email VARCHAR(200) NOT NULL UNIQUE,
             nom VARCHAR(3000) NOT NULL,
             prenom VARCHAR(3000) NOT NULL,
             role VARCHAR(3000) NOT NULL
@@ -115,6 +131,7 @@ function peopleDataBaseHard()
     $connection = connectionDataBase(); //Récupérer la connection à la bdd
     resetDataBase($connection); //Supprime toutes les tables
     createDataBase($connection); //Creer la BDD
+    insertUser($connection); //Creer la BDD
 
     $dir = "D:/Musique/Radio/";
     $array = scandir($dir);

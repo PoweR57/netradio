@@ -195,6 +195,7 @@ export default {
           this.selectedAnim,
           this.selectedColor
         );
+        document.location.reload(true)
       }
     }
   },
