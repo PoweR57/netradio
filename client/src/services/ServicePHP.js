@@ -1,6 +1,5 @@
 /* eslint-disable */
 import ApiPHP from '@/services/ApiPHP'
-import Config from "@/config/config"
 
 export default {
     getPlayLists() {
@@ -51,7 +50,7 @@ export default {
             "id":` + id + `,
             "liste":"` + strList + `"
         }`;
-        ApiPHP().put('/playlists', json)
+        return ApiPHP().put('/playlists', json)
     },
     getUserByLogin(login, mdp) {
         var json = '{"email":"' + login + '","mdp":"' + mdp + '"}';

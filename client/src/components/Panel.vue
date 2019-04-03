@@ -31,7 +31,10 @@
                                 <button class="ui orange button">{{element.duree}}</button>
                                 <div v-if="element.artist != null" class="or" data-text="🎵"></div>
                                 <div v-else class="or" data-text="🎤"></div>
-                                <button v-if="element.artist != null" class="ui yellow button">{{element.titre}}</button>
+                                <button
+                                    v-if="element.artist != null"
+                                    class="ui yellow button"
+                                >{{element.titre}}</button>
                                 <button v-else class="ui blue button">{{element.titre}}</button>
                             </div>
                         </td>
@@ -46,7 +49,10 @@
                             <button class="ui orange button">{{MusicRuning.duree}}</button>
                             <div v-if="MusicRuning.artist != null" class="or" data-text="🎵"></div>
                             <div v-else class="or" data-text="🎤"></div>
-                            <button v-if="MusicRuning.artist != null" class="ui yellow button">{{MusicRuning.titre}}</button>
+                            <button
+                                v-if="MusicRuning.artist != null"
+                                class="ui yellow button"
+                            >{{MusicRuning.titre}}</button>
                             <button v-else class="ui blue button">{{MusicRuning.titre}}</button>
                         </div>
                         <div v-else>...</div>
@@ -82,11 +88,11 @@
                 </div>
             </div>
             <div v-for="(album,idl) in albums" :key="idl">
-                <div class="title" @click="downloadMusicByAlbum(idl)">
+                <div class="title" @click="downloadMusicByAlbum(idl)" :href="'#'+album.titre">
                     <i class="dropdown icon"></i>
                     {{album.titre}}
                 </div>
-                <div class="content">
+                <div class="content" :id="album.titre">
                     <table class="ui striped table">
                         <thead>
                             <tr>
@@ -124,7 +130,11 @@
                 </div>
             </div>
         </div>
-        <div class="ui styled accordion segment" id="right-component" v-else-if="filter == 'podcast'">
+        <div
+            class="ui styled accordion segment"
+            id="right-component"
+            v-else-if="filter == 'podcast'"
+        >
             <div style="margin-bottom: 14px; text-align: center;" slot="header">
                 <div class="ui yellow floating labeled icon dropdown button">
                     <i class="filter icon"></i>
@@ -159,14 +169,13 @@
                     @end="isDragging = false"
                     :group="{ name: 'people', pull: 'clone', put: false }"
                 >
-                    <tr
-                        class="list-group-item"
-                        v-for="(element,idx) in podcasts"
-                        :key="idx"
-                    >
+                    <tr class="list-group-item" v-for="(element,idx) in podcasts" :key="idx">
                         <td id="padding">
                             <div class="ui buttons">
-                                <button class="ui negative button" @click="addToArrayElement(element)">
+                                <button
+                                    class="ui negative button"
+                                    @click="addToArrayElement(element)"
+                                >
                                     <i class="arrow left icon"></i>
                                 </button>
                                 <div class="or" data-text="⏱"></div>
@@ -204,6 +213,7 @@
                         </div>
                     </div>
                 </div>
+                <button class="ui right button primary" @click="goTo('creerplaylist')">Creer une playlist</button>
             </div>
             <div v-for="(playlist,idl) in playlists" :key="idl">
                 <div class="title">
@@ -299,6 +309,9 @@ export default {
         });
     },
     methods: {
+        goTo(page) {
+            this.$router.push(page);
+        },
         async getAlbums() {
             const response = await ServicePHP.getAlbums();
             this.albums = response.data;

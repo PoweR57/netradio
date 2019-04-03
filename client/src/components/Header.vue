@@ -6,7 +6,7 @@
       <a class="item" id="pla" v-on:click="goTo('planning')">Planning</a>
       <a class="item" id="ctl" v-on:click="goTo('control')">Control</a>
       <a class="item" id="pan" v-on:click="goTo('panel')">Panel</a>
-
+      <a class="item" id="inv" v-on:click="goTo('invite')">Invite</a>
       <div class="middle">
         <img class="logo" src="../logo.png">
       </div>
@@ -40,6 +40,7 @@ export default {
     $("#pla").removeClass("active");
     $("#ctl").removeClass("active");
     $("#pan").removeClass("active");
+    $("#inv").removeClass("active");
     switch ($(location)[0].hash) {
       case "#/":
         $("#acc").addClass("active");
@@ -56,6 +57,9 @@ export default {
       case "#/panel":
         $("#pan").addClass("active");
         break;
+      case "#/invite":
+        $("#inv").addClass("active");
+        break;
     }
   },
   methods: {
@@ -64,6 +68,7 @@ export default {
       $("#ctl").removeClass("active");
       $("#pan").removeClass("active");
       $("#acc").removeClass("active");
+      $("#inv").removeClass("active");
       switch (page) {
         case "accueil":
           $("#acc").addClass("active");
@@ -79,6 +84,10 @@ export default {
           break;
         case "panel":
           $("#pan").addClass("active");
+          this.$router.push(page);
+          break;
+        case "invite":
+          $("#inv").addClass("active");
           this.$router.push(page);
           break;
         default:
