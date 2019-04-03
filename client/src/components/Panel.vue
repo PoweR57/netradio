@@ -3,6 +3,7 @@
         <div id="left-component" class="ui segment">
             <div style="display: flex; justify-content: space-around;" slot="header">
                 <h2 id="header">Musiques en attente d'être jouées</h2>
+                <input id = "temps" class="ui orange button" v-model="timeSTr" disabled="disabled" />
                 <button class="ui yellow button" @click="RandomInArray()">
                     <i class="random icon"></i>
                 </button>
@@ -39,7 +40,7 @@
                             </div>
                         </td>
                     </tr>
-
+                    
                     <h2 id="header" slot="header">
                         <div class="ui buttons" v-if="MusicRuning && MusicRuning.length != 0">
                             <button class="ui positive button">
@@ -54,13 +55,13 @@
                                 class="ui yellow button"
                             >{{MusicRuning.titre}}</button>
                             <button v-else class="ui blue button">{{MusicRuning.titre}}</button>
+                            
                         </div>
                         <div v-else>...</div>
                     </h2>
                 </draggable>
             </table>
         </div>
-
         <div class="ui styled accordion segment" id="right-component" v-if="filter == 'album'">
             <div style="margin-bottom: 14px; text-align: center;" slot="header">
                 <div class="ui yellow floating labeled icon dropdown button">
@@ -285,7 +286,11 @@ export default {
             id_album: null,
             MusicRuning: null,
             listOfMusic: [],
-            listOfMusicWhoWaitForPlaying: []
+            listOfMusicWhoWaitForPlaying: [],
+            duree: 0,
+            timeSTr: "",
+            couperEnCour: ''
+
         };
     },
     created() {
@@ -304,6 +309,7 @@ export default {
         var getClass = this;
         socket.on("update", function() {
             console.log("update");
+            getClass.duree=0;
             getClass.getMusicWaiting();
             getClass.getMusicPlaying();
         });
@@ -332,10 +338,31 @@ export default {
         async getMusicWaiting() {
             const response = await ServiceMusic.getMusicWaiting();
             this.listOfMusicWhoWaitForPlaying = response.data.waiting;
+            for (let i =0 ; i<= this.listOfMusicWhoWaitForPlaying.length ; i++){
+                this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
+                var tmp = parseInt(this.couperEnCour[0])*60+ parseInt(this.couperEnCour[1]);
+                this.duree = this.duree + tmp
+                var secondes = Math.round(this.duree%60)
+                var minutes = Math.round(this.duree/60)
+                var minutesConvert = Math.round(minutes%60)
+                
+                var heures = Math.round(minutes/60)
+                if (secondes < 10) {
+                    secondes  = "0"+secondes
+                }
+                if (minutesConvert < 10) {
+                    minutesConvert  = "0"+minutesConvert
+                }
+                this.timeSTr = heures+"H "+ minutesConvert + "M " + secondes + "S"
+            }
         },
         async getMusicPlaying() {
             const response = await ServiceMusic.getMusicPlaying();
             this.MusicRuning = response.data.isPlaying;
+            // this.couper = this.MusicRuning.duree.split(':');
+            // let tmp = this.couper[0]+"."+this.couper[1];
+            // this.duree= parseFloat(this.duree) + parseFloat(tmp);
+            
         },
         async getPlaylist() {
             const response = await ServicePHP.getPlaylists();
@@ -385,6 +412,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 table {
     min-height: 100px;
     overflow: auto;
