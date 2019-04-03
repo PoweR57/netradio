@@ -313,6 +313,7 @@ export default {
     methods: {
         updateTime() {
             this.duree = 0
+            this.timeSTr = "0H 00M 00S"
                 for (let i =0 ; i< this.listOfMusicWhoWaitForPlaying.length ; i++){
                     this.couperEnCour = this.listOfMusicWhoWaitForPlaying[i].duree.split(":");
                     var tmp = (parseInt(parseInt(this.couperEnCour[0])) * 60 + parseInt(this.couperEnCour[1]));
