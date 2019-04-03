@@ -49,7 +49,7 @@ function createDataBase($connection)
         $sql = "CREATE TABLE user (
             id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             mdp VARCHAR(3000) NOT NULL,
-            email VARCHAR(3000) NOT NULL,
+            email VARCHAR(200) NOT NULL UNIQUE,
             nom VARCHAR(3000) NOT NULL,
             prenom VARCHAR(3000) NOT NULL,
             role VARCHAR(3000) NOT NULL

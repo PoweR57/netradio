@@ -45,7 +45,11 @@ export default {
                 this.prenom,
                 this.mdp
             );
-            this.$router.push("login");
+            if (response.data == "") {
+                this.$router.push("login");
+            } else {
+                alert('Cet email existe déjà')
+            }
         }
     },
     computed: {}
