@@ -196,6 +196,7 @@ export default {
           this.selectedColor
         );
         document.location.reload(true)
+        this.$router.push("planning");
       }
     }
   },
