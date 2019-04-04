@@ -55,14 +55,8 @@ export default {
                 if (seconde < 10) {
                     seconde = "0"+seconde
                 }
-                var temps =
-                    Math.round(seconds / 60) + ":" + seconde;
-                ServicePHP.createPodcast(
-                    getClass.titre,
-                    getClass.descr,
-                    uuid,
-                    temps
-                );
+                var temps = Math.round(seconds / 60) + ":" + seconde;
+                ServicePHP.createPodcast(getClass.titre,getClass.descr,uuid,temps);
                 var form_data = new FormData();
                 form_data.append("file", file_data);
                 const response = await getClass.sendPodcast(form_data, uuid);

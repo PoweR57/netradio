@@ -99,6 +99,7 @@ function createDataBase($connection)
             descr VARCHAR(3000) NOT NULL,
             date_debut DATETIME NOT NULL,
             date_fin DATETIME NOT NULL,
+            couleur VARCHAR(3000) NOT NULL,
             id_animateur VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);

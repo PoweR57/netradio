@@ -158,6 +158,7 @@
                         </div>
                     </div>
                 </div>
+                <button class="ui right button primary" @click="goTo('podcastupload')">Upload un poadcast</button>
             </div>
             <table class="ui striped table">
                 <draggable
