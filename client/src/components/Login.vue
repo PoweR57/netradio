@@ -32,6 +32,7 @@ export default {
       const response = await ServicePHP.getUserByLogin(this.login, this.mdp);
       sessionStorage.role = response.data.role;
       sessionStorage.connect = true;
+      this.$router.push("accueil");
       document.location.reload(true)
     }
   },

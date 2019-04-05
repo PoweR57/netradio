@@ -86,7 +86,8 @@ export default {
     deconnect() {
       sessionStorage.removeItem('role');
       sessionStorage.removeItem('connect');
-      document.location.href = "/accueil";
+      this.$router.push("accueil");
+        document.location.reload(true)
     },
     goTo(page) {
       $("#pla").removeClass("active");

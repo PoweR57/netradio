@@ -44,7 +44,7 @@
               <input v-else type="checkbox" @click="changeVoice(id)">
               <label></label>
             </div>
-            <i v-if="invite" class="microphone icon"></i>
+            <i v-if="man.listen" class="microphone icon"></i>
             <i v-else class="microphone slash icon"></i>
           </td>
         </tr>

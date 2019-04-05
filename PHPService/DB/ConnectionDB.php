@@ -43,7 +43,7 @@ function insertUser($connection)
         INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur3@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
         INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur4@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
         INSERT INTO user (email,nom,prenom,mdp,role) values ('animateur5@gmail.com','animateur@gmail.com','animateur@gmail.com','$2y$10\$xlRA7/nRUKfuoQBrVBVDLeOunAFEYr1bs1NV0q38t9Aix8pBejp9i','animateur');
-        INSERT INTO user (email,nom,prenom,mdp,role) values ('admin@gmail.com','admin@gmail.com','admin@gmail.com','$2y$10$2ldZAWSBTkVJ2nvvb2PzO..lzwfp2hFrj1Qjyhz/CjzvtR3uWUUxC','admin');
+        INSERT INTO user (email,nom,prenom,mdp,role) values ('admin@gmail.com','admin@gmail.com','admin@gmail.com','$2y$10$2ldZAWSBTkVJ2nvvb2PzO..lzwfp2hFrj1Qjyhz/CjzvtR3uWUUxC','administrateur');
         ";
         $connection->exec($sql);
     } catch (PDOException $e) {
@@ -99,6 +99,7 @@ function createDataBase($connection)
             descr VARCHAR(3000) NOT NULL,
             date_debut DATETIME NOT NULL,
             date_fin DATETIME NOT NULL,
+            couleur VARCHAR(3000) NOT NULL,
             id_animateur VARCHAR(3000) NOT NULL
             ) DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
         $connection->exec($sql);
