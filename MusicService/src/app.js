@@ -186,4 +186,4 @@ var resetParams = () => {
     onePart = 0
 }
 
-http.listen(8081, () => console.log('listening on port 8081'))
+http.listen(8081,"0.0.0.0", () => console.log('listening on port 8081'))
